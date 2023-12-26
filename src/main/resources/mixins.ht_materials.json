@@ -1,0 +1,13 @@
+{
+  "package": "io.github.hiiragi283.material.mixin",
+  "refmap": "mixins.ht_materials.refmap.json",
+  "target": "@env(DEFAULT)",
+  "minVersion": "0.8",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "BlockMixin",
+    "ItemMixin"
+  ],
+  "client": [],
+  "server": []
+}
