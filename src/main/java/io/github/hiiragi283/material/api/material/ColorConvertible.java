@@ -5,6 +5,8 @@ import java.awt.*;
 @FunctionalInterface
 public interface ColorConvertible {
 
+    ColorConvertible EMPTY = () -> Color.WHITE;
+
     Color asColor();
 
 }

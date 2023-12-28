@@ -12,17 +12,50 @@ import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 @Desugar
-public record HTMaterial(
-        int index,
-        HTMaterialKey key,
-        HTMaterialInfo info,
-        HTMaterialPropertyMap properties,
-        HTMaterialFlagSet flags
-) {
+public class HTMaterial {
+
+    private final HTMaterialKey key;
+
+    private final HTMaterialInfo info;
+
+    private final HTMaterialPropertyMap properties;
+
+    private final HTMaterialFlagSet flags;
+
+    private HTMaterial(HTMaterialKey key, HTMaterialInfo info, HTMaterialPropertyMap properties, HTMaterialFlagSet flags) {
+        this.key = key;
+        this.info = info;
+        this.properties = properties;
+        this.flags = flags;
+    }
+
+    public HTMaterialKey getKey() {
+        return key;
+    }
+
+    public int getIndex() {
+        return getKey().index();
+    }
+
+    public String getName() {
+        return getKey().name();
+    }
+
+    public HTMaterialInfo getInfo() {
+        return info;
+    }
+
+    public HTMaterialPropertyMap getProperties() {
+        return properties;
+    }
+
+    public HTMaterialFlagSet getFlags() {
+        return flags;
+    }
 
     public void verify() {
         properties.verify(this);
@@ -67,17 +100,17 @@ public record HTMaterial(
 
     //    Registry    //
 
-    private static final Logger LOGGER = LogManager.getLogger(HTMaterial.class);
+    private static final Logger LOGGER = LogManager.getLogger("HTMaterial");
 
-    private static final Map<HTMaterialKey, HTMaterial> keyRegistry = new HashMap<>();
+    private static final Map<HTMaterialKey, HTMaterial> registry = new LinkedHashMap<>();
 
-    public static Map<HTMaterialKey, HTMaterial> getKeyRegistry() {
-        return ImmutableMap.copyOf(keyRegistry);
+    public static Map<HTMaterialKey, HTMaterial> getRegistry() {
+        return ImmutableMap.copyOf(registry);
     }
 
     @NotNull
     public static HTMaterial getMaterial(HTMaterialKey key) {
-        HTMaterial material = keyRegistry.get(key);
+        HTMaterial material = getMaterialOrNull(key);
         if (material == null) {
             throw new IllegalStateException("Material: " + key + " is not registered!");
         }
@@ -86,10 +119,10 @@ public record HTMaterial(
 
     @Nullable
     public static HTMaterial getMaterialOrNull(HTMaterialKey key) {
-        return keyRegistry.get(key);
+        return registry.get(key);
     }
 
-    private static final Map<Integer, HTMaterial> indexRegistry = new HashMap<>();
+    private static final Map<Integer, HTMaterial> indexRegistry = new LinkedHashMap<>();
 
     public static Map<Integer, HTMaterial> getIndexRegistry() {
         return ImmutableMap.copyOf(indexRegistry);
@@ -97,7 +130,7 @@ public record HTMaterial(
 
     @NotNull
     public static HTMaterial getMaterial(int index) {
-        HTMaterial material = indexRegistry.get(index);
+        HTMaterial material = getMaterialOrNull(index);
         if (material == null) {
             throw new IllegalStateException("Material: " + index + " is not registered!");
         }
@@ -109,18 +142,22 @@ public record HTMaterial(
         return indexRegistry.get(index);
     }
 
-    static HTMaterial create(
-            int index,
+    static void create(
             HTMaterialKey key,
             HTMaterialInfo info,
             HTMaterialPropertyMap properties,
             HTMaterialFlagSet flags
     ) {
-        var material = new HTMaterial(index, key, info, properties, flags);
-        keyRegistry.putIfAbsent(key, material);
-        indexRegistry.putIfAbsent(index, material);
+        var material = new HTMaterial(key, info, properties, flags);
+        if (registry.putIfAbsent(key, material) != null) {
+            HTMaterial existMaterial = registry.get(key);
+            throw new IllegalStateException("Name: " + key.name() + " is already registered by " + existMaterial);
+        }
+        if (indexRegistry.putIfAbsent(key.index(), material) != null) {
+            HTMaterial existMaterial = indexRegistry.get(key.index());
+            throw new IllegalStateException("Index: " + key.index() + " is already registered by " + existMaterial);
+        }
         LOGGER.info("Material: " + key + " registered!");
-        return material;
     }
 
 }

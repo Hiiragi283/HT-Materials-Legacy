@@ -1,0 +1,292 @@
+##    Shape    ##
+
+ht_shape.ball=%s Grinding Ball
+ht_shape.block=Block of %s
+ht_shape.block_sheetmetal=%s Sheetmetal
+ht_shape.bottle=%s Full-Bottle
+ht_shape.casing=%s Casing
+ht_shape.clump=%s Clump
+ht_shape.cluster=Native %s Cluster
+ht_shape.coin=%s Coin
+ht_shape.crushed=Crushed %s Ore
+ht_shape.crushed_purified=Purified Crushed %s Ore
+ht_shape.crystal=%s Crystal
+ht_shape.dust=%s Dust
+ht_shape.dust_dirty=Dirty %s Dust
+ht_shape.dust_tiny=Tiny Pile of %s Dust
+ht_shape.empty=%s
+ht_shape.fence=%s Fence
+ht_shape.frame=%s Frame
+ht_shape.gear=%s Gear
+ht_shape.gem=%s Gem
+ht_shape.ingot=%s Ingot
+ht_shape.log=%s Log
+ht_shape.nugget=%s Nugget
+ht_shape.ore=%s Ore
+ht_shape.ore_poor=Poor %s Ore
+ht_shape.plank=%s
+ht_shape.plate=%s Plate
+ht_shape.plate_dense=Dense %s Plate
+ht_shape.sand=%s
+ht_shape.scaffolding=%s Scaffolding
+ht_shape.shard=%s Shard
+ht_shape.slab=%s Slab
+ht_shape.slab_sheetmetal=%s Sheetmetal Slab
+ht_shape.stick=%s Stick
+ht_shape.stone=%s
+ht_shape.wire=%s Wire
+
+##    Tooltip    ##
+
+tips.ragi_materials.module.energy_capacity=- Energy Capacity Time: §b%s§r§7 FE
+tips.ragi_materials.module.energy_rate=- Energy Rate: §b%s§r§7 FE/t
+tips.ragi_materials.module.fluid_slot=- Fluid Slot: §b%s§r§7
+tips.ragi_materials.module.item_slots=- Item Slot: §b%s§r§7
+tips.ragi_materials.module.process_time=- Process Time: §b%s§r§7 tick
+tips.ragi_materials.property.boil=- Boiling Point: §b%s§r§7 K
+tips.ragi_materials.property.formula=- Chemical Formula: §b%s§r
+tips.ragi_materials.property.melt=- Melting Point: §b%s§r§7 K
+tips.ragi_materials.property.mol=- Molar: §b%s§r§7 g/mol
+tips.ragi_materials.property.name=- Name: §b%s§r§7
+tips.ragi_materials.property.scale=- Scale: §b%s§r§7 mol
+tips.ragi_materials.property.subl=- Sublimation Point: §b%s§r§7 K
+
+##    Material    ##
+
+ht_material.empty=EMPTY
+
+###   Elements   ###
+
+ht_material.hydrogen=Hydrogen
+ht_material.helium=Helium
+ht_material.lithium=Lithium
+ht_material.beryllium=Beryllium
+ht_material.boron=Boron
+ht_material.carbon=Carbon
+ht_material.nitrogen=Nitrogen
+ht_material.oxygen=Oxygen
+ht_material.fluorine=Fluorine
+ht_material.neon=Neon
+ht_material.sodium=Sodium
+ht_material.magnesium=Magnesium
+//ht_material.aluminum=Aluminum
+ht_material.aluminium=Aluminium
+ht_material.silicon=Silicon
+ht_material.phosphorus=Phosphorus
+ht_material.sulfur=Sulfur
+ht_material.chlorine=Chlorine
+ht_material.argon=Argon
+ht_material.potassium=Potassium
+ht_material.calcium=Calcium
+ht_material.scandium=Scandium
+ht_material.titanium=Titanium
+ht_material.vanadium=Vanadium
+//ht_material.chrome=Chrome
+ht_material.chromium=Chromium
+ht_material.manganese=Manganese
+ht_material.iron=Iron
+ht_material.cobalt=Cobalt
+ht_material.nickel=Nickel
+ht_material.copper=Copper
+ht_material.zinc=Zinc
+ht_material.gallium=Gallium
+ht_material.germanium=Germanium
+ht_material.arsenic=Arsenic
+ht_material.selenium=Selenium
+ht_material.bromine=Bromine
+ht_material.krypton=Krypton
+ht_material.rubidium=Rubidium
+ht_material.strontium=Strontium
+ht_material.yttrium=Yttrium
+ht_material.zirconium=Zirconium
+ht_material.niobium=Niobium
+ht_material.molybdenum=Molybdenum
+ht_material.technetium=Technetium
+ht_material.ruthenium=Ruthenium
+ht_material.rhodium=Rhodium
+ht_material.palladium=Palladium
+ht_material.silver=Silver
+ht_material.cadmium=Cadmium
+ht_material.indium=Indium
+ht_material.tin=Tin
+ht_material.antimony=Antimony
+ht_material.tellurium=Tellurium
+ht_material.iodine=Iodine
+ht_material.xenon=Xenon
+ht_material.caesium=Caesium
+ht_material.barium=Barium
+ht_material.lanthanum=Lanthanum
+ht_material.cerium=Cerium
+ht_material.praseodymium=Praseodymium
+ht_material.neodymium=Neodymium
+ht_material.promethium=Promethium
+ht_material.samarium=Samarium
+ht_material.europium=Europium
+ht_material.gadolinium=Gadolinium
+ht_material.terbium=Terbium
+ht_material.dysprosium=Dysprosium
+ht_material.holmium=Holmium
+ht_material.erbium=Erbium
+ht_material.thulium=Thulium
+ht_material.ytterbium=Ytterbium
+ht_material.lutetium=Lutetium
+ht_material.hafnium=Hafnium
+ht_material.tantalum=Tantalum
+ht_material.tungsten=Tungsten
+ht_material.rhenium=Rhenium
+ht_material.osmium=Osmium
+ht_material.iridium=Iridium
+ht_material.platinum=Platinum
+ht_material.gold=Gold
+ht_material.mercury=Mercury
+ht_material.thallium=Thallium
+ht_material.lead=Lead
+ht_material.bismuth=Bismuth
+ht_material.polonium=Polonium
+ht_material.astatine=Astatine
+ht_material.radon=Radon
+ht_material.francium=Francium
+ht_material.radium=Radium
+ht_material.actinium=Actinium
+ht_material.thorium=Thorium
+ht_material.protactinium=Protactinium
+//ht_material.uranium238=Uranium 238
+ht_material.uranium=Uranium
+ht_material.neptunium=Neptunium
+ht_material.plutonium=Plutonium
+ht_material.americium=Americium
+ht_material.curium=Curium
+ht_material.berkelium=Berkelium
+ht_material.californium=Californium
+ht_material.einsteinium=Einsteinium
+ht_material.fermium=Fermium
+ht_material.mendelevium=Mendelevium
+ht_material.nobelium=Nobelium
+ht_material.lawrencium=Lawrencium
+ht_material.rutherfordium=Rutherfordium
+ht_material.dubnium=Dubnium
+ht_material.seaborgium=Seaborgium
+ht_material.bohrium=Bohrium
+ht_material.hassium=Hassium
+ht_material.meitnerium=Meitnerium
+ht_material.darmstadtium=Darmstadtium
+ht_material.roentgenium=Roentgenium
+ht_material.copernicium=Copernicium
+ht_material.nihonium=Nihonium
+ht_material.flerovium=Flerovium
+ht_material.moscovium=Moscovium
+ht_material.livermorium=Livermorium
+ht_material.tennessine=Tennessine
+ht_material.oganesson=Oganesson
+
+### Isotope ###
+
+ht_material.deuterium=Deuterium
+ht_material.tritium=Tritium
+ht_material.uranium235=Uranium 235
+
+### Common Materials ###
+
+ht_material.wood=Wood
+ht_material.water=Water
+ht_material.aquamarine=Aquamarine
+ht_material.emerald=Emerald
+ht_material.coal=Coal
+ht_material.charcoal=Charcoal
+ht_material.coke=Coke
+ht_material.diamond=Diamond
+ht_material.sugar=Sugar
+ht_material.amber=Amber
+ht_material.ash=Ash
+ht_material.rubber=Rubber
+ht_material.plastic=Plastic
+ht_material.niter=Niter
+ht_material.nitric_acid=Nitric Acid
+ht_material.gunpowder=Gunpowder
+ht_material.cryolite=Cryolite
+ht_material.fluorite=Fluorite
+ht_material.hydrogen_fluoride=Hydrogen Fluoride
+ht_material.salt=Salt
+ht_material.olivine=Olivine
+ht_material.peridot=Peridot
+ht_material.alumina=Alumina
+ht_material.bauxite=Bauxite
+ht_material.ruby=Ruby
+ht_material.sapphire=Sapphire
+ht_material.clay=Clay
+ht_material.end_stone=End Stone
+ht_material.glass=Glass
+ht_material.lava=Lava
+ht_material.netherrack=Netherrack
+ht_material.obsidian=Obsidian
+ht_material.quartz=Quartz
+ht_material.soul_sand=Soul Sand
+ht_material.stone=Stone
+ht_material.sulfuric_acid=Sulfuric Acid
+ht_material.hydrogen_chloride=Hydrogen Chloride
+ht_material.apatite=Apatite
+ht_material.gypsum=Gypsum
+ht_material.lime=Lime
+ht_material.rutile=Rutile
+ht_material.stainless_steel=Stainless Steel
+ht_material.steel=Steel
+ht_material.constantan=Constantan
+ht_material.invar=Invar
+ht_material.brass=Brass
+ht_material.bronze=Bronze
+ht_material.electrum=Electrum
+ht_material.tungsten_steel=Tungsten Steel
+ht_material.cinnabar=Cinnabar
+
+ht_material.dhmo=DHMO
+
+### Vanilla Materials ###
+
+ht_material.redstone=Redstone
+ht_material.lapis=Lapis
+ht_material.glowstone=Glowstone
+ht_material.enderpearl=Ender Pearl
+
+### Integration Materials ###
+
+ht_material.mithril=Mana Infused Metal
+ht_material.signalum=Signalum
+ht_material.lumium=Lumium
+ht_material.enderium=Enderium
+ht_material.pyrotheum=Pyrotheum
+ht_material.cryotheum=Cryotheum
+ht_material.aerotheum=Aerotheum
+ht_material.petrotheum=Petrotheum
+
+ht_material.refined_obsidian=Refined Obsidian
+ht_material.refined_glowstone=Refined Glowstone
+
+ht_material.electrical_steel=Electrical Steel
+ht_material.energetic_alloy=Energetic Alloy
+ht_material.vibrant_alloy=Vibrant Alloy
+ht_material.redstone_alloy=Redstone Alloy
+ht_material.conductive_iron=Conductive Iron
+ht_material.pulsating_iron=Pulsating Iron
+ht_material.dark_steel=Dark Steel
+ht_material.soularium=Soularium
+ht_material.end_steel=End Steel
+ht_material.construction_alloy=Iron Alloy
+
+ht_material.thaumium=Thaumium
+ht_material.void=Void Metal
+
+ht_material.manasteel=Manasteel
+ht_material.mana_diamond=Mana Diamond
+ht_material.terrasteel=Terrasteel
+ht_material.elven_elementium=Elementium
+ht_material.elven_dragonstone=Dragonstone
+
+ht_material.dawnstone=Dawnstone
+
+ht_material.electrotine=Electrotine
+ht_material.red_alloy=Red Alloy
+ht_material.electrotine_alloy=Electrotine Alloy
+
+ht_material.ardite=Ardite
+ht_material.manyullyn=Manyullyn
+ht_material.aluminium_brass=Aluminium Brass

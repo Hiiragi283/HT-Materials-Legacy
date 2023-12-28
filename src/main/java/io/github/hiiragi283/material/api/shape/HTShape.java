@@ -8,7 +8,7 @@ import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.Predicate;
 
@@ -22,9 +22,9 @@ public record HTShape(HTShapeKey key, HTShapePredicate predicate) implements Pre
 
     //    Registry    //
 
-    private static final Logger LOGGER = LogManager.getLogger(HTShape.class);
+    private static final Logger LOGGER = LogManager.getLogger("HTShape");
 
-    private static final Map<HTShapeKey, HTShape> registry = new HashMap<>();
+    private static final Map<HTShapeKey, HTShape> registry = new LinkedHashMap<>();
 
     public static Map<HTShapeKey, HTShape> getRegistry() {
         return ImmutableMap.copyOf(registry);
@@ -32,7 +32,7 @@ public record HTShape(HTShapeKey key, HTShapePredicate predicate) implements Pre
 
     @NotNull
     public static HTShape getShape(HTShapeKey key) {
-        HTShape shape = registry.get(key);
+        HTShape shape = getShapeOrNull(key);
         if (shape == null) {
             throw new IllegalStateException("Shape: " + key + " is not registered!");
         }
@@ -44,14 +44,13 @@ public record HTShape(HTShapeKey key, HTShapePredicate predicate) implements Pre
         return registry.get(key);
     }
 
-    public static HTShape create(
+    static void create(
             HTShapeKey key,
             HTShapePredicate predicate
     ) {
         var shape = new HTShape(key, predicate);
         registry.putIfAbsent(key, shape);
         LOGGER.info("Shape: " + key + " registered!");
-        return shape;
     }
 
 }

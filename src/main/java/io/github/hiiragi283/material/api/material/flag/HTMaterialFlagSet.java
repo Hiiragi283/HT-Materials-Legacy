@@ -93,7 +93,7 @@ public final class HTMaterialFlagSet implements Collection<HTMaterialFlag> {
 
         public final Set<HTMaterialFlag> backingSet = new HashSet<>();
 
-        HTMaterialFlagSet build() {
+        public HTMaterialFlagSet build() {
             return new HTMaterialFlagSet(backingSet);
         }
 

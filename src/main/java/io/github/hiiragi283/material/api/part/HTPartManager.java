@@ -3,7 +3,7 @@ package io.github.hiiragi283.material.api.part;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.ImmutableTable;
 import com.google.common.collect.Table;
-import io.github.hiiragi283.material.api.item.ItemConvertible;
+import io.github.hiiragi283.material.api.item.IItemConvertible;
 import io.github.hiiragi283.material.api.material.HTMaterialKey;
 import io.github.hiiragi283.material.api.shape.HTShapeKey;
 import net.minecraft.item.Item;
@@ -22,12 +22,12 @@ public abstract class HTPartManager {
     private static final Map<Item, HTPart> itemToPart = new HashMap<>();
 
     @Nullable
-    public static HTPart getPart(ItemConvertible itemConvertible) {
-        return itemToPart.get(itemConvertible.asItem());
+    public static HTPart getPart(IItemConvertible iItemConvertible) {
+        return itemToPart.get(iItemConvertible.asItem());
     }
 
-    public static boolean hasPart(ItemConvertible itemConvertible) {
-        return itemToPart.containsKey(itemConvertible.asItem());
+    public static boolean hasPart(IItemConvertible iItemConvertible) {
+        return itemToPart.containsKey(iItemConvertible.asItem());
     }
 
     //    HTMaterialKey, HTShapeKey -> Item    //

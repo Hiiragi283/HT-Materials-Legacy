@@ -109,7 +109,7 @@ public final class HTMaterialPropertyMap implements Map<HTPropertyKey<?>, HTMate
             backingMap.put(property.getKey(), property);
         }
 
-        HTMaterialPropertyMap build() {
+        public HTMaterialPropertyMap build() {
             return new HTMaterialPropertyMap(backingMap);
         }
 

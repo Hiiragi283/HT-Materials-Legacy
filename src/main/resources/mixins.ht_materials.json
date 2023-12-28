@@ -6,7 +6,8 @@
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "BlockMixin",
-    "ItemMixin"
+    "ItemMixin",
+    "OreDictionaryMixin"
   ],
   "client": [],
   "server": []

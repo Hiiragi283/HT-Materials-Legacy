@@ -5,15 +5,15 @@ import net.minecraft.item.Item;
 import org.jetbrains.annotations.NotNull;
 
 @FunctionalInterface
-public interface ItemConvertible {
+public interface IItemConvertible {
 
     @NotNull
     Item asItem();
 
     @NotNull
     static Item asItem(Object obj) {
-        if (obj instanceof ItemConvertible) {
-            return ((ItemConvertible) obj).asItem();
+        if (obj instanceof IItemConvertible iItemConvertible) {
+            return iItemConvertible.asItem();
         }
         return Items.AIR;
     }

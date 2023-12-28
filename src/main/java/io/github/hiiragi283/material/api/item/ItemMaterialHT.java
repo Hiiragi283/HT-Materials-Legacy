@@ -1,7 +1,6 @@
 package io.github.hiiragi283.material.api.item;
 
 import io.github.hiiragi283.material.HMReference;
-import io.github.hiiragi283.material.api.shape.HTShape;
 import io.github.hiiragi283.material.api.shape.HTShapeKey;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -14,15 +13,16 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class HTItemMaterial extends Item implements MaterialItemConvertible {
+public class ItemMaterialHT extends Item implements IMaterialItemConvertible {
 
-    public final HTShape shape;
+    public final HTShapeKey shapeKey;
 
-    public HTItemMaterial(HTShapeKey shapeKey) {
-        this.shape = shapeKey.getShape();
+    public ItemMaterialHT(HTShapeKey shapeKey) {
+        this.shapeKey = shapeKey;
+        setCreativeTab(CreativeTabs.MATERIALS);
         hasSubtypes = true;
         registry.putIfAbsent(shapeKey, this);
         setRegistryName(HMReference.MOD_ID, shapeKey.name());
@@ -49,7 +49,7 @@ public class HTItemMaterial extends Item implements MaterialItemConvertible {
         }
     }
 
-    //    MaterialItemConvertible    //
+    //    IMaterialItemConvertible    //
 
     @NotNull
     @Override
@@ -60,19 +60,19 @@ public class HTItemMaterial extends Item implements MaterialItemConvertible {
     @NotNull
     @Override
     public HTShapeKey getShapeKey() {
-        return shape.key();
+        return shapeKey;
     }
 
     //    Registry    //
 
-    private final static Map<HTShapeKey, HTItemMaterial> registry = new HashMap<>();
+    private final static Map<HTShapeKey, ItemMaterialHT> registry = new LinkedHashMap<>();
 
-    public static Collection<HTItemMaterial> getItems() {
+    public static Collection<ItemMaterialHT> getItems() {
         return registry.values();
     }
 
     @Nullable
-    public static HTItemMaterial getItem(HTShapeKey shapeKey) {
+    public static ItemMaterialHT getItem(HTShapeKey shapeKey) {
         return registry.get(shapeKey);
     }
 

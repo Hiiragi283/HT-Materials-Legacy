@@ -2,32 +2,31 @@ package io.github.hiiragi283.material;
 
 import io.github.hiiragi283.material.api.HTAddon;
 import io.github.hiiragi283.material.api.HTMaterialsAddon;
-import io.github.hiiragi283.material.api.registry.HTNonNullMap;
-import io.github.hiiragi283.material.api.registry.HTObjectKeySet;
-import io.github.hiiragi283.material.api.shape.HTShape;
-import io.github.hiiragi283.material.api.shape.HTShapeKey;
-import io.github.hiiragi283.material.api.shape.HTShapePredicate;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.event.FMLConstructionEvent;
+import io.github.hiiragi283.material.api.material.HTMaterials;
+import io.github.hiiragi283.material.api.shape.HTShapes;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
-import java.util.HashSet;
+import java.util.Comparator;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-public class HMCommonProxy implements HTLoader {
+public class HMCommonProxy implements HTProxy {
 
     private static final Logger LOGGER = LogManager.getLogger(HMReference.MOD_NAME + "/Proxy");
 
-    private static final Collection<HTMaterialsAddon> cache = new HashSet<>();
+    private static Collection<HTMaterialsAddon> cache;
 
-    //    Construct    //
-
-    @Override
-    public void onConstruct(FMLConstructionEvent event) {
-        MinecraftForge.EVENT_BUS.register(HMEventHandler.class);
+    @NotNull
+    public static Collection<HTMaterialsAddon> getAddons() throws IllegalAccessException {
+        if (cache == null) {
+            throw new IllegalAccessException("HTMaterialsAddon not yet collected!");
+        }
+        return cache;
     }
 
     //    Pre Init    //
@@ -35,42 +34,26 @@ public class HMCommonProxy implements HTLoader {
     @Override
     public void onPreInit(FMLPreInitializationEvent event) {
         //Collect HTMaterialsAddon
+        Stream.Builder<HTMaterialsAddon> builder = Stream.builder();
         event.getAsmData().getAll(HTAddon.class.getCanonicalName()).forEach(data -> {
             try {
-                cache.add(Class.forName(data.getClassName()).asSubclass(HTMaterialsAddon.class).getConstructor().newInstance());
-            } catch (ClassNotFoundException | InvocationTargetException | InstantiationException |
-                     IllegalAccessException | NoSuchMethodException e) {
+                HTMaterialsAddon addon = Class.forName(data.getClassName()).asSubclass(HTMaterialsAddon.class).getConstructor().newInstance();
+                if (Loader.isModLoaded(addon.getModId())) builder.add(addon);
+            } catch (Exception e) {
                 LOGGER.catching(e);
             }
         });
-        //Register HTShape
-        registerShapeKey();
-        modifyShapePredicate();
-        createShape();
+        cache = builder.build().sorted(Comparator.comparingInt(HTMaterialsAddon::getPriority)).collect(Collectors.toList());
+        //Register HTShape and HTMaterial
+        try {
+            HTShapes.init();
+            LOGGER.info("HTShape initialized!");
+            HTMaterials.init();
+            LOGGER.info("HTMaterial initialized!");
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
     }
-
-    //    Pre Init - HTShape    //
-
-    private static final HTObjectKeySet<HTShapeKey> shapeKeySet = HTObjectKeySet.create();
-
-    private static void registerShapeKey() {
-        cache.forEach(addon -> addon.registerShapeKey(shapeKeySet));
-    }
-
-    private static final HTNonNullMap<HTShapeKey, HTShapePredicate.Builder> predicateMap = HTNonNullMap.create(key -> new HTShapePredicate.Builder());
-
-    private static void modifyShapePredicate() {
-        cache.forEach(addon -> addon.modifyShapePredicate(predicateMap));
-    }
-
-    private static void createShape() {
-        shapeKeySet.forEach(key -> {
-            var predicate = predicateMap.getOrCreate(key).build();
-            HTShape.create(key, predicate);
-        });
-    }
-
-    //    Pre Init - HTMaterial    //
 
     public static class Client extends HMCommonProxy {
 

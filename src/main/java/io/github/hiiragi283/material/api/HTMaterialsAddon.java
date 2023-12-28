@@ -25,7 +25,7 @@ public interface HTMaterialsAddon {
     default void modifyShapePredicate(HTNonNullMap<HTShapeKey, HTShapePredicate.Builder> registry) {
     }
 
-    default void registerMaterialKey() {
+    default void registerMaterialKey(HTObjectKeySet<HTMaterialKey> registry) {
     }
 
     default void modifyMaterialProperty(HTNonNullMap<HTMaterialKey, HTMaterialPropertyMap.Builder> registry) {

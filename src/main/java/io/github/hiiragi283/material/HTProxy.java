@@ -2,7 +2,7 @@ package io.github.hiiragi283.material;
 
 import net.minecraftforge.fml.common.event.*;
 
-public interface HTLoader {
+public interface HTProxy {
 
     default void onConstruct(FMLConstructionEvent event) {
     }

@@ -13,9 +13,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 @Desugar
-public record HTMaterialKey(String name) implements HTObjectKey<HTMaterial> {
+public record HTMaterialKey(String name, int index) implements HTObjectKey<HTMaterial> {
 
-    public static final HTMaterialKey EMPTY = new HTMaterialKey("");
+    public static final HTMaterialKey EMPTY = new HTMaterialKey("", 0);
 
     @Override
     public String getName() {
