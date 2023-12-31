@@ -18,15 +18,6 @@ public final class HTPropertyKey<T extends HTMaterialProperty<T>> implements HTO
         registry.putIfAbsent(name, this);
     }
 
-    //    Registry    //
-
-    private static final Map<String, HTPropertyKey<?>> registry = new HashMap<>();
-
-    @SuppressWarnings("unchecked")
-    public static <T extends HTMaterialProperty<T>> HTPropertyKey<T> getKey(String name) {
-        return (HTPropertyKey<T>) registry.get(name);
-    }
-
     //    HTObjectKey    //
 
     @Override
@@ -58,4 +49,18 @@ public final class HTPropertyKey<T extends HTMaterialProperty<T>> implements HTO
     public String toString() {
         return name;
     }
+
+    //    Registry    //
+
+    private static final Map<String, HTPropertyKey<?>> registry = new HashMap<>();
+
+    @SuppressWarnings("unchecked")
+    public static <T extends HTMaterialProperty<T>> HTPropertyKey<T> getKey(String name) {
+        return (HTPropertyKey<T>) registry.get(name);
+    }
+
+    static {
+        HTPropertyKeys.init();
+    }
+
 }

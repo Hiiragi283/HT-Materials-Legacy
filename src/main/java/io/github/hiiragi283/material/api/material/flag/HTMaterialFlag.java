@@ -74,7 +74,9 @@ public final class HTMaterialFlag {
         return builder.build();
     }
 
-    public static final HTMaterialFlag GENERATE_DUST = create("generate_dust");
+    static {
+        HTMaterialFlags.init();
+    }
 
     //    Builder    //
 

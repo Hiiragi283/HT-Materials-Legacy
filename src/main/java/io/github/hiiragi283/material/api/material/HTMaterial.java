@@ -12,6 +12,7 @@ import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -70,13 +71,17 @@ public class HTMaterial {
     }
 
     public boolean hasProperty(HTPropertyKey<?> key) {
-        return properties.containsKey(key);
+        return properties.contains(key);
     }
 
     //    Flags    //
 
     public boolean hasFlag(HTMaterialFlag flag) {
         return flags.contains(flag);
+    }
+
+    public boolean hasAllFlag(Collection<HTMaterialFlag> flags) {
+        return this.flags.containsAll(flags);
     }
 
     //    Object    //
@@ -102,24 +107,24 @@ public class HTMaterial {
 
     private static final Logger LOGGER = LogManager.getLogger("HTMaterial");
 
-    private static final Map<HTMaterialKey, HTMaterial> registry = new LinkedHashMap<>();
+    private static final Map<String, HTMaterial> registry = new LinkedHashMap<>();
 
-    public static Map<HTMaterialKey, HTMaterial> getRegistry() {
+    public static Map<String, HTMaterial> getRegistry() {
         return ImmutableMap.copyOf(registry);
     }
 
     @NotNull
-    public static HTMaterial getMaterial(HTMaterialKey key) {
-        HTMaterial material = getMaterialOrNull(key);
+    public static HTMaterial getMaterial(String name) {
+        HTMaterial material = getMaterialOrNull(name);
         if (material == null) {
-            throw new IllegalStateException("Material: " + key + " is not registered!");
+            throw new IllegalStateException("Material: " + name + " is not registered!");
         }
         return material;
     }
 
     @Nullable
-    public static HTMaterial getMaterialOrNull(HTMaterialKey key) {
-        return registry.get(key);
+    public static HTMaterial getMaterialOrNull(String name) {
+        return registry.get(name);
     }
 
     private static final Map<Integer, HTMaterial> indexRegistry = new LinkedHashMap<>();
@@ -149,13 +154,15 @@ public class HTMaterial {
             HTMaterialFlagSet flags
     ) {
         var material = new HTMaterial(key, info, properties, flags);
-        if (registry.putIfAbsent(key, material) != null) {
-            HTMaterial existMaterial = registry.get(key);
-            throw new IllegalStateException("Name: " + key.name() + " is already registered by " + existMaterial);
+        String name = key.name();
+        if (registry.putIfAbsent(name, material) != null) {
+            HTMaterial existMaterial = registry.get(name);
+            throw new IllegalStateException("Name: " + name + " is already registered by " + existMaterial);
         }
-        if (indexRegistry.putIfAbsent(key.index(), material) != null) {
-            HTMaterial existMaterial = indexRegistry.get(key.index());
-            throw new IllegalStateException("Index: " + key.index() + " is already registered by " + existMaterial);
+        int index = key.index();
+        if (indexRegistry.putIfAbsent(index, material) != null) {
+            HTMaterial existMaterial = indexRegistry.get(index);
+            throw new IllegalStateException("Index: " + index + " is already registered by " + existMaterial);
         }
         LOGGER.info("Material: " + key + " registered!");
     }

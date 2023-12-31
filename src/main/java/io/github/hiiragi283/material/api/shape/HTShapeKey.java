@@ -1,6 +1,7 @@
 package io.github.hiiragi283.material.api.shape;
 
 import com.github.bsideup.jabel.Desugar;
+import com.google.common.base.CaseFormat;
 import io.github.hiiragi283.material.api.material.HTMaterialKey;
 import io.github.hiiragi283.material.api.registry.HTObjectKey;
 import net.minecraft.client.resources.I18n;
@@ -32,6 +33,18 @@ public record HTShapeKey(String name) implements HTObjectKey<HTShape> {
     @Nullable
     public HTShape getShapeOrNull() {
         return HTShape.getShapeOrNull(this);
+    }
+
+    //    Ore Dict    //
+
+    @NotNull
+    public String getPrefixName() {
+        return CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, name);
+    }
+
+    @NotNull
+    public String getOreDict(HTMaterialKey materialKey) {
+        return getPrefixName() + materialKey.getOreDictName();
     }
 
     //    Translation    //

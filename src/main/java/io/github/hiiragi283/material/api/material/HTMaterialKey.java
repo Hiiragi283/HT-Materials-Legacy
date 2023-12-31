@@ -1,6 +1,7 @@
 package io.github.hiiragi283.material.api.material;
 
 import com.github.bsideup.jabel.Desugar;
+import com.google.common.base.CaseFormat;
 import io.github.hiiragi283.material.HMReference;
 import io.github.hiiragi283.material.api.registry.HTObjectKey;
 import net.minecraft.client.resources.I18n;
@@ -29,12 +30,19 @@ public record HTMaterialKey(String name, int index) implements HTObjectKey<HTMat
 
     @NotNull
     public HTMaterial getMaterial() {
-        return HTMaterial.getMaterial(this);
+        return HTMaterial.getMaterial(this.name);
     }
 
     @Nullable
     public HTMaterial getMaterialOrNull() {
-        return HTMaterial.getMaterialOrNull(this);
+        return HTMaterial.getMaterialOrNull(this.name);
+    }
+
+    //    Ore Dict    //
+
+    @NotNull
+    public String getOreDictName() {
+        return CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, name);
     }
 
     //    ResourceLocation    //

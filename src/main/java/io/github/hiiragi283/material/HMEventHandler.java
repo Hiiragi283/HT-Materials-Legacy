@@ -6,6 +6,7 @@ import net.minecraft.item.Item;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -33,6 +34,11 @@ public abstract class HMEventHandler {
         @SubscribeEvent
         public static void onModelRegister(ModelRegistryEvent event) {
             ItemMaterialHT.getItems().forEach(item -> item.getMaterialIndexes().forEach(index -> ModelLoader.setCustomModelResourceLocation(item, index, new ModelResourceLocation(Objects.requireNonNull(item.getRegistryName()), "inventory"))));
+        }
+
+        @SubscribeEvent
+        public static void onItemTooltip(ItemTooltipEvent event) {
+
         }
 
     }

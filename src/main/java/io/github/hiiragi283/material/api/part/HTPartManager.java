@@ -5,6 +5,7 @@ import com.google.common.collect.ImmutableTable;
 import com.google.common.collect.Table;
 import io.github.hiiragi283.material.api.item.IItemConvertible;
 import io.github.hiiragi283.material.api.material.HTMaterialKey;
+import io.github.hiiragi283.material.api.registry.ItemWithMeta;
 import io.github.hiiragi283.material.api.shape.HTShapeKey;
 import net.minecraft.item.Item;
 import org.jetbrains.annotations.NotNull;
@@ -17,47 +18,66 @@ public abstract class HTPartManager {
     private HTPartManager() {
     }
 
-    //    Item -> HTPart    //
+    //    ItemWithMeta -> HTPart    //
 
-    private static final Map<Item, HTPart> itemToPart = new HashMap<>();
+    private static final Map<ItemWithMeta, HTPart> itemToPart = new HashMap<>();
 
     @Nullable
-    public static HTPart getPart(IItemConvertible iItemConvertible) {
-        return itemToPart.get(iItemConvertible.asItem());
+    public static HTPart getPart(@NotNull ItemWithMeta itemWithMeta) {
+        return itemToPart.get(itemWithMeta);
     }
 
-    public static boolean hasPart(IItemConvertible iItemConvertible) {
-        return itemToPart.containsKey(iItemConvertible.asItem());
+    public static boolean hasPart(@NotNull ItemWithMeta itemWithMeta) {
+        return itemToPart.containsKey(itemWithMeta);
     }
 
-    //    HTMaterialKey, HTShapeKey -> Item    //
+    //    HTMaterialKey, HTShapeKey -> ItemWithMeta    //
 
-    private static final Table<HTMaterialKey, HTShapeKey, Item> partToItem = HashBasedTable.create();
+    private static final Table<HTMaterialKey, HTShapeKey, ItemWithMeta> partToItem = HashBasedTable.create();
 
-    public static Table<HTMaterialKey, HTShapeKey, Item> getDefaultItemTable() {
+    @NotNull
+    public static Table<HTMaterialKey, HTShapeKey, ItemWithMeta> getDefaultItemTable() {
         return ImmutableTable.copyOf(partToItem);
     }
 
     @Nullable
-    public static Item getDefaultItem(HTMaterialKey materialKey, HTShapeKey shapeKey) {
+    public static ItemWithMeta getDefaultItem(@NotNull HTMaterialKey materialKey, @NotNull HTShapeKey shapeKey) {
         return partToItem.get(materialKey, shapeKey);
     }
 
-    public static boolean hasDefaultItem(HTMaterialKey materialKey, HTShapeKey shapeKey) {
+    public static boolean hasDefaultItem(@NotNull HTMaterialKey materialKey, @NotNull HTShapeKey shapeKey) {
         return partToItem.contains(materialKey, shapeKey);
     }
 
-    //    HTMaterialKey, HTShapeKey -> Collection<Item>    //
+    //    HTMaterialKey, HTShapeKey -> Collection<ItemWithMeta>    //
 
-    private static final Table<HTMaterialKey, HTShapeKey, Set<Item>> partToItems = HashBasedTable.create();
+    private static final Table<HTMaterialKey, HTShapeKey, Set<ItemWithMeta>> partToItems = HashBasedTable.create();
 
-    public static Table<HTMaterialKey, HTShapeKey, Collection<Item>> getPartToItemsTable() {
+    @NotNull
+    public static Table<HTMaterialKey, HTShapeKey, Collection<ItemWithMeta>> getPartToItemsTable() {
         return ImmutableTable.copyOf(partToItems);
     }
 
     @NotNull
-    public static Collection<Item> getItems(HTMaterialKey materialKey, HTShapeKey shapeKey) {
+    public static Collection<ItemWithMeta> getItems(@NotNull HTMaterialKey materialKey, @NotNull HTShapeKey shapeKey) {
         return partToItems.contains(materialKey, shapeKey) ? partToItems.get(materialKey, shapeKey) : Collections.emptySet();
+    }
+
+    //   Register    //
+
+    static void register(@NotNull HTMaterialKey materialKey, @NotNull HTShapeKey shapeKey, @NotNull IItemConvertible convertible, int meta) {
+        register(materialKey, shapeKey, convertible.asItem(), meta);
+    }
+
+    static void register(@NotNull HTMaterialKey materialKey, @NotNull HTShapeKey shapeKey, @NotNull Item item, int meta) {
+        register(materialKey, shapeKey, new ItemWithMeta(item, meta));
+    }
+
+    static void register(@NotNull HTMaterialKey materialKey, @NotNull HTShapeKey shapeKey, @NotNull ItemWithMeta itemWithMeta) {
+        HTPart part = new HTPart(materialKey, shapeKey);
+        itemToPart.putIfAbsent(itemWithMeta, part);
+        partToItem.put(materialKey, shapeKey, itemWithMeta);
+
     }
 
 }

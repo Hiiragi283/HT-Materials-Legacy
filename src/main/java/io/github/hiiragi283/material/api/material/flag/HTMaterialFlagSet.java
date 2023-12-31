@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-public final class HTMaterialFlagSet implements Collection<HTMaterialFlag> {
+public final class HTMaterialFlagSet implements Iterable<HTMaterialFlag> {
 
     private final Collection<HTMaterialFlag> backingSet;
 
@@ -20,72 +20,20 @@ public final class HTMaterialFlagSet implements Collection<HTMaterialFlag> {
         backingSet.forEach(flag -> flag.verify(material));
     }
 
-    //    Collection    //
-
-    @Override
-    public int size() {
-        return backingSet.size();
+    public boolean contains(@NotNull HTMaterialFlag flag) {
+        return backingSet.contains(flag);
     }
 
-    @Override
-    public boolean isEmpty() {
-        return backingSet.isEmpty();
+    public boolean containsAll(@NotNull Collection<HTMaterialFlag> c) {
+        return backingSet.containsAll(c);
     }
 
-    @Override
-    public boolean contains(Object o) {
-        return backingSet.contains(o);
-    }
+    //    Iterable    //
 
     @NotNull
     @Override
     public Iterator<HTMaterialFlag> iterator() {
         return backingSet.iterator();
-    }
-
-    @Override
-    public Object @NotNull [] toArray() {
-        return backingSet.toArray();
-    }
-
-    @Override
-    public <T> T @NotNull [] toArray(@NotNull T[] a) {
-        return backingSet.toArray(a);
-    }
-
-    @Override
-    public boolean add(HTMaterialFlag flag) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public boolean remove(Object o) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public boolean containsAll(@NotNull Collection<?> c) {
-        return backingSet.containsAll(c);
-    }
-
-    @Override
-    public boolean addAll(@NotNull Collection<? extends HTMaterialFlag> c) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public boolean removeAll(@NotNull Collection<?> c) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public boolean retainAll(@NotNull Collection<?> c) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void clear() {
-        throw new UnsupportedOperationException();
     }
 
     //    Builder    //
