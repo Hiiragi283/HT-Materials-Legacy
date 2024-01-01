@@ -1,8 +1,8 @@
 package io.github.hiiragi283.material.api.material.property;
 
 import com.google.common.collect.ImmutableMap;
-import io.github.hiiragi283.material.api.HTCollectors;
 import io.github.hiiragi283.material.api.material.*;
+import io.github.hiiragi283.material.util.HTCollectors;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
@@ -27,6 +27,7 @@ public class HTCompoundProperty implements HTComponentProperty<HTCompoundPropert
         return ColorConvertible.average(backingMap.entrySet().stream().collect(HTCollectors.mapKeys(key -> HTMaterial.getMaterial(key.name()).getInfo().color())));
     }
 
+    @NotNull
     @Override
     public String asFormula() {
         return FormulaConvertible.format(backingMap.entrySet().stream().collect(HTCollectors.mapKeys(key -> HTMaterial.getMaterial(key.name()).getInfo().formula())));
@@ -41,6 +42,23 @@ public class HTCompoundProperty implements HTComponentProperty<HTCompoundPropert
     @Override
     public HTPropertyKey<HTCompoundProperty> getKey() {
         return HTPropertyKeys.COMPOUND;
+    }
+
+    //    Builder    //
+
+    public static class Builder {
+
+        private final ImmutableMap.Builder<HTMaterialKey, Integer> builder = ImmutableMap.builder();
+
+        public Builder put(HTMaterialKey materialKey, int weight) {
+            builder.put(materialKey, weight);
+            return this;
+        }
+
+        public HTCompoundProperty build() {
+            return new HTCompoundProperty(builder.build());
+        }
+
     }
 
 }

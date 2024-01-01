@@ -1,9 +1,10 @@
 package io.github.hiiragi283.material.api.material;
 
-import io.github.hiiragi283.material.api.HTCollectors;
+import io.github.hiiragi283.material.util.HTCollectors;
 
 import java.util.Arrays;
 import java.util.Map;
+import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 @FunctionalInterface
@@ -30,7 +31,11 @@ public interface MolarMassConvertible {
     }
 
     static double calculate(Iterable<Double> molars) {
-        return calculate(StreamSupport.stream(molars.spliterator(), false).collect(HTCollectors.associateWith(1)));
+        return calculate(StreamSupport.stream(molars.spliterator(), false));
+    }
+
+    static double calculate(Stream<Double> molars) {
+        return calculate(molars.collect(HTCollectors.associateWith(1)));
     }
 
     static double calculate(Map<Double, Integer> map) {

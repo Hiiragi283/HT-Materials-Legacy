@@ -32,15 +32,65 @@ public record HTShapePredicate(
 
     public static class Builder {
 
-        public final Set<HTMaterialKey> blackList = new HashSet<>();
+        private final Set<HTMaterialKey> blackList = new HashSet<>();
 
-        public final Set<HTMaterialKey> whiteList = new HashSet<>();
+        public Builder addBlackList(HTMaterialKey materialKey) {
+            blackList.add(materialKey);
+            return this;
+        }
 
-        public final Set<HTMaterialFlag> requiredFlags = new HashSet<>();
+        public Builder removeBlackList(HTMaterialKey materialKey) {
+            blackList.remove(materialKey);
+            return this;
+        }
 
-        public final Set<HTPropertyKey<?>> requiredProperties = new HashSet<>();
+        private final Set<HTMaterialKey> whiteList = new HashSet<>();
+
+        public Builder addWhiteList(HTMaterialKey materialKey) {
+            whiteList.add(materialKey);
+            return this;
+        }
+
+        public Builder removeWhiteList(HTMaterialKey materialKey) {
+            whiteList.remove(materialKey);
+            return this;
+        }
+
+        private final Set<HTMaterialFlag> requiredFlags = new HashSet<>();
+
+        public Builder addRequiredFlag(HTMaterialFlag flag) {
+            requiredFlags.add(flag);
+            return this;
+        }
+
+        public Builder removeRequiredFlag(HTMaterialFlag flag) {
+            requiredFlags.remove(flag);
+            return this;
+        }
+
+        private final Set<HTPropertyKey<?>> requiredProperties = new HashSet<>();
+
+        public Builder addRequiredProperty(HTPropertyKey<?> key) {
+            requiredProperties.add(key);
+            return this;
+        }
+
+        public Builder removeRequiredProperty(HTPropertyKey<?> key) {
+            requiredProperties.remove(key);
+            return this;
+        }
 
         public boolean disabled = true;
+
+        public Builder setDisabled() {
+            disabled = true;
+            return this;
+        }
+
+        public Builder setEnabled() {
+            disabled = false;
+            return this;
+        }
 
         public HTShapePredicate build() {
             return new HTShapePredicate(disabled, blackList, whiteList, requiredFlags, requiredProperties);

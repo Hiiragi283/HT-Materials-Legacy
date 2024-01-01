@@ -24,24 +24,24 @@ public record HTShape(HTShapeKey key, HTShapePredicate predicate) implements Pre
 
     private static final Logger LOGGER = LogManager.getLogger("HTShape");
 
-    private static final Map<HTShapeKey, HTShape> registry = new LinkedHashMap<>();
+    private static final Map<String, HTShape> registry = new LinkedHashMap<>();
 
-    public static Map<HTShapeKey, HTShape> getRegistry() {
+    public static Map<String, HTShape> getRegistry() {
         return ImmutableMap.copyOf(registry);
     }
 
     @NotNull
-    public static HTShape getShape(HTShapeKey key) {
-        HTShape shape = getShapeOrNull(key);
+    public static HTShape getShape(String name) {
+        HTShape shape = getShapeOrNull(name);
         if (shape == null) {
-            throw new IllegalStateException("Shape: " + key + " is not registered!");
+            throw new IllegalStateException("Shape: " + name + " is not registered!");
         }
         return shape;
     }
 
     @Nullable
-    public static HTShape getShapeOrNull(HTShapeKey key) {
-        return registry.get(key);
+    public static HTShape getShapeOrNull(String name) {
+        return registry.get(name);
     }
 
     static void create(
@@ -49,7 +49,7 @@ public record HTShape(HTShapeKey key, HTShapePredicate predicate) implements Pre
             HTShapePredicate predicate
     ) {
         var shape = new HTShape(key, predicate);
-        registry.putIfAbsent(key, shape);
+        registry.putIfAbsent(key.name(), shape);
         LOGGER.info("Shape: " + key + " registered!");
     }
 

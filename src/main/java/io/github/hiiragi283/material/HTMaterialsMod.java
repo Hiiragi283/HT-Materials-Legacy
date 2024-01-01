@@ -1,6 +1,6 @@
 package io.github.hiiragi283.material;
 
-import io.github.hiiragi283.material.api.item.ItemMaterialHT;
+import io.github.hiiragi283.material.api.item.HTMaterialItem;
 import io.github.hiiragi283.material.api.shape.HTShapes;
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.common.Mod;
@@ -10,19 +10,19 @@ import net.minecraftforge.fml.common.event.*;
 @Mod(modid = HMReference.MOD_ID, name = HMReference.MOD_NAME, version = HMReference.VERSION)
 public final class HTMaterialsMod implements HTProxy {
 
-    public static final Item ITEM_DUST = new ItemMaterialHT(HTShapes.DUST);
+    public static final Item ITEM_DUST = new HTMaterialItem(HTShapes.DUST);
 
-    public static final Item ITEM_GEAR = new ItemMaterialHT(HTShapes.GEAR);
+    public static final Item ITEM_GEAR = new HTMaterialItem(HTShapes.GEAR);
 
-    public static final Item ITEM_GEM = new ItemMaterialHT(HTShapes.GEM);
+    public static final Item ITEM_GEM = new HTMaterialItem(HTShapes.GEM);
 
-    public static final Item ITEM_INGOT = new ItemMaterialHT(HTShapes.INGOT);
+    public static final Item ITEM_INGOT = new HTMaterialItem(HTShapes.INGOT);
 
-    public static final Item ITEM_NUGGET = new ItemMaterialHT(HTShapes.NUGGET);
+    public static final Item ITEM_NUGGET = new HTMaterialItem(HTShapes.NUGGET);
 
-    public static final Item ITEM_PLATE = new ItemMaterialHT(HTShapes.PLATE);
+    public static final Item ITEM_PLATE = new HTMaterialItem(HTShapes.PLATE);
 
-    public static final Item ITEM_STICK = new ItemMaterialHT(HTShapes.STICK);
+    public static final Item ITEM_STICK = new HTMaterialItem(HTShapes.STICK);
 
     @SidedProxy(serverSide = "io.github.hiiragi283.material.HMCommonProxy", clientSide = "io.github.hiiragi283.material.HMCommonProxy$Client")
     public static HMCommonProxy proxy;

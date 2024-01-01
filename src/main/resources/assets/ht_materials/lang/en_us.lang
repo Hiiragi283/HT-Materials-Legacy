@@ -38,18 +38,13 @@ ht_shape.wire=%s Wire
 
 ##    Tooltip    ##
 
-tips.ragi_materials.module.energy_capacity=- Energy Capacity Time: §b%s§r§7 FE
-tips.ragi_materials.module.energy_rate=- Energy Rate: §b%s§r§7 FE/t
-tips.ragi_materials.module.fluid_slot=- Fluid Slot: §b%s§r§7
-tips.ragi_materials.module.item_slots=- Item Slot: §b%s§r§7
-tips.ragi_materials.module.process_time=- Process Time: §b%s§r§7 tick
-tips.ragi_materials.property.boil=- Boiling Point: §b%s§r§7 K
-tips.ragi_materials.property.formula=- Chemical Formula: §b%s§r
-tips.ragi_materials.property.melt=- Melting Point: §b%s§r§7 K
-tips.ragi_materials.property.mol=- Molar: §b%s§r§7 g/mol
-tips.ragi_materials.property.name=- Name: §b%s§r§7
-tips.ragi_materials.property.scale=- Scale: §b%s§r§7 mol
-tips.ragi_materials.property.subl=- Sublimation Point: §b%s§r§7 K
+tooltip.ht_materials.material.boil=- Boiling Point: §b%s§r§7 K
+tooltip.ht_materials.material.formula=- Chemical Formula: §b%s§r
+tooltip.ht_materials.material.melt=- Melting Point: §b%s§r§7 K
+tooltip.ht_materials.material.molar=- Molar Mass: §b%s§r§7 g/mol
+tooltip.ht_materials.material.name=- Name: §b%s§r§7
+tooltip.ht_materials.material.subl=- Sublimation Point: §b%s§r§7 K
+tooltip.ht_materials.material.title=§e=== Material Info ===
 
 ##    Material    ##
 

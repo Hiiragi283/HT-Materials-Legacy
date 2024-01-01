@@ -2,10 +2,15 @@ package io.github.hiiragi283.material;
 
 import io.github.hiiragi283.material.api.HTAddon;
 import io.github.hiiragi283.material.api.HTMaterialsAddon;
+import io.github.hiiragi283.material.api.item.HTMaterialItem;
+import io.github.hiiragi283.material.api.material.HTMaterialUtils;
 import io.github.hiiragi283.material.api.material.HTMaterials;
+import io.github.hiiragi283.material.api.part.HTPartManager;
 import io.github.hiiragi283.material.api.shape.HTShapes;
 import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.oredict.OreDictionary;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
@@ -52,6 +57,17 @@ public class HMCommonProxy implements HTProxy {
             LOGGER.info("HTMaterial initialized!");
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
+        }
+        //Reload Ore Dictionary
+        HTPartManager.reloadOreDicts();
+    }
+
+    //    Init    //
+
+    @Override
+    public void onInit(FMLInitializationEvent event) {
+        for (HTMaterialItem materialItem : HTMaterialItem.getItems()) {
+            HTMaterialUtils.getMaterialStacks(materialItem).forEach(stack -> OreDictionary.registerOre(materialItem.getOreDict(stack), stack));
         }
     }
 

@@ -1,11 +1,12 @@
 package io.github.hiiragi283.material.api.material;
 
-import io.github.hiiragi283.material.api.HTCollectors;
+import io.github.hiiragi283.material.util.HTCollectors;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.util.Arrays;
 import java.util.Map;
+import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 @FunctionalInterface
@@ -33,7 +34,11 @@ public interface ColorConvertible {
     }
 
     static Color average(Iterable<Color> colors) {
-        return average(StreamSupport.stream(colors.spliterator(), false).collect(HTCollectors.associateWith(1)));
+        return average(StreamSupport.stream(colors.spliterator(), false));
+    }
+
+    static Color average(Stream<Color> colors) {
+        return average(colors.collect(HTCollectors.associateWith(1)));
     }
 
     static Color average(Map<Color, Integer> map) {

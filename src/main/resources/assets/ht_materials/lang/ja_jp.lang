@@ -38,13 +38,13 @@ ht_shape.wire=%sのワイヤ
 
 ##    Tooltip    ##
 
-tips.ragi_materials.property.boil=- 沸点: §b%s§r§7 K
-tips.ragi_materials.property.formula=- 化学式: §b%s§r
-tips.ragi_materials.property.melt=- 融点: §b%s§r§7 K
-tips.ragi_materials.property.mol=- モル質量: §b%s§r§7 g/mol
-tips.ragi_materials.property.name=- 名称: §b%s§r§7
-tips.ragi_materials.property.scale=- 物質量: §b%s§r§7 mol
-tips.ragi_materials.property.subl=- 昇華点: §b%s§r§7 K
+tooltip.ht_materials.material.boil=- 沸点: §b%s§r§7 K
+tooltip.ht_materials.material.formula=- 化学式: §b%s§r
+tooltip.ht_materials.material.melt=- 融点: §b%s§r§7 K
+tooltip.ht_materials.material.molar=- モル質量: §b%s§r§7 g/mol
+tooltip.ht_materials.material.name=- 名称: §b%s§r§7
+tooltip.ht_materials.material.subl=- 昇華点: §b%s§r§7 K
+tooltip.ht_materials.material.title=§e=== 素材情報 ===
 
 ##    Material    ##
 

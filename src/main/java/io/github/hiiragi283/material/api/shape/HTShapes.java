@@ -4,6 +4,7 @@ import io.github.hiiragi283.material.HMCommonProxy;
 import io.github.hiiragi283.material.HMReference;
 import io.github.hiiragi283.material.api.HTAddon;
 import io.github.hiiragi283.material.api.HTMaterialsAddon;
+import io.github.hiiragi283.material.api.material.flag.HTMaterialFlags;
 import io.github.hiiragi283.material.api.registry.HTNonNullMap;
 import io.github.hiiragi283.material.api.registry.HTObjectKeySet;
 
@@ -65,15 +66,37 @@ public class HTShapes implements HTMaterialsAddon {
 
     @Override
     public void modifyShapePredicate(HTNonNullMap<HTShapeKey, HTShapePredicate.Builder> registry) {
+
         //registry.getOrCreate(BLOCK).disabled = false;
+
         //registry.getOrCreate(ORE).disabled = false;
-        registry.getOrCreate(DUST).disabled = false;
-        registry.getOrCreate(GEAR).disabled = false;
+
+        registry.getOrCreate(DUST)
+                .setEnabled()
+                .addRequiredFlag(HTMaterialFlags.GENERATE_DUST);
+
+        registry.getOrCreate(GEAR)
+                .setEnabled()
+                .addRequiredFlag(HTMaterialFlags.GENERATE_GEAR);
+
         //registry.getOrCreate(GEM).disabled = false;
-        registry.getOrCreate(INGOT).disabled = false;
-        registry.getOrCreate(NUGGET).disabled = false;
-        registry.getOrCreate(PLATE).disabled = false;
-        registry.getOrCreate(STICK).disabled = false;
+
+        registry.getOrCreate(INGOT)
+                .setDisabled()
+                .addRequiredFlag(HTMaterialFlags.GENERATE_INGOT);
+
+        registry.getOrCreate(NUGGET)
+                .setDisabled()
+                .addRequiredFlag(HTMaterialFlags.GENERATE_NUGGET);
+
+        registry.getOrCreate(PLATE)
+                .setDisabled()
+                .addRequiredFlag(HTMaterialFlags.GENERATE_PLATE);
+
+        registry.getOrCreate(STICK)
+                .setDisabled()
+                .addRequiredFlag(HTMaterialFlags.GENERATE_STICK);
+
     }
 
     //    Init    //

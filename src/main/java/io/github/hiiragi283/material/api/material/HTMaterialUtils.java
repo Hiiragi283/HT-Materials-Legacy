@@ -1,6 +1,6 @@
 package io.github.hiiragi283.material.api.material;
 
-import io.github.hiiragi283.material.api.item.ItemMaterialHT;
+import io.github.hiiragi283.material.api.item.HTMaterialItem;
 import io.github.hiiragi283.material.api.shape.HTShape;
 import io.github.hiiragi283.material.api.shape.HTShapeKey;
 import net.minecraft.client.resources.I18n;
@@ -28,7 +28,7 @@ public abstract class HTMaterialUtils {
         return getMaterials(shapeKey).map(HTMaterial::getIndex);
     }
 
-    public static Stream<ItemStack> getMaterialStacks(ItemMaterialHT item) {
+    public static Stream<ItemStack> getMaterialStacks(HTMaterialItem item) {
         return getMaterialIndexes(item.getShapeKey()).map(index -> new ItemStack(item, 1, index));
     }
 

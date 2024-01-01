@@ -1,4 +1,4 @@
-package io.github.hiiragi283.material.api;
+package io.github.hiiragi283.material.util;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

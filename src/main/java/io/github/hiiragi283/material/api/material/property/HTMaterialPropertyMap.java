@@ -58,14 +58,15 @@ public final class HTMaterialPropertyMap {
 
         private final Map<HTPropertyKey<?>, HTMaterialProperty<?>> backingMap = new HashMap<>();
 
-        public <T extends HTMaterialProperty<T>> void add(T property) {
-            add(property, prop -> {
+        public <T extends HTMaterialProperty<T>> Builder add(T property) {
+            return add(property, prop -> {
             });
         }
 
-        public <T extends HTMaterialProperty<T>> void add(T property, Consumer<T> consumer) {
+        public <T extends HTMaterialProperty<T>> Builder add(T property, Consumer<T> consumer) {
             consumer.accept(property);
             backingMap.put(property.getKey(), property);
+            return this;
         }
 
         public HTMaterialPropertyMap build() {

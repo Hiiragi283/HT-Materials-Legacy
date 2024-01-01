@@ -2,7 +2,7 @@ package io.github.hiiragi283.material.api.part;
 
 import com.github.bsideup.jabel.Desugar;
 import com.google.common.base.CaseFormat;
-import io.github.hiiragi283.material.HTUtils;
+import io.github.hiiragi283.material.util.HTUtils;
 import io.github.hiiragi283.material.api.material.HTMaterial;
 import io.github.hiiragi283.material.api.material.HTMaterialKey;
 import io.github.hiiragi283.material.api.shape.HTShape;
@@ -21,13 +21,12 @@ public record HTPart(HTMaterialKey materialKey, HTShapeKey shapeKey) {
         List<String> split = Arrays.asList(CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, oreDict).split("_"));
         for (int i = 0; i < split.size(); i++) {
             String shapeName = HTUtils.joinToString("_", split.subList(0, i + 1).stream());
-            HTShapeKey shapeKey = new HTShapeKey(shapeName);
-            HTShape shape = HTShape.getShapeOrNull(shapeKey);
+            HTShape shape = HTShape.getShapeOrNull(shapeName);
             if (shape == null) continue;
             String materialName = HTUtils.joinToString("_", split.subList(i + 1, split.size()).stream());
             HTMaterial material = HTMaterial.getMaterialOrNull(materialName);
             if (material == null) continue;
-            return new HTPart(material.getKey(), shapeKey);
+            return new HTPart(material.getKey(), shape.key());
         }
         return null;
     }
@@ -44,12 +43,12 @@ public record HTPart(HTMaterialKey materialKey, HTShapeKey shapeKey) {
 
     @NotNull
     public HTShape getShape() {
-        return HTShape.getShape(shapeKey);
+        return HTShape.getShape(shapeKey.name());
     }
 
     @Nullable
     public HTShape getShapeOrNull() {
-        return HTShape.getShapeOrNull(shapeKey);
+        return HTShape.getShapeOrNull(shapeKey.name());
     }
 
 }

@@ -3,10 +3,7 @@ package io.github.hiiragi283.material.api.material.flag;
 import io.github.hiiragi283.material.api.material.HTMaterial;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
 
 public final class HTMaterialFlagSet implements Iterable<HTMaterialFlag> {
 
@@ -39,7 +36,17 @@ public final class HTMaterialFlagSet implements Iterable<HTMaterialFlag> {
     //    Builder    //
     public static class Builder {
 
-        public final Set<HTMaterialFlag> backingSet = new HashSet<>();
+        private final Set<HTMaterialFlag> backingSet = new HashSet<>();
+
+        public Builder add(HTMaterialFlag flag) {
+            backingSet.add(flag);
+            return this;
+        }
+
+        public Builder remove(HTMaterialFlag flag) {
+            backingSet.remove(flag);
+            return this;
+        }
 
         public HTMaterialFlagSet build() {
             return new HTMaterialFlagSet(backingSet);

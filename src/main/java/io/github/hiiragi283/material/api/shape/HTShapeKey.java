@@ -27,12 +27,12 @@ public record HTShapeKey(String name) implements HTObjectKey<HTShape> {
 
     @NotNull
     public HTShape getShape() {
-        return HTShape.getShape(this);
+        return HTShape.getShape(this.name);
     }
 
     @Nullable
     public HTShape getShapeOrNull() {
-        return HTShape.getShapeOrNull(this);
+        return HTShape.getShapeOrNull(this.name);
     }
 
     //    Ore Dict    //

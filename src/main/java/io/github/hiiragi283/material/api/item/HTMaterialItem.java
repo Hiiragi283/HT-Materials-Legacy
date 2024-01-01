@@ -16,11 +16,11 @@ import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class ItemMaterialHT extends Item implements IMaterialItemConvertible {
+public class HTMaterialItem extends Item implements IMaterialItemConvertible {
 
     public final HTShapeKey shapeKey;
 
-    public ItemMaterialHT(HTShapeKey shapeKey) {
+    public HTMaterialItem(HTShapeKey shapeKey) {
         this.shapeKey = shapeKey;
         setCreativeTab(CreativeTabs.MATERIALS);
         hasSubtypes = true;
@@ -65,14 +65,14 @@ public class ItemMaterialHT extends Item implements IMaterialItemConvertible {
 
     //    Registry    //
 
-    private final static Map<HTShapeKey, ItemMaterialHT> registry = new LinkedHashMap<>();
+    private final static Map<HTShapeKey, HTMaterialItem> registry = new LinkedHashMap<>();
 
-    public static Collection<ItemMaterialHT> getItems() {
+    public static Collection<HTMaterialItem> getItems() {
         return registry.values();
     }
 
     @Nullable
-    public static ItemMaterialHT getItem(HTShapeKey shapeKey) {
+    public static HTMaterialItem getItem(HTShapeKey shapeKey) {
         return registry.get(shapeKey);
     }
 

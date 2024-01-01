@@ -3,6 +3,7 @@ package io.github.hiiragi283.material.api.item;
 import io.github.hiiragi283.material.api.material.HTMaterial;
 import io.github.hiiragi283.material.api.material.HTMaterialKey;
 import io.github.hiiragi283.material.api.material.HTMaterialUtils;
+import io.github.hiiragi283.material.api.part.HTPart;
 import io.github.hiiragi283.material.api.shape.HTShapeKey;
 import net.minecraft.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -32,8 +33,16 @@ public interface IMaterialItemConvertible extends IItemConvertible {
         return HTMaterialUtils.getMaterialIndexes(getShapeKey());
     }
 
-    default Stream<ItemStack> getMaterialStacks(ItemMaterialHT item) {
+    default Stream<ItemStack> getMaterialStacks(HTMaterialItem item) {
         return HTMaterialUtils.getMaterialStacks(item);
+    }
+
+    default HTPart getPart(ItemStack stack) {
+        return new HTPart(getMaterialKey(stack), getShapeKey());
+    }
+
+    default String getOreDict(ItemStack stack) {
+        return getShapeKey().getOreDict(getMaterialKey(stack));
     }
 
 }

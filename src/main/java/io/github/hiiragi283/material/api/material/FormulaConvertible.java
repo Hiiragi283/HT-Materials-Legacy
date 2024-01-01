@@ -1,14 +1,17 @@
 package io.github.hiiragi283.material.api.material;
 
-import io.github.hiiragi283.material.api.HTCollectors;
+import io.github.hiiragi283.material.util.HTCollectors;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.Map;
+import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 @FunctionalInterface
 public interface FormulaConvertible {
 
+    @NotNull
     String asFormula();
 
     FormulaConvertible EMPTY = () -> "";
@@ -30,7 +33,11 @@ public interface FormulaConvertible {
     }
 
     static String format(Iterable<String> formulas) {
-        return format(StreamSupport.stream(formulas.spliterator(), false).collect(HTCollectors.associateWith(1)));
+        return format(StreamSupport.stream(formulas.spliterator(), false));
+    }
+
+    static String format(Stream<String> formulas) {
+        return format(formulas.collect(HTCollectors.associateWith(1)));
     }
 
     static String format(Map<String, Integer> map) {
