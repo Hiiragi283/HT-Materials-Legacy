@@ -1,44 +1,53 @@
 package io.github.hiiragi283.material.api.shape;
 
-import io.github.hiiragi283.material.HMCommonProxy;
-import io.github.hiiragi283.material.HMReference;
-import io.github.hiiragi283.material.api.HTAddon;
 import io.github.hiiragi283.material.api.HTMaterialsAddon;
+import io.github.hiiragi283.material.api.HTMaterialsAddonManager;
 import io.github.hiiragi283.material.api.material.flag.HTMaterialFlags;
 import io.github.hiiragi283.material.api.registry.HTNonNullMap;
 import io.github.hiiragi283.material.api.registry.HTObjectKeySet;
 
-@HTAddon
-public class HTShapes implements HTMaterialsAddon {
+import java.lang.reflect.Field;
+
+public enum HTShapes implements HTMaterialsAddon {
+    INSTANCE;
 
     //    Block    //
 
-    public static HTShapeKey BLOCK = new HTShapeKey("block");
+    public static final HTShapeKey BLOCK = new HTShapeKey("block");
 
-    public static HTShapeKey ORE = new HTShapeKey("ore");
+    public static final HTShapeKey FENCE = new HTShapeKey("fence");
+
+    public static final HTShapeKey FENCE_GATE = new HTShapeKey("fence_gate");
+
+    public static final HTShapeKey LOG = new HTShapeKey("log");
+
+    public static final HTShapeKey ORE = new HTShapeKey("ore");
+
+    public static final HTShapeKey PLANK = new HTShapeKey("plank");
+
+    public static final HTShapeKey SLAB = new HTShapeKey("slab");
+
+    public static final HTShapeKey STAIR = new HTShapeKey("stair");
+
+    public static final HTShapeKey STONE = new HTShapeKey("stone");
 
     //    Item    //
 
-    public static HTShapeKey DUST = new HTShapeKey("dust");
+    public static final HTShapeKey DUST = new HTShapeKey("dust");
 
-    public static HTShapeKey GEAR = new HTShapeKey("gear");
+    public static final HTShapeKey GEAR = new HTShapeKey("gear");
 
-    public static HTShapeKey GEM = new HTShapeKey("gem");
+    public static final HTShapeKey GEM = new HTShapeKey("gem");
 
-    public static HTShapeKey INGOT = new HTShapeKey("ingot");
+    public static final HTShapeKey INGOT = new HTShapeKey("ingot");
 
-    public static HTShapeKey NUGGET = new HTShapeKey("nugget");
+    public static final HTShapeKey NUGGET = new HTShapeKey("nugget");
 
-    public static HTShapeKey PLATE = new HTShapeKey("plate");
+    public static final HTShapeKey PLATE = new HTShapeKey("plate");
 
-    public static HTShapeKey STICK = new HTShapeKey("stick");
+    public static final HTShapeKey STICK = new HTShapeKey("stick");
 
     //    HTMaterialsAddon    //
-
-    @Override
-    public String getModId() {
-        return HMReference.MOD_ID;
-    }
 
     @Override
     public int getPriority() {
@@ -47,21 +56,17 @@ public class HTShapes implements HTMaterialsAddon {
 
     @Override
     public void registerShapeKey(HTObjectKeySet<HTShapeKey> registry) {
-        //Block
-        registry.addAll(
-                BLOCK,
-                ORE
-        );
-        //Item
-        registry.addAll(
-                DUST,
-                GEAR,
-                GEM,
-                INGOT,
-                NUGGET,
-                PLATE,
-                STICK
-        );
+        for (Field field : HTShapes.class.getDeclaredFields()) {
+            field.setAccessible(true);
+            try {
+                Object obj = field.get(this);
+                if (obj instanceof HTShapeKey key) {
+                    registry.add(key);
+                }
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     @Override
@@ -110,13 +115,13 @@ public class HTShapes implements HTMaterialsAddon {
     private static final HTObjectKeySet<HTShapeKey> shapeKeySet = HTObjectKeySet.create();
 
     private static void registerShapeKey() throws IllegalAccessException {
-        HMCommonProxy.getAddons().forEach(addon -> addon.registerShapeKey(shapeKeySet));
+        HTMaterialsAddonManager.getAddons().forEach(addon -> addon.registerShapeKey(shapeKeySet));
     }
 
     private static final HTNonNullMap<HTShapeKey, HTShapePredicate.Builder> predicateMap = HTNonNullMap.create(key -> new HTShapePredicate.Builder());
 
     private static void modifyShapePredicate() throws IllegalAccessException {
-        HMCommonProxy.getAddons().forEach(addon -> addon.modifyShapePredicate(predicateMap));
+        HTMaterialsAddonManager.getAddons().forEach(addon -> addon.modifyShapePredicate(predicateMap));
     }
 
     private static void createShape() {

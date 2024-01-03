@@ -8,7 +8,10 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collector;
 
-public class HTCollectors {
+public abstract class HTCollectors {
+
+    private HTCollectors() {
+    }
 
     public static <T, K, V> Collector<T, HashMap<K, V>, HashMap<K, V>> associate(@NotNull Function<T, K> keyFunction, @NotNull Function<T, V> valueFunction) {
         return Collector.of(

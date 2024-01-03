@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 import java.awt.*;
 import java.util.Map;
 
-public class HTCompoundProperty implements HTComponentProperty<HTCompoundProperty> {
+public final class HTCompoundProperty implements HTComponentProperty<HTCompoundProperty> {
 
     private final Map<HTMaterialKey, Integer> backingMap;
 
@@ -24,18 +24,18 @@ public class HTCompoundProperty implements HTComponentProperty<HTCompoundPropert
     @NotNull
     @Override
     public Color asColor() {
-        return ColorConvertible.average(backingMap.entrySet().stream().collect(HTCollectors.mapKeys(key -> HTMaterial.getMaterial(key.name()).getInfo().color())));
+        return ColorConvertible.average(backingMap.entrySet().stream().collect(HTCollectors.mapKeys(key -> HTMaterial.getMaterial(key.name()).getColor())));
     }
 
     @NotNull
     @Override
     public String asFormula() {
-        return FormulaConvertible.format(backingMap.entrySet().stream().collect(HTCollectors.mapKeys(key -> HTMaterial.getMaterial(key.name()).getInfo().formula())));
+        return FormulaConvertible.format(backingMap.entrySet().stream().collect(HTCollectors.mapKeys(key -> HTMaterial.getMaterial(key.name()).getFormula())));
     }
 
     @Override
     public double asMolar() {
-        return MolarMassConvertible.calculate(backingMap.entrySet().stream().collect(HTCollectors.mapKeys(key -> HTMaterial.getMaterial(key.name()).getInfo().molar())));
+        return MolarMassConvertible.calculate(backingMap.entrySet().stream().collect(HTCollectors.mapKeys(key -> HTMaterial.getMaterial(key.name()).getMolar())));
     }
 
     @NotNull
@@ -46,7 +46,7 @@ public class HTCompoundProperty implements HTComponentProperty<HTCompoundPropert
 
     //    Builder    //
 
-    public static class Builder {
+    public static final class Builder {
 
         private final ImmutableMap.Builder<HTMaterialKey, Integer> builder = ImmutableMap.builder();
 

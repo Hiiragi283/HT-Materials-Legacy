@@ -3,12 +3,8 @@ package io.github.hiiragi283.material.api.material.property;
 import io.github.hiiragi283.material.api.material.HTMaterial;
 import org.jetbrains.annotations.NotNull;
 
-public class HTMetalProperty implements HTMaterialProperty<HTMetalProperty> {
-
-    public static final HTMetalProperty INSTANCE = new HTMetalProperty();
-
-    private HTMetalProperty() {
-    }
+public enum HTMetalProperty implements HTMaterialProperty<HTMetalProperty> {
+    INSTANCE;
 
     @NotNull
     @Override

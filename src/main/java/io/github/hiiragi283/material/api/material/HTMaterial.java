@@ -1,6 +1,5 @@
 package io.github.hiiragi283.material.api.material;
 
-import com.github.bsideup.jabel.Desugar;
 import com.google.common.collect.ImmutableMap;
 import io.github.hiiragi283.material.api.material.flag.HTMaterialFlag;
 import io.github.hiiragi283.material.api.material.flag.HTMaterialFlagSet;
@@ -12,12 +11,12 @@ import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.awt.*;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-@Desugar
-public class HTMaterial {
+public final class HTMaterial {
 
     private final HTMaterialKey key;
 
@@ -48,6 +47,18 @@ public class HTMaterial {
 
     public HTMaterialInfo getInfo() {
         return info;
+    }
+
+    public Color getColor() {
+        return getInfo().color();
+    }
+
+    public String getFormula() {
+        return getInfo().formula();
+    }
+
+    public double getMolar() {
+        return getInfo().molar();
     }
 
     public HTMaterialPropertyMap getProperties() {

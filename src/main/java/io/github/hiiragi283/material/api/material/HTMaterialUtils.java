@@ -39,10 +39,10 @@ public abstract class HTMaterialUtils {
         String name = shape == null ? material.getKey().getTranslatedName() : shape.key().getTranslatedName(material.getKey());
         tooltips.add(I18n.format("tooltip.ht_materials.material.name", name));
         //Formula
-        String formula = material.getInfo().formula();
+        String formula = material.getFormula();
         if (!formula.isEmpty()) tooltips.add(I18n.format("tooltip.ht_materials.material.formula", formula));
         //Molar Mass
-        double molar = material.getInfo().molar();
+        double molar = material.getMolar();
         if (molar > 0.0) tooltips.add(I18n.format("tooltip.ht_materials.material.molar", molar));
         //Tooltip from Properties
         material.getProperties().values().forEach(pro -> pro.addInformation(material, shape, stack, tooltips));

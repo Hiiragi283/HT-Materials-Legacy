@@ -1,13 +1,18 @@
 package io.github.hiiragi283.material.util;
 
+import com.google.gson.JsonObject;
 import io.github.hiiragi283.material.HMReference;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.ModContainer;
 
 import java.util.StringJoiner;
+import java.util.function.Consumer;
 import java.util.stream.Stream;
 
-public class HTUtils {
+public abstract class HTUtils {
+
+    private HTUtils() {
+    }
 
     public static String joinToString(String delimiter, Stream<String> stream) {
         StringJoiner sj = new StringJoiner(delimiter);
@@ -21,6 +26,12 @@ public class HTUtils {
 
     public static boolean isHTMaterialsActive() {
         return getActiveModContainer().getModId().equals(HMReference.MOD_ID);
+    }
+
+    public static JsonObject buildJson(Consumer<JsonObject> consumer) {
+        JsonObject jsonObject = new JsonObject();
+        consumer.accept(jsonObject);
+        return jsonObject;
     }
 
 }

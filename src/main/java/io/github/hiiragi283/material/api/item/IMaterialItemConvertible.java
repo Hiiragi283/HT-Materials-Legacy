@@ -7,14 +7,20 @@ import io.github.hiiragi283.material.api.part.HTPart;
 import io.github.hiiragi283.material.api.shape.HTShapeKey;
 import net.minecraft.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.stream.Stream;
 
 public interface IMaterialItemConvertible extends IItemConvertible {
 
+    @Nullable
+    default HTMaterial getMaterial(ItemStack stack) {
+        return HTMaterial.getMaterialOrNull(stack.getMetadata());
+    }
+
     @NotNull
     default HTMaterialKey getMaterialKey(ItemStack stack) {
-        HTMaterial material = HTMaterial.getMaterialOrNull(stack.getMetadata());
+        HTMaterial material = getMaterial(stack);
         return material == null ? HTMaterialKey.EMPTY : material.getKey();
     }
 

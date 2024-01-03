@@ -9,7 +9,7 @@ import java.awt.*;
 import java.util.Iterator;
 import java.util.stream.StreamSupport;
 
-public class HTMixtureProperty implements HTComponentProperty<HTMixtureProperty>, Iterable<HTMaterialKey> {
+public final class HTMixtureProperty implements HTComponentProperty<HTMixtureProperty>, Iterable<HTMaterialKey> {
 
     private final Iterable<HTMaterialKey> iterable;
 
@@ -31,7 +31,7 @@ public class HTMixtureProperty implements HTComponentProperty<HTMixtureProperty>
     @NotNull
     @Override
     public Color asColor() {
-        return ColorConvertible.average(StreamSupport.stream(iterable.spliterator(), false).map(key -> key.getMaterial().getInfo().color()));
+        return ColorConvertible.average(StreamSupport.stream(iterable.spliterator(), false).map(key -> key.getMaterial().getColor()));
     }
 
     @Override

@@ -1,7 +1,5 @@
 package io.github.hiiragi283.material.api.material.materials;
 
-import io.github.hiiragi283.material.HMReference;
-import io.github.hiiragi283.material.api.HTAddon;
 import io.github.hiiragi283.material.api.HTMaterialsAddon;
 import io.github.hiiragi283.material.api.material.ColorConvertible;
 import io.github.hiiragi283.material.api.material.FormulaConvertible;
@@ -18,8 +16,8 @@ import io.github.hiiragi283.material.util.HTColor;
 import java.lang.reflect.Field;
 import java.util.Map;
 
-@HTAddon
-public class HTElementMaterials implements HTMaterialsAddon {
+public enum HTElementMaterials implements HTMaterialsAddon {
+    INSTANCE;
 
     //    1st Period    //
 
@@ -46,11 +44,6 @@ public class HTElementMaterials implements HTMaterialsAddon {
     //    7th Period    //
 
     //    HTMaterialsAddon    //
-
-    @Override
-    public String getModId() {
-        return HMReference.MOD_ID;
-    }
 
     @Override
     public int getPriority() {

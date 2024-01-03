@@ -7,8 +7,10 @@ import io.github.hiiragi283.material.api.item.IItemConvertible;
 import io.github.hiiragi283.material.api.material.HTMaterialKey;
 import io.github.hiiragi283.material.api.registry.ItemWithMeta;
 import io.github.hiiragi283.material.api.shape.HTShapeKey;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.oredict.OreDictionary;
@@ -97,7 +99,7 @@ public abstract class HTPartManager {
         return partToItem.contains(materialKey, shapeKey);
     }
 
-    //    HTMaterialKey, HTShapeKey -> Collection<ItemWithMeta>    //
+    //    HTMaterialKey, HTShapeKey -> Stream<ItemWithMeta>    //
 
     private static final Table<HTMaterialKey, HTShapeKey, Set<ItemWithMeta>> partToItems = HashBasedTable.create();
 
@@ -124,7 +126,13 @@ public abstract class HTPartManager {
     //   Register    //
 
     static void register(@NotNull HTMaterialKey materialKey, @NotNull HTShapeKey shapeKey, @NotNull ItemStack stack) {
-        register(materialKey, shapeKey, stack.getItem(), stack.getMetadata());
+        if (stack.isEmpty()) return;
+        if (stack.getMetadata() == OreDictionary.WILDCARD_VALUE) {
+            Item item = stack.getItem();
+            NonNullList<ItemStack> list = NonNullList.create();
+            item.getSubItems(CreativeTabs.SEARCH, list);
+            list.forEach(stack1 -> register(materialKey, shapeKey, stack1.getItem(), stack1.getMetadata()));
+        } else register(materialKey, shapeKey, stack.getItem(), stack.getMetadata());
     }
 
     static void register(@NotNull HTMaterialKey materialKey, @NotNull HTShapeKey shapeKey, @NotNull IItemConvertible convertible, int meta) {
@@ -154,7 +162,7 @@ public abstract class HTPartManager {
     }
 
     @SubscribeEvent
-    static void onOreRegistered(OreDictionary.OreRegisterEvent event) {
+    public static void onOreRegistered(OreDictionary.OreRegisterEvent event) {
         String oreDict = event.getName();
         ItemStack stack = event.getOre();
         LOGGER.info("OreDict Name: " + oreDict);

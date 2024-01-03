@@ -1,7 +1,5 @@
 package io.github.hiiragi283.material.api.material.materials;
 
-import io.github.hiiragi283.material.HMReference;
-import io.github.hiiragi283.material.api.HTAddon;
 import io.github.hiiragi283.material.api.HTMaterialsAddon;
 import io.github.hiiragi283.material.api.material.HTMaterialKey;
 import io.github.hiiragi283.material.api.material.property.HTCompoundProperty;
@@ -11,8 +9,8 @@ import io.github.hiiragi283.material.api.registry.HTObjectKeySet;
 
 import java.lang.reflect.Field;
 
-@HTAddon
-public class HTVanillaMaterials implements HTMaterialsAddon {
+public enum HTVanillaMaterials implements HTMaterialsAddon {
+    INSTANCE;
 
     public static final HTMaterialKey STONE = new HTMaterialKey("stone", 1000);
 
@@ -91,11 +89,6 @@ public class HTVanillaMaterials implements HTMaterialsAddon {
     public static final HTMaterialKey NETHER_STAR = new HTMaterialKey("nether_star", 1037);
 
     //    HTMaterialsAddon    //
-
-    @Override
-    public String getModId() {
-        return HMReference.MOD_ID;
-    }
 
     @Override
     public int getPriority() {

@@ -9,6 +9,9 @@ import java.util.Map;
 
 public abstract class HTColor {
 
+    private HTColor() {
+    }
+
     //Minecraftのカラーコードと同じ色
     public static final Color BLACK = new Color(0x00, 0x00, 0x00);
     public static final Color DARK_BLUE = new Color(0x00, 0x00, 0xAA);

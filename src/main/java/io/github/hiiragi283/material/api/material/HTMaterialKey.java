@@ -60,14 +60,19 @@ public record HTMaterialKey(String name, int index) implements HTObjectKey<HTMat
     //    Translation    //
 
     @NotNull
+    public String getTranslationKey() {
+        return "ht_material." + name;
+    }
+
+    @NotNull
     @SideOnly(Side.CLIENT)
     public String getTranslatedName() {
-        return I18n.format("ht_material." + name);
+        return I18n.format(getTranslationKey());
     }
 
     @NotNull
     public ITextComponent getTranslatedText() {
-        return new TextComponentTranslation("ht_material." + name);
+        return new TextComponentTranslation(getTranslationKey() + name);
     }
 
 }

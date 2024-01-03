@@ -54,7 +54,7 @@ public final class HTMaterialPropertyMap {
 
     //    Builder    //
 
-    public static class Builder {
+    public static final class Builder {
 
         private final Map<HTPropertyKey<?>, HTMaterialProperty<?>> backingMap = new HashMap<>();
 

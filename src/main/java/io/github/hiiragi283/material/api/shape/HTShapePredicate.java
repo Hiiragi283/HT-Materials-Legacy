@@ -30,7 +30,7 @@ public record HTShapePredicate(
             return requiredFlags.stream().allMatch(material::hasFlag) && requiredProperties.stream().allMatch(material::hasProperty);
     }
 
-    public static class Builder {
+    public static final class Builder {
 
         private final Set<HTMaterialKey> blackList = new HashSet<>();
 

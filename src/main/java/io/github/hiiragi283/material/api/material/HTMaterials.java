@@ -1,6 +1,6 @@
 package io.github.hiiragi283.material.api.material;
 
-import io.github.hiiragi283.material.HMCommonProxy;
+import io.github.hiiragi283.material.api.HTMaterialsAddonManager;
 import io.github.hiiragi283.material.api.material.flag.HTMaterialFlagSet;
 import io.github.hiiragi283.material.api.material.property.HTComponentProperty;
 import io.github.hiiragi283.material.api.material.property.HTMaterialProperty;
@@ -13,7 +13,10 @@ import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
-public class HTMaterials {
+public abstract class HTMaterials {
+
+    private HTMaterials() {
+    }
 
     //    Init    //
 
@@ -30,37 +33,37 @@ public class HTMaterials {
     private static final HTObjectKeySet<HTMaterialKey> materialKeySet = HTObjectKeySet.create();
 
     private static void registerMaterialKey() throws IllegalAccessException {
-        HMCommonProxy.getAddons().forEach(addon -> addon.registerMaterialKey(materialKeySet));
+        HTMaterialsAddonManager.getAddons().forEach(addon -> addon.registerMaterialKey(materialKeySet));
     }
 
     private static final HTNonNullMap<HTMaterialKey, HTMaterialPropertyMap.Builder> propertyMap = HTNonNullMap.create(key -> new HTMaterialPropertyMap.Builder());
 
     private static void modifyMaterialProperty() throws IllegalAccessException {
-        HMCommonProxy.getAddons().forEach(addon -> addon.modifyMaterialProperty(propertyMap));
+        HTMaterialsAddonManager.getAddons().forEach(addon -> addon.modifyMaterialProperty(propertyMap));
     }
 
     private static final HTNonNullMap<HTMaterialKey, HTMaterialFlagSet.Builder> flagMap = HTNonNullMap.create(key -> new HTMaterialFlagSet.Builder());
 
     private static void modifyMaterialFlag() throws IllegalAccessException {
-        HMCommonProxy.getAddons().forEach(addon -> addon.modifyMaterialFlag(flagMap));
+        HTMaterialsAddonManager.getAddons().forEach(addon -> addon.modifyMaterialFlag(flagMap));
     }
 
     private static final Map<HTMaterialKey, ColorConvertible> colorMap = new HashMap<>();
 
     private static void modifyMaterialColor() throws IllegalAccessException {
-        HMCommonProxy.getAddons().forEach(addon -> addon.modifyMaterialColor(colorMap));
+        HTMaterialsAddonManager.getAddons().forEach(addon -> addon.modifyMaterialColor(colorMap));
     }
 
     private static final Map<HTMaterialKey, FormulaConvertible> formulaMap = new HashMap<>();
 
     private static void modifyMaterialFormula() throws IllegalAccessException {
-        HMCommonProxy.getAddons().forEach(addon -> addon.modifyMaterialFormula(formulaMap));
+        HTMaterialsAddonManager.getAddons().forEach(addon -> addon.modifyMaterialFormula(formulaMap));
     }
 
     private static final Map<HTMaterialKey, MolarMassConvertible> molarMap = new HashMap<>();
 
     private static void modifyMaterialMolar() throws IllegalAccessException {
-        HMCommonProxy.getAddons().forEach(addon -> addon.modifyMaterialMolar(molarMap));
+        HTMaterialsAddonManager.getAddons().forEach(addon -> addon.modifyMaterialMolar(molarMap));
     }
 
     @NotNull

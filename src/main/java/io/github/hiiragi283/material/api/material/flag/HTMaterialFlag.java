@@ -80,7 +80,7 @@ public final class HTMaterialFlag {
 
     //    Builder    //
 
-    public static class Builder {
+    public static final class Builder {
 
         private final String name;
 

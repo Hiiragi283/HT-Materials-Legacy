@@ -15,8 +15,6 @@ import java.util.Map;
 
 public interface HTMaterialsAddon {
 
-    String getModId();
-
     int getPriority();
 
     default void registerShapeKey(HTObjectKeySet<HTShapeKey> registry) {

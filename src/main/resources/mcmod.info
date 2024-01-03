@@ -1,12 +1,14 @@
 [{
     "modid": "${modid}",
     "name": "${modname}",
-    "description": "An example mod for Minecraft 1.12.2 with Forge",
+    "description": "Official backport of HT Materials for older MC versions ",
     "version": "${version}",
     "mcversion": "${mcversion}",
-    "logoFile": "",
+    "logoFile": "assets/ht_materials/textures/icon.png",
     "url": "",
-    "authorList": [],
+    "authorList": [
+        "Hiiragi283"
+    ],
     "credits": "",
     "dependencies": []
 }]

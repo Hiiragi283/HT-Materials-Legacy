@@ -11,7 +11,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class HTFluidProperty implements HTMaterialProperty<HTFluidProperty> {
+public final class HTFluidProperty implements HTMaterialProperty<HTFluidProperty> {
 
     public int luminosity = 0;
 
@@ -23,11 +23,6 @@ public class HTFluidProperty implements HTMaterialProperty<HTFluidProperty> {
 
     public boolean isGaseous = false;
 
-    @NotNull
-    public Fluid getFluid(@NotNull HTMaterial material) {
-        return FluidRegistry.getFluid(material.getName());
-    }
-
     //    HTMaterialProperty    //
 
     @NotNull
@@ -38,12 +33,14 @@ public class HTFluidProperty implements HTMaterialProperty<HTFluidProperty> {
 
     @Override
     public void verify(HTMaterial material) {
-
+        if (!FluidRegistry.isFluidRegistered(material.getName())) {
+            throw new IllegalStateException("");
+        }
     }
 
     @Override
     public void addInformation(@NotNull HTMaterial material, @Nullable HTShape shape, @NotNull ItemStack stack, @NotNull List<String> tooltips) {
-        Fluid fluid = getFluid(material);
+        Fluid fluid = FluidRegistry.getFluid(material.getName());
         //Luminosity
         tooltips.add(I18n.format("", fluid.getLuminosity()));
         //Density
