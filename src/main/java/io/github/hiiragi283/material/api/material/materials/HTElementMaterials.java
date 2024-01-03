@@ -1,22 +1,18 @@
 package io.github.hiiragi283.material.api.material.materials;
 
-import io.github.hiiragi283.material.api.HTMaterialsAddon;
 import io.github.hiiragi283.material.api.material.ColorConvertible;
-import io.github.hiiragi283.material.api.material.FormulaConvertible;
+import io.github.hiiragi283.material.api.material.HTMaterialEvent;
 import io.github.hiiragi283.material.api.material.HTMaterialKey;
-import io.github.hiiragi283.material.api.material.MolarMassConvertible;
-import io.github.hiiragi283.material.api.material.flag.HTMaterialFlagSet;
 import io.github.hiiragi283.material.api.material.flag.HTMaterialFlags;
-import io.github.hiiragi283.material.api.material.property.HTMaterialPropertyMap;
 import io.github.hiiragi283.material.api.material.property.HTMetalProperty;
-import io.github.hiiragi283.material.api.registry.HTNonNullMap;
-import io.github.hiiragi283.material.api.registry.HTObjectKeySet;
 import io.github.hiiragi283.material.util.HTColor;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.lang.reflect.Field;
-import java.util.Map;
 
-public enum HTElementMaterials implements HTMaterialsAddon {
+@Mod.EventBusSubscriber
+public enum HTElementMaterials {
     INSTANCE;
 
     //    1st Period    //
@@ -43,21 +39,16 @@ public enum HTElementMaterials implements HTMaterialsAddon {
 
     //    7th Period    //
 
-    //    HTMaterialsAddon    //
+    //    Register    //
 
-    @Override
-    public int getPriority() {
-        return -100;
-    }
-
-    @Override
-    public void registerMaterialKey(HTObjectKeySet<HTMaterialKey> registry) {
+    @SubscribeEvent
+    public static void registerMaterialKey(HTMaterialEvent.Register event) {
         for (Field field : HTElementMaterials.class.getDeclaredFields()) {
             field.setAccessible(true);
             try {
-                Object obj = field.get(this);
+                Object obj = field.get(HTElementMaterials.INSTANCE);
                 if (obj instanceof HTMaterialKey key) {
-                    registry.add(key);
+                    event.add(key);
                 }
             } catch (Exception e) {
                 throw new RuntimeException(e);
@@ -65,67 +56,67 @@ public enum HTElementMaterials implements HTMaterialsAddon {
         }
     }
 
-    @Override
-    public void modifyMaterialProperty(HTNonNullMap<HTMaterialKey, HTMaterialPropertyMap.Builder> registry) {
+    @SubscribeEvent
+    public static void modifyProperty(HTMaterialEvent.Property event) {
         //1st Period
-        registry.getOrCreate(HYDROGEN);
-        registry.getOrCreate(HELIUM);
+        event.getOrCreate(HYDROGEN);
+        event.getOrCreate(HELIUM);
         //4th Period
-        registry.getOrCreate(IRON)
+        event.getOrCreate(IRON)
                 .add(HTMetalProperty.INSTANCE);
         //6th Period
-        registry.getOrCreate(GOLD)
+        event.getOrCreate(GOLD)
                 .add(HTMetalProperty.INSTANCE);
     }
 
-    @Override
-    public void modifyMaterialFlag(HTNonNullMap<HTMaterialKey, HTMaterialFlagSet.Builder> registry) {
+    @SubscribeEvent
+    public static void modifyFlag(HTMaterialEvent.Flag event) {
         //1st Period
         //4th Period
-        registry.getOrCreate(IRON)
+        event.getOrCreate(IRON)
                 .add(HTMaterialFlags.GENERATE_DUST)
                 .add(HTMaterialFlags.GENERATE_GEAR)
                 .add(HTMaterialFlags.GENERATE_PLATE)
                 .add(HTMaterialFlags.GENERATE_STICK);
         //6th Period
-        registry.getOrCreate(GOLD)
+        event.getOrCreate(GOLD)
                 .add(HTMaterialFlags.GENERATE_DUST)
                 .add(HTMaterialFlags.GENERATE_GEAR)
                 .add(HTMaterialFlags.GENERATE_PLATE)
                 .add(HTMaterialFlags.GENERATE_STICK);
     }
 
-    @Override
-    public void modifyMaterialColor(Map<HTMaterialKey, ColorConvertible> registry) {
+    @SubscribeEvent
+    public static void modifyColor(HTMaterialEvent.Color event) {
         //1st Period
-        registry.put(HYDROGEN, () -> HTColor.BLUE);
-        registry.put(HELIUM, () -> HTColor.YELLOW);
+        event.put(HYDROGEN, () -> HTColor.BLUE);
+        event.put(HELIUM, () -> HTColor.YELLOW);
         //4th Period
-        registry.put(IRON, () -> HTColor.WHITE);
+        event.put(IRON, () -> HTColor.WHITE);
         //6th Period
-        registry.put(GOLD, ColorConvertible.ofColor(HTColor.GOLD, HTColor.YELLOW));
+        event.put(GOLD, ColorConvertible.ofColor(HTColor.GOLD, HTColor.YELLOW));
     }
 
-    @Override
-    public void modifyMaterialFormula(Map<HTMaterialKey, FormulaConvertible> registry) {
+    @SubscribeEvent
+    public static void modifyFormula(HTMaterialEvent.Formula event) {
         //1st Period
-        registry.put(HYDROGEN, () -> "H");
-        registry.put(HELIUM, () -> "He");
+        event.put(HYDROGEN, () -> "H");
+        event.put(HELIUM, () -> "He");
         //4th Period
-        registry.put(IRON, () -> "Fe");
+        event.put(IRON, () -> "Fe");
         //6th Period
-        registry.put(GOLD, () -> "Au");
+        event.put(GOLD, () -> "Au");
     }
 
-    @Override
-    public void modifyMaterialMolar(Map<HTMaterialKey, MolarMassConvertible> registry) {
+    @SubscribeEvent
+    public static void modifyMolar(HTMaterialEvent.Molar event) {
         //1st Period
-        registry.put(HYDROGEN, () -> 1.0);
-        registry.put(HELIUM, () -> 4.0);
+        event.put(HYDROGEN, () -> 1.0);
+        event.put(HELIUM, () -> 4.0);
         //4th Period
-        registry.put(IRON, () -> 55.8);
+        event.put(IRON, () -> 55.8);
         //6th Period
-        registry.put(GOLD, () -> 197.0);
+        event.put(GOLD, () -> 197.0);
     }
 
 }

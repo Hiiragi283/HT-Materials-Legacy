@@ -1,15 +1,15 @@
 package io.github.hiiragi283.material.api.material.materials;
 
-import io.github.hiiragi283.material.api.HTMaterialsAddon;
+import io.github.hiiragi283.material.api.material.HTMaterialEvent;
 import io.github.hiiragi283.material.api.material.HTMaterialKey;
 import io.github.hiiragi283.material.api.material.property.HTCompoundProperty;
-import io.github.hiiragi283.material.api.material.property.HTMaterialPropertyMap;
-import io.github.hiiragi283.material.api.registry.HTNonNullMap;
-import io.github.hiiragi283.material.api.registry.HTObjectKeySet;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.lang.reflect.Field;
 
-public enum HTVanillaMaterials implements HTMaterialsAddon {
+@Mod.EventBusSubscriber
+public enum HTVanillaMaterials {
     INSTANCE;
 
     public static final HTMaterialKey STONE = new HTMaterialKey("stone", 1000);
@@ -88,21 +88,16 @@ public enum HTVanillaMaterials implements HTMaterialsAddon {
 
     public static final HTMaterialKey NETHER_STAR = new HTMaterialKey("nether_star", 1037);
 
-    //    HTMaterialsAddon    //
+    //    Register    //
 
-    @Override
-    public int getPriority() {
-        return -90;
-    }
-
-    @Override
-    public void registerMaterialKey(HTObjectKeySet<HTMaterialKey> registry) {
+    @SubscribeEvent
+    public static void registerMaterialKey(HTMaterialEvent.Register event) {
         for (Field field : HTVanillaMaterials.class.getDeclaredFields()) {
             field.setAccessible(true);
             try {
-                Object obj = field.get(this);
+                Object obj = field.get(HTVanillaMaterials.INSTANCE);
                 if (obj instanceof HTMaterialKey key) {
-                    registry.add(key);
+                    event.add(key);
                 }
             } catch (Exception e) {
                 throw new RuntimeException(e);
@@ -110,9 +105,9 @@ public enum HTVanillaMaterials implements HTMaterialsAddon {
         }
     }
 
-    @Override
-    public void modifyMaterialProperty(HTNonNullMap<HTMaterialKey, HTMaterialPropertyMap.Builder> registry) {
-        registry.getOrCreate(WATER)
+    @SubscribeEvent
+    public static void modifyProperty(HTMaterialEvent.Property event) {
+        event.getOrCreate(WATER)
                 .add(new HTCompoundProperty.Builder()
                         .put(HTElementMaterials.HYDROGEN, 2)
                         .put(HTElementMaterials.OXYGEN, 1)
@@ -120,5 +115,20 @@ public enum HTVanillaMaterials implements HTMaterialsAddon {
                 );
     }
 
+    @SubscribeEvent
+    public static void modifyFlag(HTMaterialEvent.Flag event) {
+    }
+
+    @SubscribeEvent
+    public static void modifyColor(HTMaterialEvent.Color event) {
+    }
+
+    @SubscribeEvent
+    public static void modifyFormula(HTMaterialEvent.Formula event) {
+    }
+
+    @SubscribeEvent
+    public static void modifyMolar(HTMaterialEvent.Molar event) {
+    }
 
 }

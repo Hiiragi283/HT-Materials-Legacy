@@ -58,11 +58,6 @@ public enum HTJsonResourcePack implements IResourcePack {
         ImmutableSet.Builder<String> builder = ImmutableSet.builder();
         builder.add("minecraft");
         builder.add(HMReference.MOD_ID);
-        /*try {
-            HMCommonProxy.getAddons().stream().map(HTMaterialsAddon::getModId).forEach(builder::add);
-        } catch (IllegalAccessException e) {
-            LOGGER.throwing(e);
-        }*/
         return builder.build();
     }
 

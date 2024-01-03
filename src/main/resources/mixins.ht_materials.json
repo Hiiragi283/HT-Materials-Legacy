@@ -6,8 +6,7 @@
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "BlockMixin",
-    "ItemMixin",
-    "MinecraftMixin"
+    "ItemMixin"
   ],
   "client": [],
   "server": []

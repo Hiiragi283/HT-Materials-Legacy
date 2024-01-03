@@ -1,6 +1,5 @@
 package io.github.hiiragi283.material.api.material;
 
-import io.github.hiiragi283.material.api.HTMaterialsAddonManager;
 import io.github.hiiragi283.material.api.material.flag.HTMaterialFlagSet;
 import io.github.hiiragi283.material.api.material.property.HTComponentProperty;
 import io.github.hiiragi283.material.api.material.property.HTMaterialProperty;
@@ -10,7 +9,6 @@ import io.github.hiiragi283.material.api.registry.HTObjectKeySet;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
-import java.util.HashMap;
 import java.util.Map;
 
 public abstract class HTMaterials {
@@ -18,52 +16,33 @@ public abstract class HTMaterials {
     private HTMaterials() {
     }
 
-    //    Init    //
+    private static HTObjectKeySet<HTMaterialKey> materialKeys;
+    private static HTNonNullMap<HTMaterialKey, HTMaterialPropertyMap.Builder> propertyMap;
+    private static HTNonNullMap<HTMaterialKey, HTMaterialFlagSet.Builder> flagMap;
+    private static Map<HTMaterialKey, ColorConvertible> colorMap;
+    private static Map<HTMaterialKey, FormulaConvertible> formulaMap;
+    private static Map<HTMaterialKey, MolarMassConvertible> molarMap;
 
-    public static void init() throws IllegalAccessException {
-        registerMaterialKey();
-        modifyMaterialProperty();
-        modifyMaterialFlag();
-        modifyMaterialColor();
-        modifyMaterialFormula();
-        modifyMaterialMolar();
-        createMaterial();
+    public static void init() {
+        materialKeys = HTMaterialEvent.register();
+        propertyMap = HTMaterialEvent.property();
+        flagMap = HTMaterialEvent.flag();
+        colorMap = HTMaterialEvent.color();
+        formulaMap = HTMaterialEvent.formula();
+        molarMap = HTMaterialEvent.molar();
+        createMaterials();
     }
 
-    private static final HTObjectKeySet<HTMaterialKey> materialKeySet = HTObjectKeySet.create();
-
-    private static void registerMaterialKey() throws IllegalAccessException {
-        HTMaterialsAddonManager.getAddons().forEach(addon -> addon.registerMaterialKey(materialKeySet));
-    }
-
-    private static final HTNonNullMap<HTMaterialKey, HTMaterialPropertyMap.Builder> propertyMap = HTNonNullMap.create(key -> new HTMaterialPropertyMap.Builder());
-
-    private static void modifyMaterialProperty() throws IllegalAccessException {
-        HTMaterialsAddonManager.getAddons().forEach(addon -> addon.modifyMaterialProperty(propertyMap));
-    }
-
-    private static final HTNonNullMap<HTMaterialKey, HTMaterialFlagSet.Builder> flagMap = HTNonNullMap.create(key -> new HTMaterialFlagSet.Builder());
-
-    private static void modifyMaterialFlag() throws IllegalAccessException {
-        HTMaterialsAddonManager.getAddons().forEach(addon -> addon.modifyMaterialFlag(flagMap));
-    }
-
-    private static final Map<HTMaterialKey, ColorConvertible> colorMap = new HashMap<>();
-
-    private static void modifyMaterialColor() throws IllegalAccessException {
-        HTMaterialsAddonManager.getAddons().forEach(addon -> addon.modifyMaterialColor(colorMap));
-    }
-
-    private static final Map<HTMaterialKey, FormulaConvertible> formulaMap = new HashMap<>();
-
-    private static void modifyMaterialFormula() throws IllegalAccessException {
-        HTMaterialsAddonManager.getAddons().forEach(addon -> addon.modifyMaterialFormula(formulaMap));
-    }
-
-    private static final Map<HTMaterialKey, MolarMassConvertible> molarMap = new HashMap<>();
-
-    private static void modifyMaterialMolar() throws IllegalAccessException {
-        HTMaterialsAddonManager.getAddons().forEach(addon -> addon.modifyMaterialMolar(molarMap));
+    private static void createMaterials() {
+        materialKeys.forEach(key -> {
+            HTMaterialPropertyMap property = propertyMap.getOrCreate(key).build();
+            HTMaterialFlagSet flag = flagMap.getOrCreate(key).build();
+            Color color = getColor(key, property).asColor();
+            String formula = getFormula(key, property).asFormula();
+            double molar = getMolar(key, property).asMolar();
+            HTMaterialInfo info = new HTMaterialInfo(color, formula, molar);
+            HTMaterial.create(key, info, property, flag);
+        });
     }
 
     @NotNull
@@ -100,18 +79,6 @@ public abstract class HTMaterials {
         }
         if (molar == null) molar = molarMap.get(key);
         return molar == null ? MolarMassConvertible.EMPTY : molar;
-    }
-
-    private static void createMaterial() {
-        materialKeySet.forEach(key -> {
-            HTMaterialPropertyMap property = propertyMap.getOrCreate(key).build();
-            HTMaterialFlagSet flag = flagMap.getOrCreate(key).build();
-            Color color = getColor(key, property).asColor();
-            String formula = getFormula(key, property).asFormula();
-            double molar = getMolar(key, property).asMolar();
-            HTMaterialInfo info = new HTMaterialInfo(color, formula, molar);
-            HTMaterial.create(key, info, property, flag);
-        });
     }
 
 }

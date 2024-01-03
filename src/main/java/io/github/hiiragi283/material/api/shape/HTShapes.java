@@ -1,14 +1,15 @@
 package io.github.hiiragi283.material.api.shape;
 
-import io.github.hiiragi283.material.api.HTMaterialsAddon;
-import io.github.hiiragi283.material.api.HTMaterialsAddonManager;
 import io.github.hiiragi283.material.api.material.flag.HTMaterialFlags;
 import io.github.hiiragi283.material.api.registry.HTNonNullMap;
 import io.github.hiiragi283.material.api.registry.HTObjectKeySet;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.lang.reflect.Field;
 
-public enum HTShapes implements HTMaterialsAddon {
+@Mod.EventBusSubscriber
+public enum HTShapes {
     INSTANCE;
 
     //    Block    //
@@ -47,21 +48,34 @@ public enum HTShapes implements HTMaterialsAddon {
 
     public static final HTShapeKey STICK = new HTShapeKey("stick");
 
-    //    HTMaterialsAddon    //
+    //    Init    //
 
-    @Override
-    public int getPriority() {
-        return -120;
+    private static HTObjectKeySet<HTShapeKey> shapeKeys;
+    private static HTNonNullMap<HTShapeKey, HTShapePredicate.Builder> predicateMap;
+
+    public static void init() {
+        shapeKeys = HTShapeEvent.register();
+        predicateMap = HTShapeEvent.predicate();
+        createShapes();
     }
 
-    @Override
-    public void registerShapeKey(HTObjectKeySet<HTShapeKey> registry) {
+    private static void createShapes() {
+        shapeKeys.forEach(key -> {
+            var predicate = predicateMap.getOrCreate(key).build();
+            HTShape.create(key, predicate);
+        });
+    }
+
+    //    Register    //
+
+    @SubscribeEvent
+    public static void registerShapeKey(HTShapeEvent.Register event) {
         for (Field field : HTShapes.class.getDeclaredFields()) {
             field.setAccessible(true);
             try {
-                Object obj = field.get(this);
+                Object obj = field.get(HTShapes.INSTANCE);
                 if (obj instanceof HTShapeKey key) {
-                    registry.add(key);
+                    event.add(key);
                 }
             } catch (Exception e) {
                 throw new RuntimeException(e);
@@ -69,66 +83,29 @@ public enum HTShapes implements HTMaterialsAddon {
         }
     }
 
-    @Override
-    public void modifyShapePredicate(HTNonNullMap<HTShapeKey, HTShapePredicate.Builder> registry) {
-
-        //registry.getOrCreate(BLOCK).disabled = false;
-
-        //registry.getOrCreate(ORE).disabled = false;
-
-        registry.getOrCreate(DUST)
+    @SubscribeEvent
+    public static void modifyPredicate(HTShapeEvent.Predicate event) {
+        //event.getOrCreate(BLOCK).disabled = false;
+        //event.getOrCreate(ORE).disabled = false;
+        event.getOrCreate(DUST)
                 .setEnabled()
                 .addRequiredFlag(HTMaterialFlags.GENERATE_DUST);
-
-        registry.getOrCreate(GEAR)
+        event.getOrCreate(GEAR)
                 .setEnabled()
                 .addRequiredFlag(HTMaterialFlags.GENERATE_GEAR);
-
-        //registry.getOrCreate(GEM).disabled = false;
-
-        registry.getOrCreate(INGOT)
+        //event.getOrCreate(GEM).disabled = false;
+        event.getOrCreate(INGOT)
                 .setDisabled()
                 .addRequiredFlag(HTMaterialFlags.GENERATE_INGOT);
-
-        registry.getOrCreate(NUGGET)
+        event.getOrCreate(NUGGET)
                 .setDisabled()
                 .addRequiredFlag(HTMaterialFlags.GENERATE_NUGGET);
-
-        registry.getOrCreate(PLATE)
+        event.getOrCreate(PLATE)
                 .setDisabled()
                 .addRequiredFlag(HTMaterialFlags.GENERATE_PLATE);
-
-        registry.getOrCreate(STICK)
+        event.getOrCreate(STICK)
                 .setDisabled()
                 .addRequiredFlag(HTMaterialFlags.GENERATE_STICK);
-
-    }
-
-    //    Init    //
-
-    public static void init() throws IllegalAccessException {
-        registerShapeKey();
-        modifyShapePredicate();
-        createShape();
-    }
-
-    private static final HTObjectKeySet<HTShapeKey> shapeKeySet = HTObjectKeySet.create();
-
-    private static void registerShapeKey() throws IllegalAccessException {
-        HTMaterialsAddonManager.getAddons().forEach(addon -> addon.registerShapeKey(shapeKeySet));
-    }
-
-    private static final HTNonNullMap<HTShapeKey, HTShapePredicate.Builder> predicateMap = HTNonNullMap.create(key -> new HTShapePredicate.Builder());
-
-    private static void modifyShapePredicate() throws IllegalAccessException {
-        HTMaterialsAddonManager.getAddons().forEach(addon -> addon.modifyShapePredicate(predicateMap));
-    }
-
-    private static void createShape() {
-        shapeKeySet.forEach(key -> {
-            var predicate = predicateMap.getOrCreate(key).build();
-            HTShape.create(key, predicate);
-        });
     }
 
 }
