@@ -31,7 +31,7 @@ public final class HTMixtureProperty implements HTComponentProperty<HTMixturePro
     @NotNull
     @Override
     public Color asColor() {
-        return ColorConvertible.average(StreamSupport.stream(iterable.spliterator(), false).map(key -> key.getMaterial().getColor()));
+        return ColorConvertible.average(StreamSupport.stream(iterable.spliterator(), false).map(key -> key.getMaterial().color()));
     }
 
     @Override

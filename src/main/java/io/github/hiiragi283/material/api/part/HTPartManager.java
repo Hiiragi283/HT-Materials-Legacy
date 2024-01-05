@@ -1,9 +1,9 @@
 package io.github.hiiragi283.material.api.part;
 
+import com.cleanroommc.groovyscript.api.GroovyBlacklist;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.ImmutableTable;
 import com.google.common.collect.Table;
-import io.github.hiiragi283.material.api.item.IItemConvertible;
 import io.github.hiiragi283.material.api.material.HTMaterialKey;
 import io.github.hiiragi283.material.api.registry.ItemWithMeta;
 import io.github.hiiragi283.material.api.shape.HTShapeKey;
@@ -19,7 +19,10 @@ import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Stream;
 
 @Mod.EventBusSubscriber()
@@ -40,11 +43,6 @@ public abstract class HTPartManager {
     }
 
     @Nullable
-    public static HTPart getPart(@NotNull IItemConvertible convertible, int meta) {
-        return getPart(convertible.asItem(), meta);
-    }
-
-    @Nullable
     public static HTPart getPart(@NotNull Item item, int meta) {
         return getPart(new ItemWithMeta(item, meta));
     }
@@ -58,10 +56,6 @@ public abstract class HTPartManager {
         return !stack.isEmpty() && hasPart(stack.getItem(), stack.getMetadata());
     }
 
-    public static boolean hasPart(@NotNull IItemConvertible convertible, int meta) {
-        return hasPart(convertible.asItem(), meta);
-    }
-
     public static boolean hasPart(@NotNull Item item, int meta) {
         return hasPart(new ItemWithMeta(item, meta));
     }
@@ -70,86 +64,89 @@ public abstract class HTPartManager {
         return itemToPart.containsKey(itemWithMeta);
     }
 
-    //    HTMaterialKey, HTShapeKey -> ItemWithMeta    //
+    //    HTShapeKey, HTMaterialKey -> ItemWithMeta    //
 
-    private static final Table<HTMaterialKey, HTShapeKey, ItemWithMeta> partToItem = HashBasedTable.create();
+    private static final Table<HTShapeKey, HTMaterialKey, ItemWithMeta> partToItem = HashBasedTable.create();
 
+    @GroovyBlacklist
     @NotNull
-    public static Table<HTMaterialKey, HTShapeKey, ItemWithMeta> getDefaultItemTable() {
+    public static Table<HTShapeKey, HTMaterialKey, ItemWithMeta> getDefaultItemTable() {
         return ImmutableTable.copyOf(partToItem);
     }
 
+    @GroovyBlacklist
     @Nullable
-    public static ItemWithMeta getDefaultItem(@NotNull HTMaterialKey materialKey, @NotNull HTShapeKey shapeKey) {
-        return partToItem.get(materialKey, shapeKey);
+    public static ItemWithMeta getDefaultItem(@NotNull HTShapeKey shapeKey, @NotNull HTMaterialKey materialKey) {
+        return partToItem.get(shapeKey, materialKey);
     }
 
     @NotNull
-    public static ItemStack getDefaultStack(@NotNull HTMaterialKey materialKey, @NotNull HTShapeKey shapeKey) {
-        return getDefaultStack(materialKey, shapeKey, 1);
+    public static ItemStack getDefaultStack(@NotNull HTShapeKey shapeKey, @NotNull HTMaterialKey materialKey) {
+        return getDefaultStack(shapeKey, materialKey, 1);
     }
 
     @NotNull
-    public static ItemStack getDefaultStack(@NotNull HTMaterialKey materialKey, @NotNull HTShapeKey shapeKey, int count) {
-        ItemWithMeta itemWithMeta = getDefaultItem(materialKey, shapeKey);
+    public static ItemStack getDefaultStack(@NotNull HTShapeKey shapeKey, @NotNull HTMaterialKey materialKey, int count) {
+        ItemWithMeta itemWithMeta = getDefaultItem(shapeKey, materialKey);
         return itemWithMeta == null ? ItemStack.EMPTY : itemWithMeta.toStack(count);
     }
 
-    public static boolean hasDefaultItem(@NotNull HTMaterialKey materialKey, @NotNull HTShapeKey shapeKey) {
-        return partToItem.contains(materialKey, shapeKey);
+    public static boolean hasDefaultItem(@NotNull HTShapeKey shapeKey, @NotNull HTMaterialKey materialKey) {
+        return partToItem.contains(shapeKey, materialKey);
     }
 
-    //    HTMaterialKey, HTShapeKey -> Stream<ItemWithMeta>    //
+    //    HTShapeKey, HTMaterialKey -> Stream<ItemWithMeta>    //
 
-    private static final Table<HTMaterialKey, HTShapeKey, Set<ItemWithMeta>> partToItems = HashBasedTable.create();
+    private static final Table<HTShapeKey, HTMaterialKey, Set<ItemWithMeta>> partToItems = HashBasedTable.create();
 
+    @GroovyBlacklist
     @NotNull
-    public static Table<HTMaterialKey, HTShapeKey, Collection<ItemWithMeta>> getPartToItemsTable() {
+    public static Table<HTShapeKey, HTMaterialKey, Set<ItemWithMeta>> getPartToItemsTable() {
         return ImmutableTable.copyOf(partToItems);
     }
 
     @NotNull
-    public static Stream<ItemWithMeta> getItems(@NotNull HTMaterialKey materialKey, @NotNull HTShapeKey shapeKey) {
-        return partToItems.contains(materialKey, shapeKey) ? partToItems.get(materialKey, shapeKey).stream() : Stream.empty();
+    public static Stream<ItemWithMeta> getItems(@NotNull HTShapeKey shapeKey, @NotNull HTMaterialKey materialKey) {
+        return partToItems.contains(shapeKey, materialKey) ? partToItems.get(shapeKey, materialKey).stream() : Stream.empty();
     }
 
     @NotNull
-    public static Stream<ItemStack> getItemStacks(@NotNull HTMaterialKey materialKey, @NotNull HTShapeKey shapeKey) {
-        return getItemStacks(materialKey, shapeKey, 1);
+    public static Stream<ItemStack> getItemStacks(@NotNull HTShapeKey shapeKey, @NotNull HTMaterialKey materialKey) {
+        return getItemStacks(shapeKey, materialKey, 1);
     }
 
     @NotNull
-    public static Stream<ItemStack> getItemStacks(@NotNull HTMaterialKey materialKey, @NotNull HTShapeKey shapeKey, int count) {
-        return getItems(materialKey, shapeKey).map(itemWithMeta -> itemWithMeta.toStack(count));
+    public static Stream<ItemStack> getItemStacks(@NotNull HTShapeKey shapeKey, @NotNull HTMaterialKey materialKey, int count) {
+        return getItems(shapeKey, materialKey).map(itemWithMeta -> itemWithMeta.toStack(count));
     }
 
     //   Register    //
 
-    static void register(@NotNull HTMaterialKey materialKey, @NotNull HTShapeKey shapeKey, @NotNull ItemStack stack) {
-        if (stack.isEmpty()) return;
-        if (stack.getMetadata() == OreDictionary.WILDCARD_VALUE) {
-            Item item = stack.getItem();
+    public static void register(@NotNull HTShapeKey shapeKey, @NotNull HTMaterialKey materialKey, @NotNull ItemStack stack) {
+        register(shapeKey, materialKey, stack.getItem(), stack.getMetadata());
+    }
+
+    public static void register(@NotNull HTShapeKey shapeKey, @NotNull HTMaterialKey materialKey, @NotNull Item item, int meta) {
+        register(shapeKey, materialKey, new ItemWithMeta(item, meta));
+    }
+
+    @GroovyBlacklist
+    public static void register(@NotNull HTShapeKey shapeKey, @NotNull HTMaterialKey materialKey, @NotNull ItemWithMeta itemWithMeta) {
+        if (itemWithMeta.meta() == OreDictionary.WILDCARD_VALUE) {
+            Item item = itemWithMeta.item();
             NonNullList<ItemStack> list = NonNullList.create();
             item.getSubItems(CreativeTabs.SEARCH, list);
-            list.forEach(stack1 -> register(materialKey, shapeKey, stack1.getItem(), stack1.getMetadata()));
-        } else register(materialKey, shapeKey, stack.getItem(), stack.getMetadata());
+            list.forEach(stack1 -> registerInternal(shapeKey, materialKey, new ItemWithMeta(stack1.getItem(), stack1.getMetadata())));
+        } else registerInternal(shapeKey, materialKey, itemWithMeta);
     }
 
-    static void register(@NotNull HTMaterialKey materialKey, @NotNull HTShapeKey shapeKey, @NotNull IItemConvertible convertible, int meta) {
-        register(materialKey, shapeKey, convertible.asItem(), meta);
-    }
-
-    static void register(@NotNull HTMaterialKey materialKey, @NotNull HTShapeKey shapeKey, @NotNull Item item, int meta) {
-        register(materialKey, shapeKey, new ItemWithMeta(item, meta));
-    }
-
-    static void register(@NotNull HTMaterialKey materialKey, @NotNull HTShapeKey shapeKey, @NotNull ItemWithMeta itemWithMeta) {
-        HTPart part = new HTPart(materialKey, shapeKey);
+    private static void registerInternal(@NotNull HTShapeKey shapeKey, @NotNull HTMaterialKey materialKey, @NotNull ItemWithMeta itemWithMeta) {
+        HTPart part = new HTPart(shapeKey, materialKey);
         itemToPart.putIfAbsent(itemWithMeta, part);
-        partToItem.put(materialKey, shapeKey, itemWithMeta);
-
+        partToItem.put(shapeKey, materialKey, itemWithMeta);
     }
 
+    @GroovyBlacklist
     public static void reloadOreDicts() {
         LOGGER.info("Reloading Ore Dictionary...");
         Arrays.stream(OreDictionary.getOreNames()).forEach(oredict -> {
@@ -169,7 +166,7 @@ public abstract class HTPartManager {
         HTPart part = HTPart.of(oreDict);
         if (part != null) {
             LOGGER.info("Part find!");
-            register(part.materialKey(), part.shapeKey(), stack);
+            register(part.shapeKey(), part.materialKey(), stack);
         }
     }
 

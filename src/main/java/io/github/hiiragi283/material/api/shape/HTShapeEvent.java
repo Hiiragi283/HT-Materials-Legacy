@@ -2,69 +2,52 @@ package io.github.hiiragi283.material.api.shape;
 
 import io.github.hiiragi283.material.api.registry.HTNonNullMap;
 import io.github.hiiragi283.material.api.registry.HTObjectKeySet;
-import io.github.hiiragi283.material.util.HTUtils;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.function.BiConsumer;
+import java.util.Comparator;
 
 public abstract class HTShapeEvent extends Event {
 
-    static HTObjectKeySet<HTShapeKey> register() {
-        return HTUtils.wrapAndPostEvent(HTObjectKeySet.create(), Register::new);
-    }
-
-    static HTNonNullMap<HTShapeKey, HTShapePredicate.Builder> predicate() {
-        return HTUtils.postAndReturnEvent(new Predicate(new HashMap<>()));
-    }
-
-    public static final class Register extends HTShapeEvent implements HTObjectKeySet<HTShapeKey> {
-
-        private final HTObjectKeySet<HTShapeKey> set;
-
-        private Register(HTObjectKeySet<HTShapeKey> set) {
-            this.set = set;
-        }
-
-        //    HTObjectKeySet    //
-
-        @Override
-        public void add(HTShapeKey key) {
-            set.add(key);
-        }
+    public static final class Register extends HTShapeEvent {
 
         @NotNull
-        @Override
-        public Iterator<HTShapeKey> iterator() {
-            return set.iterator();
+        public final HTObjectKeySet<HTShapeKey> registry;
+
+        private Register(@NotNull HTObjectKeySet<HTShapeKey> registry) {
+            this.registry = registry;
         }
 
     }
 
-    public static final class Predicate extends HTShapeEvent implements HTNonNullMap<HTShapeKey, HTShapePredicate.Builder> {
-
-        private final Map<HTShapeKey, HTShapePredicate.Builder> map;
-
-        private Predicate(Map<HTShapeKey, HTShapePredicate.Builder> map) {
-            this.map = map;
-        }
-
-        //    HTNonNullMap    //
+    public static final class Predicate extends HTShapeEvent {
 
         @NotNull
-        @Override
-        public HTShapePredicate.Builder getOrCreate(HTShapeKey key) {
-            return map.computeIfAbsent(key, key1 -> new HTShapePredicate.Builder());
+        public final HTNonNullMap<HTShapeKey, HTShapePredicate.Builder> registry;
+
+        private Predicate(@NotNull HTNonNullMap<HTShapeKey, HTShapePredicate.Builder> registry) {
+            this.registry = registry;
         }
 
-        @Override
-        public void forEach(BiConsumer<HTShapeKey, HTShapePredicate.Builder> biConsumer) {
-            map.forEach(biConsumer);
-        }
+    }
 
+    //    Init    //
+
+    private static final HTObjectKeySet<HTShapeKey> shapeKeys = HTObjectKeySet.create();
+    private static final HTNonNullMap<HTShapeKey, HTShapePredicate.Builder> predicateMap = HTNonNullMap.create(key -> new HTShapePredicate.Builder());
+
+    public static void init() {
+        MinecraftForge.EVENT_BUS.post(new Register(shapeKeys));
+        MinecraftForge.EVENT_BUS.post(new Predicate(predicateMap));
+        createShapes();
+    }
+
+    private static void createShapes() {
+        shapeKeys.stream().sorted(Comparator.comparing(HTShapeKey::name)).forEach(key -> {
+            var predicate = predicateMap.getOrCreate(key).build();
+            HTShape.create(key, predicate);
+        });
     }
 
 }

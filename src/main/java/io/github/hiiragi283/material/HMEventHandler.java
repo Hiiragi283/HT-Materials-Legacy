@@ -42,7 +42,7 @@ public abstract class HMEventHandler {
         @SubscribeEvent
         public static void onItemColored(ColorHandlerEvent.Item event) {
             HTMaterialItem.getItems().forEach(item -> event.getItemColors().registerItemColorHandler(
-                    (stack, tintIndex) -> Optional.ofNullable(item.getMaterial(stack)).map(HTMaterial::getColor).map(Color::getRGB).orElse(-1),
+                    (stack, tintIndex) -> Optional.ofNullable(item.getMaterial(stack)).map(HTMaterial::color).map(Color::getRGB).orElse(-1),
                     item
             ));
         }

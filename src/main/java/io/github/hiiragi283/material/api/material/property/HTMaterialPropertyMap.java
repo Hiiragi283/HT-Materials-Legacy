@@ -1,8 +1,12 @@
 package io.github.hiiragi283.material.api.material.property;
 
+import crafttweaker.annotations.ZenRegister;
 import io.github.hiiragi283.material.api.material.HTMaterial;
+import io.github.hiiragi283.material.compat.crt.HTCrTPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import stanhebben.zenscript.annotations.ZenClass;
+import stanhebben.zenscript.annotations.ZenMethod;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -54,10 +58,13 @@ public final class HTMaterialPropertyMap {
 
     //    Builder    //
 
+    @ZenClass(HTCrTPlugin.MATERIAL_PREFIX + "property.HTMaterialPropertyMapBuilder")
+    @ZenRegister
     public static final class Builder {
 
         private final Map<HTPropertyKey<?>, HTMaterialProperty<?>> backingMap = new HashMap<>();
 
+        @ZenMethod
         public <T extends HTMaterialProperty<T>> Builder add(T property) {
             return add(property, prop -> {
             });

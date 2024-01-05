@@ -2,11 +2,11 @@ package io.github.hiiragi283.material.api.part;
 
 import com.github.bsideup.jabel.Desugar;
 import com.google.common.base.CaseFormat;
-import io.github.hiiragi283.material.util.HTUtils;
 import io.github.hiiragi283.material.api.material.HTMaterial;
 import io.github.hiiragi283.material.api.material.HTMaterialKey;
 import io.github.hiiragi283.material.api.shape.HTShape;
 import io.github.hiiragi283.material.api.shape.HTShapeKey;
+import io.github.hiiragi283.material.util.HTUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -14,7 +14,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Desugar
-public record HTPart(HTMaterialKey materialKey, HTShapeKey shapeKey) {
+public record HTPart(HTShapeKey shapeKey, HTMaterialKey materialKey) {
 
     @Nullable
     public static HTPart of(String oreDict) {
@@ -26,9 +26,13 @@ public record HTPart(HTMaterialKey materialKey, HTShapeKey shapeKey) {
             String materialName = HTUtils.joinToString("_", split.subList(i + 1, split.size()).stream());
             HTMaterial material = HTMaterial.getMaterialOrNull(materialName);
             if (material == null) continue;
-            return new HTPart(material.getKey(), shape.key());
+            return new HTPart(shape, material);
         }
         return null;
+    }
+
+    public HTPart(HTShape shape, HTMaterial material) {
+        this(shape.key(), material.key());
     }
 
     @NotNull

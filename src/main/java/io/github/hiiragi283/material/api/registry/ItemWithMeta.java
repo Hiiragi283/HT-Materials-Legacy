@@ -1,7 +1,6 @@
 package io.github.hiiragi283.material.api.registry;
 
 import com.github.bsideup.jabel.Desugar;
-import io.github.hiiragi283.material.api.item.IItemConvertible;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -11,10 +10,6 @@ import org.jetbrains.annotations.Nullable;
 
 @Desugar
 public record ItemWithMeta(Item item, int meta) {
-
-    public ItemWithMeta(IItemConvertible convertible, int meta) {
-        this(convertible.asItem(), meta);
-    }
 
     public static ItemWithMeta EMPTY = new ItemWithMeta(Items.AIR, 0);
 

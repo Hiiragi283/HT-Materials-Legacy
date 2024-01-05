@@ -17,6 +17,11 @@ public final class HTObjectKeySetImpl<T extends HTObjectKey<?>> implements HTObj
         backingSet.add(key);
     }
 
+    @Override
+    public boolean contains(T key) {
+        return backingSet.contains(key);
+    }
+
     @NotNull
     @Override
     public Iterator<T> iterator() {

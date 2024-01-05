@@ -22,7 +22,7 @@ public record HTShapePredicate(
 
     @Override
     public boolean test(HTMaterial material) {
-        var key = material.getKey();
+        var key = material.key();
         if (disabled) return false;
         else if (blackList.contains(key)) return false;
         else if (whiteList.contains(key)) return true;

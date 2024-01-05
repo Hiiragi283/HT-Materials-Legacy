@@ -11,7 +11,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.stream.Stream;
 
-public interface IMaterialItemConvertible extends IItemConvertible {
+public interface MaterialItemConvertible {
 
     @Nullable
     default HTMaterial getMaterial(ItemStack stack) {
@@ -21,7 +21,7 @@ public interface IMaterialItemConvertible extends IItemConvertible {
     @NotNull
     default HTMaterialKey getMaterialKey(ItemStack stack) {
         HTMaterial material = getMaterial(stack);
-        return material == null ? HTMaterialKey.EMPTY : material.getKey();
+        return material == null ? HTMaterialKey.EMPTY : material.key();
     }
 
     @NotNull
@@ -44,7 +44,7 @@ public interface IMaterialItemConvertible extends IItemConvertible {
     }
 
     default HTPart getPart(ItemStack stack) {
-        return new HTPart(getMaterialKey(stack), getShapeKey());
+        return new HTPart(getShapeKey(), getMaterialKey(stack));
     }
 
     default String getOreDict(ItemStack stack) {

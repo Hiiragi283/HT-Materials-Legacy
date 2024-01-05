@@ -1,7 +1,10 @@
 package io.github.hiiragi283.material.api.material;
 
+import crafttweaker.annotations.ZenRegister;
+import io.github.hiiragi283.material.compat.crt.HTCrTPlugin;
 import io.github.hiiragi283.material.util.HTCollectors;
 import org.jetbrains.annotations.NotNull;
+import stanhebben.zenscript.annotations.ZenClass;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -9,6 +12,8 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 @FunctionalInterface
+@ZenClass(HTCrTPlugin.MATERIAL_PREFIX + "FormulaConvertible")
+@ZenRegister
 public interface FormulaConvertible {
 
     @NotNull

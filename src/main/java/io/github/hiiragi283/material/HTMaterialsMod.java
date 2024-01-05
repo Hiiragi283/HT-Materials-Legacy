@@ -3,11 +3,12 @@ package io.github.hiiragi283.material;
 import io.github.hiiragi283.material.api.fluid.HTMaterialFluid;
 import io.github.hiiragi283.material.api.item.HTMaterialItem;
 import io.github.hiiragi283.material.api.material.HTMaterial;
+import io.github.hiiragi283.material.api.material.HTMaterialEvent;
 import io.github.hiiragi283.material.api.material.HTMaterialUtils;
-import io.github.hiiragi283.material.api.material.HTMaterials;
 import io.github.hiiragi283.material.api.material.property.HTFluidProperty;
 import io.github.hiiragi283.material.api.material.property.HTPropertyKeys;
 import io.github.hiiragi283.material.api.part.HTPartManager;
+import io.github.hiiragi283.material.api.shape.HTShapeEvent;
 import io.github.hiiragi283.material.api.shape.HTShapes;
 import net.minecraft.item.Item;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -18,7 +19,12 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 @SuppressWarnings("unused")
-@Mod(modid = HMReference.MOD_ID, name = HMReference.MOD_NAME, version = HMReference.VERSION)
+@Mod(
+        modid = HMReference.MOD_ID,
+        name = HMReference.MOD_NAME,
+        version = HMReference.VERSION,
+        dependencies = "after:jei;" + "after:crafttweaker;" + "after:groovyscript;"
+)
 public final class HTMaterialsMod {
 
     private static final Logger LOGGER = LogManager.getLogger(HMReference.MOD_NAME);
@@ -44,9 +50,9 @@ public final class HTMaterialsMod {
     @Mod.EventHandler
     public void onPreInit(FMLPreInitializationEvent event) {
         //Register HTShape and HTMaterial
-        HTShapes.init();
+        HTShapeEvent.init();
         LOGGER.info("HTShape initialized!");
-        HTMaterials.init();
+        HTMaterialEvent.init();
         LOGGER.info("HTMaterial initialized!");
         //Reload Ore Dictionary
         HTPartManager.reloadOreDicts();

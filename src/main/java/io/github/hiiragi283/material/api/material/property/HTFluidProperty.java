@@ -33,14 +33,14 @@ public final class HTFluidProperty implements HTMaterialProperty<HTFluidProperty
 
     @Override
     public void verify(HTMaterial material) {
-        if (!FluidRegistry.isFluidRegistered(material.getName())) {
+        if (!FluidRegistry.isFluidRegistered(material.name())) {
             throw new IllegalStateException("");
         }
     }
 
     @Override
     public void addInformation(@NotNull HTMaterial material, @Nullable HTShape shape, @NotNull ItemStack stack, @NotNull List<String> tooltips) {
-        Fluid fluid = FluidRegistry.getFluid(material.getName());
+        Fluid fluid = FluidRegistry.getFluid(material.name());
         //Luminosity
         tooltips.add(I18n.format("", fluid.getLuminosity()));
         //Density

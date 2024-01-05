@@ -15,7 +15,7 @@ public enum HTMetalProperty implements HTMaterialProperty<HTMetalProperty> {
     @Override
     public void verify(HTMaterial material) {
         if (material.hasProperty(HTPropertyKeys.GEM)) {
-            throw new IllegalStateException("Material: " + material.getKey() + " has both Metal and Gem Property, which is not allowed!");
+            throw new IllegalStateException("Material: " + material.key() + " has both Metal and Gem Property, which is not allowed!");
         }
     }
 }

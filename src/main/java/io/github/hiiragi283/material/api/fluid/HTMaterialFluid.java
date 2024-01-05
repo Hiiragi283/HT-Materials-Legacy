@@ -22,7 +22,7 @@ public final class HTMaterialFluid extends Fluid {
     private final SoundEvent fillSound;
 
     public HTMaterialFluid(HTMaterial material, HTFluidProperty fluidProperty) {
-        super(material.getName(), getStillLocation(), getFlowingLocation(), null, material.getColor().getRGB());
+        super(material.name(), getStillLocation(), getFlowingLocation(), null, material.color().getRGB());
         luminosity = fluidProperty.luminosity;
         density = fluidProperty.density;
         temperature = fluidProperty.temperature;
@@ -30,7 +30,7 @@ public final class HTMaterialFluid extends Fluid {
         isGaseous = fluidProperty.isGaseous;
         emptySound = temperature > 300 ? SoundEvents.ITEM_BUCKET_EMPTY_LAVA : SoundEvents.ITEM_BUCKET_EMPTY;
         fillSound = temperature > 300 ? SoundEvents.ITEM_BUCKET_FILL_LAVA : SoundEvents.ITEM_BUCKET_FILL;
-        unlocalizedName = material.getKey().getTranslationKey();
+        unlocalizedName = material.key().getTranslationKey();
     }
 
     @Override

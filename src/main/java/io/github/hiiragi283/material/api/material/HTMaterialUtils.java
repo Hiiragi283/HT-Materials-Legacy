@@ -21,11 +21,11 @@ public abstract class HTMaterialUtils {
     }
 
     public static Stream<HTMaterialKey> getMaterialKeys(HTShapeKey shapeKey) {
-        return getMaterials(shapeKey).map(HTMaterial::getKey);
+        return getMaterials(shapeKey).map(HTMaterial::key);
     }
 
     public static Stream<Integer> getMaterialIndexes(HTShapeKey shapeKey) {
-        return getMaterials(shapeKey).map(HTMaterial::getIndex);
+        return getMaterials(shapeKey).map(HTMaterial::index);
     }
 
     public static Stream<ItemStack> getMaterialStacks(HTMaterialItem item) {
@@ -36,13 +36,13 @@ public abstract class HTMaterialUtils {
         //Title
         tooltips.add(I18n.format("tooltip.ht_materials.material.title"));
         //Name
-        String name = shape == null ? material.getKey().getTranslatedName() : shape.key().getTranslatedName(material.getKey());
+        String name = shape == null ? material.key().getTranslatedName() : shape.key().getTranslatedName(material.key());
         tooltips.add(I18n.format("tooltip.ht_materials.material.name", name));
         //Formula
-        String formula = material.getFormula();
+        String formula = material.formula();
         if (!formula.isEmpty()) tooltips.add(I18n.format("tooltip.ht_materials.material.formula", formula));
         //Molar Mass
-        double molar = material.getMolar();
+        double molar = material.molar();
         if (molar > 0.0) tooltips.add(I18n.format("tooltip.ht_materials.material.molar", molar));
         //Tooltip from Properties
         material.getProperties().values().forEach(pro -> pro.addInformation(material, shape, stack, tooltips));

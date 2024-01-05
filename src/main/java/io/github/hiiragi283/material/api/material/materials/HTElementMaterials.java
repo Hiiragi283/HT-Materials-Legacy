@@ -7,6 +7,7 @@ import io.github.hiiragi283.material.api.material.flag.HTMaterialFlags;
 import io.github.hiiragi283.material.api.material.property.HTMetalProperty;
 import io.github.hiiragi283.material.util.HTColor;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.lang.reflect.Field;
@@ -18,7 +19,6 @@ public enum HTElementMaterials {
     //    1st Period    //
 
     public static final HTMaterialKey HYDROGEN = new HTMaterialKey("hydrogen", 1);
-
     public static final HTMaterialKey HELIUM = new HTMaterialKey("helium", 2);
 
     //    2nd Period    //
@@ -41,14 +41,14 @@ public enum HTElementMaterials {
 
     //    Register    //
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void registerMaterialKey(HTMaterialEvent.Register event) {
         for (Field field : HTElementMaterials.class.getDeclaredFields()) {
             field.setAccessible(true);
             try {
                 Object obj = field.get(HTElementMaterials.INSTANCE);
                 if (obj instanceof HTMaterialKey key) {
-                    event.add(key);
+                    event.registry.add(key);
                 }
             } catch (Exception e) {
                 throw new RuntimeException(e);
@@ -56,37 +56,39 @@ public enum HTElementMaterials {
         }
     }
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void modifyProperty(HTMaterialEvent.Property event) {
+        var registry = event.registry;
         //1st Period
-        event.getOrCreate(HYDROGEN);
-        event.getOrCreate(HELIUM);
+        registry.getOrCreate(HYDROGEN);
+        registry.getOrCreate(HELIUM);
         //4th Period
-        event.getOrCreate(IRON)
+        registry.getOrCreate(IRON)
                 .add(HTMetalProperty.INSTANCE);
         //6th Period
-        event.getOrCreate(GOLD)
+        registry.getOrCreate(GOLD)
                 .add(HTMetalProperty.INSTANCE);
     }
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void modifyFlag(HTMaterialEvent.Flag event) {
+        var registry = event.registry;
         //1st Period
         //4th Period
-        event.getOrCreate(IRON)
+        registry.getOrCreate(IRON)
                 .add(HTMaterialFlags.GENERATE_DUST)
                 .add(HTMaterialFlags.GENERATE_GEAR)
                 .add(HTMaterialFlags.GENERATE_PLATE)
                 .add(HTMaterialFlags.GENERATE_STICK);
         //6th Period
-        event.getOrCreate(GOLD)
+        registry.getOrCreate(GOLD)
                 .add(HTMaterialFlags.GENERATE_DUST)
                 .add(HTMaterialFlags.GENERATE_GEAR)
                 .add(HTMaterialFlags.GENERATE_PLATE)
                 .add(HTMaterialFlags.GENERATE_STICK);
     }
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void modifyColor(HTMaterialEvent.Color event) {
         //1st Period
         event.put(HYDROGEN, () -> HTColor.BLUE);
@@ -97,7 +99,7 @@ public enum HTElementMaterials {
         event.put(GOLD, ColorConvertible.ofColor(HTColor.GOLD, HTColor.YELLOW));
     }
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void modifyFormula(HTMaterialEvent.Formula event) {
         //1st Period
         event.put(HYDROGEN, () -> "H");
@@ -108,7 +110,7 @@ public enum HTElementMaterials {
         event.put(GOLD, () -> "Au");
     }
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void modifyMolar(HTMaterialEvent.Molar event) {
         //1st Period
         event.put(HYDROGEN, () -> 1.0);

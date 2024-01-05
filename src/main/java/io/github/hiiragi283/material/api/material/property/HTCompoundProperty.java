@@ -24,18 +24,18 @@ public final class HTCompoundProperty implements HTComponentProperty<HTCompoundP
     @NotNull
     @Override
     public Color asColor() {
-        return ColorConvertible.average(backingMap.entrySet().stream().collect(HTCollectors.mapKeys(key -> HTMaterial.getMaterial(key.name()).getColor())));
+        return ColorConvertible.average(backingMap.entrySet().stream().collect(HTCollectors.mapKeys(key -> HTMaterial.getMaterial(key.name()).color())));
     }
 
     @NotNull
     @Override
     public String asFormula() {
-        return FormulaConvertible.format(backingMap.entrySet().stream().collect(HTCollectors.mapKeys(key -> HTMaterial.getMaterial(key.name()).getFormula())));
+        return FormulaConvertible.format(backingMap.entrySet().stream().collect(HTCollectors.mapKeys(key -> HTMaterial.getMaterial(key.name()).formula())));
     }
 
     @Override
     public double asMolar() {
-        return MolarMassConvertible.calculate(backingMap.entrySet().stream().collect(HTCollectors.mapKeys(key -> HTMaterial.getMaterial(key.name()).getMolar())));
+        return MolarMassConvertible.calculate(backingMap.entrySet().stream().collect(HTCollectors.mapKeys(key -> HTMaterial.getMaterial(key.name()).molar())));
     }
 
     @NotNull

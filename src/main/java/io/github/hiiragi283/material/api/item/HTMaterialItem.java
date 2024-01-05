@@ -16,7 +16,7 @@ import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public final class HTMaterialItem extends Item implements IMaterialItemConvertible {
+public final class HTMaterialItem extends Item implements MaterialItemConvertible {
 
     public final HTShapeKey shapeKey;
 
@@ -49,13 +49,7 @@ public final class HTMaterialItem extends Item implements IMaterialItemConvertib
         }
     }
 
-    //    IMaterialItemConvertible    //
-
-    @NotNull
-    @Override
-    public Item asItem() {
-        return this;
-    }
+    //    MaterialItemConvertible    //
 
     @NotNull
     @Override
