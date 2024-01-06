@@ -1,8 +1,13 @@
 package io.github.hiiragi283.material.api.material.materials;
 
+import io.github.hiiragi283.material.api.material.ColorConvertible;
 import io.github.hiiragi283.material.api.material.HTMaterialEvent;
 import io.github.hiiragi283.material.api.material.HTMaterialKey;
+import io.github.hiiragi283.material.api.material.flag.HTMaterialFlags;
 import io.github.hiiragi283.material.api.material.property.HTCompoundProperty;
+import io.github.hiiragi283.material.api.material.property.HTFluidProperty;
+import io.github.hiiragi283.material.api.material.property.HTMixtureProperty;
+import io.github.hiiragi283.material.util.HTColor;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -72,20 +77,73 @@ public enum HTVanillaMaterials {
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void modifyProperty(HTMaterialEvent.Property event) {
         var registry = event.registry;
+        registry.getOrCreate(STONE)
+                .add(new HTCompoundProperty(HTAtomicGroup.SILICON_OXIDE));
+        registry.getOrCreate(GRANITE)
+                .add(new HTCompoundProperty(HTAtomicGroup.SILICON_OXIDE));
+        registry.getOrCreate(DIORITE)
+                .add(new HTCompoundProperty(HTAtomicGroup.SILICON_OXIDE));
+        registry.getOrCreate(ANDESITE)
+                .add(new HTCompoundProperty(HTAtomicGroup.SILICON_OXIDE));
+        registry.getOrCreate(WOOD)
+                .add(new HTMixtureProperty(HTElementMaterials.CARBON, HTElementMaterials.HYDROGEN, HTElementMaterials.OXYGEN));
+        registry.getOrCreate(BEDROCK)
+                .add(new HTCompoundProperty(HTAtomicGroup.SILICON_OXIDE));
         registry.getOrCreate(WATER)
-                .add(new HTCompoundProperty.Builder()
-                        .put(HTElementMaterials.HYDROGEN, 2)
-                        .put(HTElementMaterials.OXYGEN, 1)
-                        .build()
-                );
+                .add(new HTCompoundProperty(builder -> {
+                    builder.put(HTElementMaterials.HYDROGEN, 2);
+                    builder.put(HTElementMaterials.OXYGEN, 1);
+                }))
+                .add(new HTFluidProperty());
+        registry.getOrCreate(LAVA)
+                .add(new HTCompoundProperty(HTAtomicGroup.SILICON_OXIDE))
+                .add(new HTFluidProperty());
     }
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void modifyFlag(HTMaterialEvent.Flag event) {
+        var registry = event.registry;
+        registry.getOrCreate(STONE)
+                .add(HTMaterialFlags.GENERATE_DUST);
+        registry.getOrCreate(GRANITE)
+                .add(HTMaterialFlags.GENERATE_DUST);
+        registry.getOrCreate(DIORITE)
+                .add(HTMaterialFlags.GENERATE_DUST);
+        registry.getOrCreate(ANDESITE)
+                .add(HTMaterialFlags.GENERATE_DUST);
+        registry.getOrCreate(WOOD)
+                .add(HTMaterialFlags.GENERATE_DUST)
+                .add(HTMaterialFlags.GENERATE_GEAR)
+                .add(HTMaterialFlags.GENERATE_PLATE)
+                .add(HTMaterialFlags.GENERATE_STICK);
+        registry.getOrCreate(BEDROCK)
+                .add(HTMaterialFlags.GENERATE_DUST);
+        registry.getOrCreate(WATER)
+                .add(HTMaterialFlags.NOT_GENERATE_FLUID);
+        registry.getOrCreate(LAVA)
+                .add(HTMaterialFlags.NOT_GENERATE_FLUID);
     }
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void modifyColor(HTMaterialEvent.Color event) {
+        event.put(STONE, () -> HTColor.DARK_GRAY);
+        event.put(GRANITE, ColorConvertible.ofColor(builder -> {
+            builder.put(HTColor.DARK_RED, 1);
+            builder.put(HTColor.GRAY, 4);
+            builder.put(HTColor.RED, 1);
+        }));
+        event.put(DIORITE, () -> HTColor.GRAY);
+        event.put(ANDESITE, ColorConvertible.ofColor(builder -> {
+            builder.put(HTColor.DARK_GRAY, 7);
+            builder.put(HTColor.YELLOW, 1);
+        }));
+        event.put(WOOD, ColorConvertible.ofColor(builder -> {
+            builder.put(HTColor.DARK_GRAY, 2);
+            builder.put(HTColor.RED, 1);
+            builder.put(HTColor.YELLOW, 1);
+        }));
+        event.put(WATER, () -> HTColor.BLUE);
+        event.put(LAVA, ColorConvertible.ofColor(HTColor.DARK_RED, HTColor.GOLD));
     }
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)

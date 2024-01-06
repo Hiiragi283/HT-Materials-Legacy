@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.util.Map;
+import java.util.function.Consumer;
 
 public final class HTCompoundProperty implements HTComponentProperty<HTCompoundProperty> {
 
@@ -14,6 +15,12 @@ public final class HTCompoundProperty implements HTComponentProperty<HTCompoundP
 
     public HTCompoundProperty(Map<HTMaterialKey, Integer> map) {
         this.backingMap = map;
+    }
+
+    public HTCompoundProperty(Consumer<ImmutableMap.Builder<HTMaterialKey, Integer>> consumer) {
+        var builder = new ImmutableMap.Builder<HTMaterialKey, Integer>();
+        consumer.accept(builder);
+        this.backingMap = builder.build();
     }
 
     @NotNull
@@ -42,23 +49,6 @@ public final class HTCompoundProperty implements HTComponentProperty<HTCompoundP
     @Override
     public HTPropertyKey<HTCompoundProperty> getKey() {
         return HTPropertyKeys.COMPOUND;
-    }
-
-    //    Builder    //
-
-    public static final class Builder {
-
-        private final ImmutableMap.Builder<HTMaterialKey, Integer> builder = ImmutableMap.builder();
-
-        public Builder put(HTMaterialKey materialKey, int weight) {
-            builder.put(materialKey, weight);
-            return this;
-        }
-
-        public HTCompoundProperty build() {
-            return new HTCompoundProperty(builder.build());
-        }
-
     }
 
 }

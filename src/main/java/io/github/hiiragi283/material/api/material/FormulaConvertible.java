@@ -1,5 +1,6 @@
 package io.github.hiiragi283.material.api.material;
 
+import com.google.common.collect.ImmutableMap;
 import crafttweaker.annotations.ZenRegister;
 import io.github.hiiragi283.material.compat.crt.HTCrTPlugin;
 import io.github.hiiragi283.material.util.HTCollectors;
@@ -8,6 +9,7 @@ import stanhebben.zenscript.annotations.ZenClass;
 
 import java.util.Arrays;
 import java.util.Map;
+import java.util.function.Consumer;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -22,19 +24,21 @@ public interface FormulaConvertible {
     FormulaConvertible EMPTY = () -> "";
 
     static FormulaConvertible of(FormulaConvertible... formulas) {
-        return ofString(Arrays.stream(formulas).collect(HTCollectors.associate(FormulaConvertible::asFormula, formula -> 1)));
+        return () -> format(Arrays.stream(formulas).collect(HTCollectors.associate(FormulaConvertible::asFormula, formula -> 1)));
     }
 
     static FormulaConvertible of(Map<FormulaConvertible, Integer> map) {
-        return ofString(map.entrySet().stream().collect(HTCollectors.mapKeys(FormulaConvertible::asFormula)));
+        return () -> format(map.entrySet().stream().collect(HTCollectors.mapKeys(FormulaConvertible::asFormula)));
     }
 
     static FormulaConvertible ofString(String... formulas) {
-        return ofString(Arrays.stream(formulas).collect(HTCollectors.associateWith(1)));
+        return () -> format(Arrays.stream(formulas).collect(HTCollectors.associateWith(1)));
     }
 
-    static FormulaConvertible ofString(Map<String, Integer> map) {
-        return () -> format(map);
+    static FormulaConvertible ofString(Consumer<ImmutableMap.Builder<String, Integer>> consumer) {
+        var builder = new ImmutableMap.Builder<String, Integer>();
+        consumer.accept(builder);
+        return () -> format(builder.build());
     }
 
     static String format(Iterable<String> formulas) {

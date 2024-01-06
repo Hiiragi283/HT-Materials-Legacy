@@ -2,6 +2,7 @@ package io.github.hiiragi283.material.api.material.property;
 
 import io.github.hiiragi283.material.api.material.ColorConvertible;
 import io.github.hiiragi283.material.api.material.HTMaterialKey;
+import io.github.hiiragi283.material.util.HTUtils;
 import org.jetbrains.annotations.NotNull;
 import scala.actors.threadpool.Arrays;
 
@@ -36,7 +37,7 @@ public final class HTMixtureProperty implements HTComponentProperty<HTMixturePro
 
     @Override
     public @NotNull String asFormula() {
-        return "";
+        return HTUtils.joinToString(", ", StreamSupport.stream(iterable.spliterator(), false).map(key -> key.getMaterial().formula()));
     }
 
     @Override

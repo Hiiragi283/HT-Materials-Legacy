@@ -1,6 +1,7 @@
 package io.github.hiiragi283.material.api.item;
 
 import io.github.hiiragi283.material.HMReference;
+import io.github.hiiragi283.material.HTMaterialsMod;
 import io.github.hiiragi283.material.api.shape.HTShapeKey;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -22,9 +23,9 @@ public final class HTMaterialItem extends Item implements MaterialItemConvertibl
 
     public HTMaterialItem(HTShapeKey shapeKey) {
         this.shapeKey = shapeKey;
-        setCreativeTab(CreativeTabs.MATERIALS);
         hasSubtypes = true;
         registry.putIfAbsent(shapeKey, this);
+        setCreativeTab(HTMaterialsMod.CREATIVE_TABS);
         setRegistryName(HMReference.MOD_ID, shapeKey.name());
     }
 

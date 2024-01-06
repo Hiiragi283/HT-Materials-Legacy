@@ -39,12 +39,17 @@ ht_shape.wire=%sのワイヤ
 ##    Tooltip    ##
 
 tooltip.ht_materials.material.boil=- 沸点: §b%s§r§7 K
+tooltip.ht_materials.material.density=- 液体密度: §b%s§r§7 kg/m^3
 tooltip.ht_materials.material.formula=- 化学式: §b%s§r
+tooltip.ht_materials.material.gaseous=- 気体: §b%s§r§7
+tooltip.ht_materials.material.luminosity=- 液体輝度: §b%s§r§7
 tooltip.ht_materials.material.melt=- 融点: §b%s§r§7 K
 tooltip.ht_materials.material.molar=- モル質量: §b%s§r§7 g/mol
 tooltip.ht_materials.material.name=- 名称: §b%s§r§7
 tooltip.ht_materials.material.subl=- 昇華点: §b%s§r§7 K
+tooltip.ht_materials.material.temperature=- 液体温度: §b%s§r§7 K
 tooltip.ht_materials.material.title=§e=== 素材情報 ===
+tooltip.ht_materials.material.viscosity=- 液体流速: §b%s§r§7 m/s^2
 
 ##    Material    ##
 

@@ -144,7 +144,10 @@ public abstract class HTMaterialEvent extends Event {
                 color = component;
             }
         }
-        if (color == null) color = colorMap.get(key);
+        ColorConvertible color1;
+        if ((color1 = colorMap.get(key)) != null) {
+            color = color1;
+        }
         return color == null ? ColorConvertible.EMPTY : color;
     }
 
@@ -156,7 +159,10 @@ public abstract class HTMaterialEvent extends Event {
                 formula = component;
             }
         }
-        if (formula == null) formula = formulaMap.get(key);
+        FormulaConvertible formula1;
+        if ((formula1 = formulaMap.get(key)) != null) {
+            formula = formula1;
+        }
         return formula == null ? FormulaConvertible.EMPTY : formula;
     }
 
@@ -168,7 +174,10 @@ public abstract class HTMaterialEvent extends Event {
                 molar = component;
             }
         }
-        if (molar == null) molar = molarMap.get(key);
+        MolarMassConvertible molar1;
+        if ((molar1 = molarMap.get(key)) != null) {
+            molar = molar1;
+        }
         return molar == null ? MolarMassConvertible.EMPTY : molar;
     }
 

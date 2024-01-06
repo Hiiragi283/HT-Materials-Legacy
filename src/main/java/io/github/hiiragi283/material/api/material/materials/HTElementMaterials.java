@@ -4,6 +4,7 @@ import io.github.hiiragi283.material.api.material.ColorConvertible;
 import io.github.hiiragi283.material.api.material.HTMaterialEvent;
 import io.github.hiiragi283.material.api.material.HTMaterialKey;
 import io.github.hiiragi283.material.api.material.flag.HTMaterialFlags;
+import io.github.hiiragi283.material.api.material.property.HTFluidProperty;
 import io.github.hiiragi283.material.api.material.property.HTMetalProperty;
 import io.github.hiiragi283.material.util.HTColor;
 import net.minecraftforge.fml.common.Mod;
@@ -23,9 +24,18 @@ public enum HTElementMaterials {
 
     //    2nd Period    //
 
+    public static final HTMaterialKey LITHIUM = new HTMaterialKey("lithium", 3);
+    public static final HTMaterialKey BERYLLIUM = new HTMaterialKey("beryllium", 4);
+    public static final HTMaterialKey BORON = new HTMaterialKey("boron", 5);
+    public static final HTMaterialKey CARBON = new HTMaterialKey("carbon", 6);
+    public static final HTMaterialKey NITROGEN = new HTMaterialKey("nitrogen", 7);
     public static final HTMaterialKey OXYGEN = new HTMaterialKey("oxygen", 8);
+    public static final HTMaterialKey FLUORINE = new HTMaterialKey("fluorine", 9);
+    public static final HTMaterialKey NEON = new HTMaterialKey("neon", 10);
 
     //    3rd Period    //
+
+    public static final HTMaterialKey SILICON = new HTMaterialKey("silicon", 14);
 
     //    4th Period    //
 
@@ -60,8 +70,25 @@ public enum HTElementMaterials {
     public static void modifyProperty(HTMaterialEvent.Property event) {
         var registry = event.registry;
         //1st Period
-        registry.getOrCreate(HYDROGEN);
-        registry.getOrCreate(HELIUM);
+        registry.getOrCreate(HYDROGEN)
+                .add(new HTFluidProperty(), HTFluidProperty::setGaseous);
+        registry.getOrCreate(HELIUM)
+                .add(new HTFluidProperty(), HTFluidProperty::setGaseous);
+        //2nd Period
+        registry.getOrCreate(LITHIUM)
+                .add(HTMetalProperty.INSTANCE);
+        registry.getOrCreate(BERYLLIUM)
+                .add(HTMetalProperty.INSTANCE);
+        registry.getOrCreate(BORON);
+        registry.getOrCreate(CARBON);
+        registry.getOrCreate(NITROGEN)
+                .add(new HTFluidProperty(), HTFluidProperty::setGaseous);
+        registry.getOrCreate(OXYGEN)
+                .add(new HTFluidProperty(), HTFluidProperty::setGaseous);
+        registry.getOrCreate(FLUORINE)
+                .add(new HTFluidProperty(), HTFluidProperty::setGaseous);
+        registry.getOrCreate(NEON)
+                .add(new HTFluidProperty(), HTFluidProperty::setGaseous);
         //4th Period
         registry.getOrCreate(IRON)
                 .add(HTMetalProperty.INSTANCE);
@@ -74,6 +101,21 @@ public enum HTElementMaterials {
     public static void modifyFlag(HTMaterialEvent.Flag event) {
         var registry = event.registry;
         //1st Period
+        registry.getOrCreate(HYDROGEN);
+        registry.getOrCreate(HELIUM);
+        //2nd Period
+        registry.getOrCreate(LITHIUM);
+        registry.getOrCreate(BERYLLIUM);
+        registry.getOrCreate(BORON);
+        registry.getOrCreate(CARBON)
+                .add(HTMaterialFlags.GENERATE_DUST)
+                .add(HTMaterialFlags.GENERATE_INGOT)
+                .add(HTMaterialFlags.GENERATE_PLATE)
+                .add(HTMaterialFlags.GENERATE_STICK);
+        registry.getOrCreate(NITROGEN);
+        registry.getOrCreate(OXYGEN);
+        registry.getOrCreate(FLUORINE);
+        registry.getOrCreate(NEON);
         //4th Period
         registry.getOrCreate(IRON)
                 .add(HTMaterialFlags.GENERATE_DUST)
@@ -93,8 +135,17 @@ public enum HTElementMaterials {
         //1st Period
         event.put(HYDROGEN, () -> HTColor.BLUE);
         event.put(HELIUM, () -> HTColor.YELLOW);
+        //2nd Period
+        event.put(LITHIUM, () -> HTColor.GRAY);
+        event.put(BERYLLIUM, () -> HTColor.DARK_GREEN);
+        event.put(BORON, () -> HTColor.GRAY);
+        event.put(CARBON, ColorConvertible.ofColor(HTColor.BLACK, HTColor.DARK_GRAY));
+        event.put(NITROGEN, () -> HTColor.AQUA);
+        event.put(OXYGEN, ColorConvertible.EMPTY);
+        event.put(FLUORINE, () -> HTColor.GREEN);
+        event.put(NEON, () -> HTColor.LIGHT_PURPLE);
         //4th Period
-        event.put(IRON, () -> HTColor.WHITE);
+        event.put(IRON, ColorConvertible.EMPTY);
         //6th Period
         event.put(GOLD, ColorConvertible.ofColor(HTColor.GOLD, HTColor.YELLOW));
     }
@@ -104,6 +155,15 @@ public enum HTElementMaterials {
         //1st Period
         event.put(HYDROGEN, () -> "H");
         event.put(HELIUM, () -> "He");
+        //2nd Period
+        event.put(LITHIUM, () -> "Li");
+        event.put(BERYLLIUM, () -> "Be");
+        event.put(BORON, () -> "B");
+        event.put(CARBON, () -> "C");
+        event.put(NITROGEN, () -> "N");
+        event.put(OXYGEN, () -> "O");
+        event.put(FLUORINE, () -> "F");
+        event.put(NEON, () -> "Ne");
         //4th Period
         event.put(IRON, () -> "Fe");
         //6th Period
@@ -115,6 +175,15 @@ public enum HTElementMaterials {
         //1st Period
         event.put(HYDROGEN, () -> 1.0);
         event.put(HELIUM, () -> 4.0);
+        //2nd Period
+        event.put(LITHIUM, () -> 6.9);
+        event.put(BERYLLIUM, () -> 9.0);
+        event.put(BORON, () -> 10.8);
+        event.put(CARBON, () -> 12.0);
+        event.put(NITROGEN, () -> 14.0);
+        event.put(OXYGEN, () -> 16.0);
+        event.put(FLUORINE, () -> 19.0);
+        event.put(NEON, () -> 20.2);
         //4th Period
         event.put(IRON, () -> 55.8);
         //6th Period

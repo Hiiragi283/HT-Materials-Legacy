@@ -1,5 +1,6 @@
 package io.github.hiiragi283.material.api.material;
 
+import com.google.common.collect.ImmutableMap;
 import crafttweaker.annotations.ZenRegister;
 import io.github.hiiragi283.material.compat.crt.HTCrTPlugin;
 import io.github.hiiragi283.material.util.HTCollectors;
@@ -7,6 +8,7 @@ import stanhebben.zenscript.annotations.ZenClass;
 
 import java.util.Arrays;
 import java.util.Map;
+import java.util.function.Consumer;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -20,19 +22,21 @@ public interface MolarMassConvertible {
     MolarMassConvertible EMPTY = () -> 0.0;
 
     static MolarMassConvertible of(MolarMassConvertible... molars) {
-        return ofDouble(Arrays.stream(molars).collect(HTCollectors.associate(MolarMassConvertible::asMolar, color -> 1)));
+        return () -> calculate(Arrays.stream(molars).collect(HTCollectors.associate(MolarMassConvertible::asMolar, color -> 1)));
     }
 
     static MolarMassConvertible of(Map<MolarMassConvertible, Integer> map) {
-        return ofDouble(map.entrySet().stream().collect(HTCollectors.mapKeys(MolarMassConvertible::asMolar)));
+        return () -> calculate(map.entrySet().stream().collect(HTCollectors.mapKeys(MolarMassConvertible::asMolar)));
     }
 
     static MolarMassConvertible ofDouble(Double... molars) {
-        return ofDouble(Arrays.stream(molars).collect(HTCollectors.associateWith(1)));
+        return () -> calculate(Arrays.stream(molars).collect(HTCollectors.associateWith(1)));
     }
 
-    static MolarMassConvertible ofDouble(Map<Double, Integer> map) {
-        return () -> calculate(map);
+    static MolarMassConvertible ofDouble(Consumer<ImmutableMap.Builder<Double, Integer>> consumer) {
+        var builder = new ImmutableMap.Builder<Double, Integer>();
+        consumer.accept(builder);
+        return () -> calculate(builder.build());
     }
 
     static double calculate(Iterable<Double> molars) {

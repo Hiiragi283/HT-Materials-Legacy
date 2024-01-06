@@ -26,4 +26,6 @@ public abstract class HTMaterialFlags {
 
     public static final HTMaterialFlag GENERATE_STICK = HTMaterialFlag.create("generate_stick");
 
+    public static final HTMaterialFlag NOT_GENERATE_FLUID = HTMaterialFlag.create("not_generate_fluid", builder -> builder.requiredProperties.add(HTPropertyKeys.FLUID));
+
 }

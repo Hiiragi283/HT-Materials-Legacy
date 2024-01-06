@@ -23,6 +23,12 @@ public final class HTFluidProperty implements HTMaterialProperty<HTFluidProperty
 
     public boolean isGaseous = false;
 
+    public HTFluidProperty setGaseous() {
+        density *= -1;
+        isGaseous = true;
+        return this;
+    }
+
     //    HTMaterialProperty    //
 
     @NotNull
@@ -33,24 +39,22 @@ public final class HTFluidProperty implements HTMaterialProperty<HTFluidProperty
 
     @Override
     public void verify(HTMaterial material) {
-        if (!FluidRegistry.isFluidRegistered(material.name())) {
-            throw new IllegalStateException("");
-        }
+
     }
 
     @Override
     public void addInformation(@NotNull HTMaterial material, @Nullable HTShape shape, @NotNull ItemStack stack, @NotNull List<String> tooltips) {
         Fluid fluid = FluidRegistry.getFluid(material.name());
         //Luminosity
-        tooltips.add(I18n.format("", fluid.getLuminosity()));
+        tooltips.add(I18n.format("tooltip.ht_materials.material.luminosity", fluid.getLuminosity()));
         //Density
-        tooltips.add(I18n.format("", fluid.getDensity()));
+        tooltips.add(I18n.format("tooltip.ht_materials.material.density", Math.abs(fluid.getDensity())));
         //Temperature
-        tooltips.add(I18n.format("", fluid.getTemperature()));
+        tooltips.add(I18n.format("tooltip.ht_materials.material.temperature", fluid.getTemperature()));
         //Viscosity
-        tooltips.add(I18n.format("", fluid.getViscosity()));
+        tooltips.add(I18n.format("tooltip.ht_materials.material.viscosity", fluid.getViscosity() / 1000.0));
         //Is Gaseous
-        tooltips.add(I18n.format("", fluid.isGaseous()));
+        tooltips.add(I18n.format("tooltip.ht_materials.material.gaseous", fluid.isGaseous()));
     }
 
 }

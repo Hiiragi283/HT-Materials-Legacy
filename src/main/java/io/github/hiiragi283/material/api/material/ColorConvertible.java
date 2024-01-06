@@ -1,5 +1,6 @@
 package io.github.hiiragi283.material.api.material;
 
+import com.google.common.collect.ImmutableMap;
 import crafttweaker.annotations.ZenRegister;
 import io.github.hiiragi283.material.compat.crt.HTCrTPlugin;
 import io.github.hiiragi283.material.util.HTCollectors;
@@ -9,6 +10,7 @@ import stanhebben.zenscript.annotations.ZenClass;
 import java.awt.*;
 import java.util.Arrays;
 import java.util.Map;
+import java.util.function.Consumer;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -23,19 +25,21 @@ public interface ColorConvertible {
     ColorConvertible EMPTY = () -> Color.WHITE;
 
     static ColorConvertible of(ColorConvertible... colors) {
-        return ofColor(Arrays.stream(colors).collect(HTCollectors.associate(ColorConvertible::asColor, color -> 1)));
+        return () -> average(Arrays.stream(colors).map(ColorConvertible::asColor));
     }
 
     static ColorConvertible of(Map<ColorConvertible, Integer> map) {
-        return ofColor(map.entrySet().stream().collect(HTCollectors.mapKeys(ColorConvertible::asColor)));
+        return () -> average(map.entrySet().stream().collect(HTCollectors.mapKeys(ColorConvertible::asColor)));
     }
 
     static ColorConvertible ofColor(Color... colors) {
-        return ofColor(Arrays.stream(colors).collect(HTCollectors.associateWith(1)));
+        return () -> average(Arrays.asList(colors));
     }
 
-    static ColorConvertible ofColor(Map<Color, Integer> map) {
-        return () -> average(map);
+    static ColorConvertible ofColor(Consumer<ImmutableMap.Builder<Color, Integer>> consumer) {
+        var builder = new ImmutableMap.Builder<Color, Integer>();
+        consumer.accept(builder);
+        return () -> average(builder.build());
     }
 
     static Color average(Iterable<Color> colors) {

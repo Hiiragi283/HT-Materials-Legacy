@@ -1,3 +1,5 @@
+itemGroup.ht_materials=HT Materials
+
 ##    Shape    ##
 
 ht_shape.ball=%s Grinding Ball
@@ -39,12 +41,17 @@ ht_shape.wire=%s Wire
 ##    Tooltip    ##
 
 tooltip.ht_materials.material.boil=- Boiling Point: §b%s§r§7 K
+tooltip.ht_materials.material.density=- Fluid Density: §b%s§r§7 kg/m^3
 tooltip.ht_materials.material.formula=- Chemical Formula: §b%s§r
+tooltip.ht_materials.material.gaseous=- Gaseous: §b%s§r§7
+tooltip.ht_materials.material.luminosity=- Fluid Luminosity: §b%s§r§7
 tooltip.ht_materials.material.melt=- Melting Point: §b%s§r§7 K
 tooltip.ht_materials.material.molar=- Molar Mass: §b%s§r§7 g/mol
 tooltip.ht_materials.material.name=- Name: §b%s§r§7
 tooltip.ht_materials.material.subl=- Sublimation Point: §b%s§r§7 K
+tooltip.ht_materials.material.temperature=- Fluid Temperature: §b%s§r§7 K
 tooltip.ht_materials.material.title=§e=== Material Info ===
+tooltip.ht_materials.material.viscosity=- Fluid Viscosity: §b%s§r§7 m/s^2
 
 ##    Material    ##
 
