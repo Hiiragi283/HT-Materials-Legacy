@@ -6,8 +6,6 @@ import io.github.hiiragi283.material.api.material.property.HTMaterialProperty;
 import io.github.hiiragi283.material.api.material.property.HTMaterialPropertyMap;
 import io.github.hiiragi283.material.api.registry.HTNonNullMap;
 import io.github.hiiragi283.material.api.registry.HTObjectKeySet;
-import io.github.hiiragi283.material.compat.crt.HTCrTMaterialRegistry;
-import io.github.hiiragi283.material.compat.crt.HTCrTPlugin;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import org.jetbrains.annotations.NotNull;
@@ -118,8 +116,6 @@ public abstract class HTMaterialEvent extends Event {
         MinecraftForge.EVENT_BUS.post(new Color(colorMap));
         MinecraftForge.EVENT_BUS.post(new Formula(formulaMap));
         MinecraftForge.EVENT_BUS.post(new Molar(molarMap));
-        new HTCrTMaterialRegistry(materialKeys, propertyMap, flagMap, colorMap, formulaMap, molarMap);
-        HTCrTPlugin.loadScripts();
         createMaterials();
         HTMaterial.getRegistry().values().forEach(HTMaterial::verify);
     }

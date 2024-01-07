@@ -2,12 +2,16 @@ package io.github.hiiragi283.material.api.part;
 
 import com.cleanroommc.groovyscript.api.GroovyBlacklist;
 import com.google.common.collect.HashBasedTable;
-import com.google.common.collect.ImmutableTable;
 import com.google.common.collect.Table;
 import io.github.hiiragi283.material.api.material.HTMaterialKey;
+import io.github.hiiragi283.material.api.material.materials.HTVanillaMaterials;
+import io.github.hiiragi283.material.api.registry.HTNonNullTable;
 import io.github.hiiragi283.material.api.registry.ItemWithMeta;
 import io.github.hiiragi283.material.api.shape.HTShapeKey;
+import io.github.hiiragi283.material.api.shape.HTShapes;
+import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
@@ -19,18 +23,15 @@ import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Stream;
 
 @Mod.EventBusSubscriber()
-public abstract class HTPartManager {
+public abstract class HTPartDictionary {
 
-    private static final Logger LOGGER = LogManager.getLogger(HTPartManager.class.getSimpleName());
+    private static final Logger LOGGER = LogManager.getLogger(HTPartDictionary.class.getSimpleName());
 
-    private HTPartManager() {
+    private HTPartDictionary() {
     }
 
     //    ItemWithMeta -> HTPart    //
@@ -69,12 +70,6 @@ public abstract class HTPartManager {
     private static final Table<HTShapeKey, HTMaterialKey, ItemWithMeta> partToItem = HashBasedTable.create();
 
     @GroovyBlacklist
-    @NotNull
-    public static Table<HTShapeKey, HTMaterialKey, ItemWithMeta> getDefaultItemTable() {
-        return ImmutableTable.copyOf(partToItem);
-    }
-
-    @GroovyBlacklist
     @Nullable
     public static ItemWithMeta getDefaultItem(@NotNull HTShapeKey shapeKey, @NotNull HTMaterialKey materialKey) {
         return partToItem.get(shapeKey, materialKey);
@@ -97,17 +92,11 @@ public abstract class HTPartManager {
 
     //    HTShapeKey, HTMaterialKey -> Stream<ItemWithMeta>    //
 
-    private static final Table<HTShapeKey, HTMaterialKey, Set<ItemWithMeta>> partToItems = HashBasedTable.create();
-
-    @GroovyBlacklist
-    @NotNull
-    public static Table<HTShapeKey, HTMaterialKey, Set<ItemWithMeta>> getPartToItemsTable() {
-        return ImmutableTable.copyOf(partToItems);
-    }
+    private static final HTNonNullTable<HTShapeKey, HTMaterialKey, Set<ItemWithMeta>> partToItems = HTNonNullTable.create((shape, material) -> new HashSet<>());
 
     @NotNull
     public static Stream<ItemWithMeta> getItems(@NotNull HTShapeKey shapeKey, @NotNull HTMaterialKey materialKey) {
-        return partToItems.contains(shapeKey, materialKey) ? partToItems.get(shapeKey, materialKey).stream() : Stream.empty();
+        return partToItems.getOrCreate(shapeKey, materialKey).stream();
     }
 
     @NotNull
@@ -126,6 +115,10 @@ public abstract class HTPartManager {
         register(shapeKey, materialKey, stack.getItem(), stack.getMetadata());
     }
 
+    public static void register(@NotNull HTShapeKey shapeKey, @NotNull HTMaterialKey materialKey, @NotNull Block block, int meta) {
+        register(shapeKey, materialKey, new ItemWithMeta(Item.getItemFromBlock(block), meta));
+    }
+
     public static void register(@NotNull HTShapeKey shapeKey, @NotNull HTMaterialKey materialKey, @NotNull Item item, int meta) {
         register(shapeKey, materialKey, new ItemWithMeta(item, meta));
     }
@@ -141,21 +134,57 @@ public abstract class HTPartManager {
     }
 
     private static void registerInternal(@NotNull HTShapeKey shapeKey, @NotNull HTMaterialKey materialKey, @NotNull ItemWithMeta itemWithMeta) {
+        if (itemWithMeta.isEmpty()) return;
         HTPart part = new HTPart(shapeKey, materialKey);
         itemToPart.putIfAbsent(itemWithMeta, part);
-        partToItem.put(shapeKey, materialKey, itemWithMeta);
+        if (partToItem.get(shapeKey, materialKey) == null) {
+            partToItem.put(shapeKey, materialKey, itemWithMeta);
+        }
+        partToItems.getOrCreate(shapeKey, materialKey).add(itemWithMeta);
     }
 
     @GroovyBlacklist
     public static void reloadOreDicts() {
+
         LOGGER.info("Reloading Ore Dictionary...");
         Arrays.stream(OreDictionary.getOreNames()).forEach(oredict -> {
             OreDictionary.getOres(oredict).stream()
                     .filter(stack -> !hasPart(stack))
                     .map(stack -> new OreDictionary.OreRegisterEvent(oredict, stack))
-                    .forEach(HTPartManager::onOreRegistered);
+                    .forEach(HTPartDictionary::onOreRegistered);
         });
         LOGGER.info("Reloaded Ore Dictionary!");
+
+        LOGGER.info("Registering Custom Vanilla entries...");
+        register(HTShapes.STONE, HTVanillaMaterials.STONE, Blocks.STONE, 0);
+        register(HTShapes.STONE, HTVanillaMaterials.GRANITE, Blocks.STONE, 2);
+        register(HTShapes.STONE, HTVanillaMaterials.DIORITE, Blocks.STONE, 4);
+        register(HTShapes.STONE, HTVanillaMaterials.ANDESITE, Blocks.STONE, 6);
+        register(HTShapes.STONE, HTVanillaMaterials.STONE, Blocks.COBBLESTONE, 0);
+        register(HTShapes.SAND, HTVanillaMaterials.SAND, Blocks.SAND, OreDictionary.WILDCARD_VALUE);
+        register(HTShapes.BLOCK, HTVanillaMaterials.SPONGE, Blocks.SPONGE, OreDictionary.WILDCARD_VALUE);
+        register(HTShapes.STONE, HTVanillaMaterials.SAND, Blocks.SANDSTONE, OreDictionary.WILDCARD_VALUE);
+        register(HTShapes.SLAB, HTVanillaMaterials.STONE, Blocks.STONE_SLAB, 0);
+        register(HTShapes.SLAB, HTVanillaMaterials.SAND, Blocks.STONE_SLAB, 1);
+        register(HTShapes.SLAB, HTVanillaMaterials.WOOD, Blocks.STONE_SLAB, 2);
+        register(HTShapes.SLAB, HTVanillaMaterials.STONE, Blocks.STONE_SLAB, 3);
+        register(HTShapes.SLAB, HTVanillaMaterials.BRICK, Blocks.STONE_SLAB, 4);
+        register(HTShapes.SLAB, HTVanillaMaterials.STONE, Blocks.STONE_SLAB, 5);
+        register(HTShapes.SLAB, HTVanillaMaterials.NETHER_BRICK, Blocks.STONE_SLAB, 6);
+        register(HTShapes.SLAB, HTVanillaMaterials.QUARTZ, Blocks.STONE_SLAB, 7);
+        register(HTShapes.BRICK, HTVanillaMaterials.BRICK, Blocks.BRICK_BLOCK, 0);
+        register(HTShapes.STONE, HTVanillaMaterials.STONE, Blocks.MOSSY_COBBLESTONE, 0);
+        register(HTShapes.STONE, HTVanillaMaterials.OBSIDIAN, Blocks.OBSIDIAN, 0);
+        register(HTShapes.BLOCK, HTVanillaMaterials.ICE, Blocks.ICE, 0);
+        register(HTShapes.BLOCK, HTVanillaMaterials.SNOW, Blocks.SNOW, 0);
+        register(HTShapes.BLOCK, HTVanillaMaterials.CLAY, Blocks.CLAY, 0);
+        register(HTShapes.STONE, HTVanillaMaterials.NETHERRACK, Blocks.NETHERRACK, 0);
+        register(HTShapes.SAND, HTVanillaMaterials.SOUL_SAND, Blocks.SOUL_SAND, 0);
+        register(HTShapes.BLOCK, HTVanillaMaterials.GLOWSTONE, Blocks.GLOWSTONE, 0);
+        register(HTShapes.BRICK, HTVanillaMaterials.STONE, Blocks.STONEBRICK, OreDictionary.WILDCARD_VALUE);
+        register(HTShapes.BRICK, HTVanillaMaterials.NETHER_BRICK, Blocks.NETHER_BRICK, 0);
+        LOGGER.info("Registered Custom Vanilla entries!");
+
     }
 
     @SubscribeEvent

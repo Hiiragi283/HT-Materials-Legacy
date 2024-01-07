@@ -46,7 +46,7 @@ public final class HTMaterialItem extends Item implements MaterialItemConvertibl
     @SideOnly(Side.CLIENT)
     public void getSubItems(@NotNull CreativeTabs tab, @NotNull NonNullList<ItemStack> items) {
         if (isInCreativeTab(tab)) {
-            getMaterialStacks(this).forEach(items::add);
+            getMaterialStacks().forEach(items::add);
         }
     }
 

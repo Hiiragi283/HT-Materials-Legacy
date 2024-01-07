@@ -4,15 +4,13 @@ import io.github.hiiragi283.material.api.fluid.HTMaterialFluid;
 import io.github.hiiragi283.material.api.item.HTMaterialItem;
 import io.github.hiiragi283.material.api.material.HTMaterial;
 import io.github.hiiragi283.material.api.material.HTMaterialEvent;
-import io.github.hiiragi283.material.api.material.HTMaterialUtils;
 import io.github.hiiragi283.material.api.material.flag.HTMaterialFlags;
 import io.github.hiiragi283.material.api.material.property.HTFluidProperty;
 import io.github.hiiragi283.material.api.material.property.HTPropertyKeys;
-import io.github.hiiragi283.material.api.part.HTPartManager;
+import io.github.hiiragi283.material.api.part.HTPartDictionary;
 import io.github.hiiragi283.material.api.shape.HTShapeEvent;
 import io.github.hiiragi283.material.api.shape.HTShapes;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -38,9 +36,14 @@ public final class HTMaterialsMod {
         @NotNull
         @Override
         public ItemStack createIcon() {
-            return new ItemStack(Items.IRON_INGOT);
+            return new ItemStack(ICON);
         }
     };
+
+    public static final Item ICON = new Item()
+            .setCreativeTab(CREATIVE_TABS)
+            .setRegistryName(HMReference.MOD_ID, "icon")
+            .setTranslationKey(HMReference.MOD_ID);
 
     public static final Item ITEM_DUST = new HTMaterialItem(HTShapes.DUST);
     public static final Item ITEM_GEAR = new HTMaterialItem(HTShapes.GEAR);
@@ -63,22 +66,23 @@ public final class HTMaterialsMod {
         HTMaterialEvent.init();
         LOGGER.info("HTMaterial initialized!");
         //Reload Ore Dictionary
-        HTPartManager.reloadOreDicts();
+        HTPartDictionary.reloadOreDicts();
         //Register Material Fluids
-        for (HTMaterial material : HTMaterial.getRegistry().values()) {
+        HTMaterial.getMaterials().forEach(material -> {
             HTFluidProperty fluidProperty = material.getProperty(HTPropertyKeys.FLUID);
-            if (material.hasFlag(HTMaterialFlags.NOT_GENERATE_FLUID) || fluidProperty == null) continue;
-            HTMaterialFluid fluid = new HTMaterialFluid(material, fluidProperty);
-            FluidRegistry.registerFluid(fluid);
-            FluidRegistry.addBucketForFluid(fluid);
-        }
+            if (!material.hasFlag(HTMaterialFlags.NOT_GENERATE_FLUID) && fluidProperty != null) {
+                HTMaterialFluid fluid = new HTMaterialFluid(material, fluidProperty);
+                FluidRegistry.registerFluid(fluid);
+                FluidRegistry.addBucketForFluid(fluid);
+            }
+        });
         LOGGER.info("HTMaterialFluid initialized!");
     }
 
     @Mod.EventHandler
     public void onInit(FMLInitializationEvent event) {
         for (HTMaterialItem materialItem : HTMaterialItem.getItems()) {
-            HTMaterialUtils.getMaterialStacks(materialItem).forEach(stack -> OreDictionary.registerOre(materialItem.getOreDict(stack), stack));
+            materialItem.getMaterialStacks().forEach(stack -> OreDictionary.registerOre(materialItem.getOreDict(stack), stack));
         }
     }
 

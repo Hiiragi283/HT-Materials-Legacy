@@ -4,7 +4,7 @@ import io.github.hiiragi283.material.api.item.HTMaterialItem;
 import io.github.hiiragi283.material.api.material.HTMaterial;
 import io.github.hiiragi283.material.api.material.HTMaterialUtils;
 import io.github.hiiragi283.material.api.part.HTPart;
-import io.github.hiiragi283.material.api.part.HTPartManager;
+import io.github.hiiragi283.material.api.part.HTPartDictionary;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -37,6 +37,7 @@ public abstract class HMEventHandler {
     @SubscribeEvent
     public static void onRegisterItem(RegistryEvent.Register<Item> event) {
         var registry = event.getRegistry();
+        registry.register(HTMaterialsMod.ICON);
         HTMaterialItem.getItems().forEach(registry::register);
     }
 
@@ -56,6 +57,7 @@ public abstract class HMEventHandler {
 
         @SubscribeEvent
         public static void onModelRegister(ModelRegistryEvent event) {
+            ModelLoader.setCustomModelResourceLocation(HTMaterialsMod.ICON, 0, new ModelResourceLocation(Objects.requireNonNull(HTMaterialsMod.ICON.getRegistryName()), "inventory"));
             HTMaterialItem.getItems().forEach(item -> item.getMaterialIndexes().forEach(index -> ModelLoader.setCustomModelResourceLocation(item, index, new ModelResourceLocation(Objects.requireNonNull(item.getRegistryName()), "inventory"))));
         }
 
@@ -68,7 +70,7 @@ public abstract class HMEventHandler {
             List<String> tooltip = event.getToolTip();
 
             //Material Tooltips for Item
-            HTPart part = HTPartManager.getPart(event.getItemStack());
+            HTPart part = HTPartDictionary.getPart(event.getItemStack());
             if (part != null) {
                 HTMaterialUtils.addInformation(part.getMaterial(), part.getShape(), stack, tooltip);
             }

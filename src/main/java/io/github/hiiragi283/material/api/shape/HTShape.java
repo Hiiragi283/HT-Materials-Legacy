@@ -11,6 +11,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 @Desugar
 public record HTShape(HTShapeKey key, HTShapePredicate predicate) implements Predicate<HTMaterial> {
@@ -28,6 +29,16 @@ public record HTShape(HTShapeKey key, HTShapePredicate predicate) implements Pre
 
     public static Map<String, HTShape> getRegistry() {
         return ImmutableMap.copyOf(registry);
+    }
+
+    @NotNull
+    public static Stream<HTShape> getShapes() {
+        return getRegistry().values().stream();
+    }
+
+    @NotNull
+    public static Stream<HTShapeKey> getShapeKeys() {
+        return getShapes().map(HTShape::key);
     }
 
     @NotNull

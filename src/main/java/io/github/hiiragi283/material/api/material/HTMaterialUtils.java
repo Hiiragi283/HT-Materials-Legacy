@@ -1,6 +1,6 @@
 package io.github.hiiragi283.material.api.material;
 
-import io.github.hiiragi283.material.api.item.HTMaterialItem;
+import io.github.hiiragi283.material.api.part.HTPartDictionary;
 import io.github.hiiragi283.material.api.shape.HTShape;
 import io.github.hiiragi283.material.api.shape.HTShapeKey;
 import net.minecraft.client.resources.I18n;
@@ -16,20 +16,24 @@ public abstract class HTMaterialUtils {
     private HTMaterialUtils() {
     }
 
-    public static Stream<HTMaterial> getMaterials(HTShapeKey shapeKey) {
-        return HTMaterial.getRegistry().values().stream().filter(shapeKey.getShape());
+    public static Stream<ItemStack> getAllStacks() {
+        return HTShape.getShapeKeys().flatMap(HTMaterialUtils::getMatchingStacks);
     }
 
-    public static Stream<HTMaterialKey> getMaterialKeys(HTShapeKey shapeKey) {
-        return getMaterials(shapeKey).map(HTMaterial::key);
+    public static Stream<ItemStack> getMatchingStacks(HTMaterialKey materialKey) {
+        return getMatchingStacks(materialKey, 1);
     }
 
-    public static Stream<Integer> getMaterialIndexes(HTShapeKey shapeKey) {
-        return getMaterials(shapeKey).map(HTMaterial::index);
+    public static Stream<ItemStack> getMatchingStacks(HTMaterialKey materialKey, int count) {
+        return HTShape.getShapeKeys().flatMap(key -> HTPartDictionary.getItemStacks(key, materialKey, count));
     }
 
-    public static Stream<ItemStack> getMaterialStacks(HTMaterialItem item) {
-        return getMaterialIndexes(item.getShapeKey()).map(index -> new ItemStack(item, 1, index));
+    public static Stream<ItemStack> getMatchingStacks(HTShapeKey shapeKey) {
+        return getMatchingStacks(shapeKey, 1);
+    }
+
+    public static Stream<ItemStack> getMatchingStacks(HTShapeKey shapeKey, int count) {
+        return HTMaterial.getMaterialKeys().flatMap(key -> HTPartDictionary.getItemStacks(shapeKey, key, count));
     }
 
     public static void addInformation(@NotNull HTMaterial material, @Nullable HTShape shape, @NotNull ItemStack stack, @NotNull List<String> tooltips) {

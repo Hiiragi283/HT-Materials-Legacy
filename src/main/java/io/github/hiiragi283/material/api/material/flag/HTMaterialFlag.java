@@ -1,19 +1,13 @@
 package io.github.hiiragi283.material.api.material.flag;
 
 import com.cleanroommc.groovyscript.api.GroovyBlacklist;
-import crafttweaker.annotations.ZenRegister;
 import io.github.hiiragi283.material.api.material.HTMaterial;
 import io.github.hiiragi283.material.api.material.property.HTPropertyKey;
-import io.github.hiiragi283.material.compat.crt.HTCrTPlugin;
 import org.jetbrains.annotations.Nullable;
-import stanhebben.zenscript.annotations.ZenClass;
-import stanhebben.zenscript.annotations.ZenMethod;
 
 import java.util.*;
 import java.util.function.Consumer;
 
-@ZenClass(HTCrTPlugin.MATERIAL_PREFIX + "flag.HTMaterialFlag")
-@ZenRegister
 public final class HTMaterialFlag {
 
     private final String name;
@@ -67,12 +61,10 @@ public final class HTMaterialFlag {
     private static final Map<String, HTMaterialFlag> registry = new HashMap<>();
 
     @Nullable
-    @ZenMethod
     public static HTMaterialFlag getFlag(String name) {
         return registry.get(name);
     }
 
-    @ZenMethod
     public static HTMaterialFlag create(String name) {
         return create(name, builder -> {
         });

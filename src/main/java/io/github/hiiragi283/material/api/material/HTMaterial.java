@@ -2,28 +2,22 @@ package io.github.hiiragi283.material.api.material;
 
 import com.cleanroommc.groovyscript.api.GroovyBlacklist;
 import com.google.common.collect.ImmutableMap;
-import crafttweaker.annotations.ZenRegister;
 import io.github.hiiragi283.material.api.material.flag.HTMaterialFlag;
 import io.github.hiiragi283.material.api.material.flag.HTMaterialFlagSet;
 import io.github.hiiragi283.material.api.material.property.HTMaterialProperty;
 import io.github.hiiragi283.material.api.material.property.HTMaterialPropertyMap;
 import io.github.hiiragi283.material.api.material.property.HTPropertyKey;
-import io.github.hiiragi283.material.compat.crt.HTCrTPlugin;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import stanhebben.zenscript.annotations.ZenClass;
-import stanhebben.zenscript.annotations.ZenGetter;
-import stanhebben.zenscript.annotations.ZenMethod;
 
 import java.awt.*;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.stream.Stream;
 
-@ZenClass(HTCrTPlugin.MATERIAL_PREFIX + "HTMaterial")
-@ZenRegister
 public final class HTMaterial {
 
     private final HTMaterialKey key;
@@ -41,17 +35,14 @@ public final class HTMaterial {
         this.flags = flags;
     }
 
-    @ZenGetter
     public HTMaterialKey key() {
         return key;
     }
 
-    @ZenGetter
     public int index() {
         return key().index();
     }
 
-    @ZenGetter
     public String name() {
         return key().name();
     }
@@ -60,17 +51,14 @@ public final class HTMaterial {
         return info;
     }
 
-    @ZenGetter
     public Color color() {
         return info().color();
     }
 
-    @ZenGetter
     public String formula() {
         return info().formula();
     }
 
-    @ZenGetter
     public double molar() {
         return info().molar();
     }
@@ -135,13 +123,21 @@ public final class HTMaterial {
 
     private static final Map<String, HTMaterial> registry = new LinkedHashMap<>();
 
-    @ZenGetter("registry")
     public static Map<String, HTMaterial> getRegistry() {
         return ImmutableMap.copyOf(registry);
     }
 
     @NotNull
-    @ZenMethod
+    public static Stream<HTMaterial> getMaterials() {
+        return getRegistry().values().stream();
+    }
+
+    @NotNull
+    public static Stream<HTMaterialKey> getMaterialKeys() {
+        return getMaterials().map(HTMaterial::key);
+    }
+
+    @NotNull
     public static HTMaterial getMaterial(String name) {
         HTMaterial material = getMaterialOrNull(name);
         if (material == null) {
@@ -157,13 +153,11 @@ public final class HTMaterial {
 
     private static final Map<Integer, HTMaterial> indexRegistry = new LinkedHashMap<>();
 
-    @ZenGetter("indexRegistry")
     public static Map<Integer, HTMaterial> getIndexRegistry() {
         return ImmutableMap.copyOf(indexRegistry);
     }
 
     @NotNull
-    @ZenMethod
     public static HTMaterial getMaterial(int index) {
         HTMaterial material = getMaterialOrNull(index);
         if (material == null) {

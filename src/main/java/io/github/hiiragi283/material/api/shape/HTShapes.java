@@ -14,11 +14,13 @@ public enum HTShapes {
     //    Block    //
 
     public static final HTShapeKey BLOCK = new HTShapeKey("block");
+    public static final HTShapeKey BRICK = new HTShapeKey("brick");
     public static final HTShapeKey FENCE = new HTShapeKey("fence");
     public static final HTShapeKey FENCE_GATE = new HTShapeKey("fence_gate");
     public static final HTShapeKey LOG = new HTShapeKey("log");
     public static final HTShapeKey ORE = new HTShapeKey("ore");
     public static final HTShapeKey PLANK = new HTShapeKey("plank");
+    public static final HTShapeKey SAND = new HTShapeKey("sand");
     public static final HTShapeKey SLAB = new HTShapeKey("slab");
     public static final HTShapeKey STAIR = new HTShapeKey("stair");
     public static final HTShapeKey STONE = new HTShapeKey("stone");

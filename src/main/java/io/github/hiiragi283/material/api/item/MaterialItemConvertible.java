@@ -2,9 +2,9 @@ package io.github.hiiragi283.material.api.item;
 
 import io.github.hiiragi283.material.api.material.HTMaterial;
 import io.github.hiiragi283.material.api.material.HTMaterialKey;
-import io.github.hiiragi283.material.api.material.HTMaterialUtils;
 import io.github.hiiragi283.material.api.part.HTPart;
 import io.github.hiiragi283.material.api.shape.HTShapeKey;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -28,19 +28,19 @@ public interface MaterialItemConvertible {
     HTShapeKey getShapeKey();
 
     default Stream<HTMaterial> getMaterials() {
-        return HTMaterialUtils.getMaterials(getShapeKey());
+        return HTMaterial.getMaterials().filter(getShapeKey().getShape());
     }
 
     default Stream<HTMaterialKey> getMaterialKeys() {
-        return HTMaterialUtils.getMaterialKeys(getShapeKey());
+        return getMaterials().map(HTMaterial::key);
     }
 
     default Stream<Integer> getMaterialIndexes() {
-        return HTMaterialUtils.getMaterialIndexes(getShapeKey());
+        return getMaterials().map(HTMaterial::index);
     }
 
-    default Stream<ItemStack> getMaterialStacks(HTMaterialItem item) {
-        return HTMaterialUtils.getMaterialStacks(item);
+    default Stream<ItemStack> getMaterialStacks() {
+        return this instanceof Item item ? getMaterialIndexes().map(index -> new ItemStack(item, 1, index)) : Stream.empty();
     }
 
     default HTPart getPart(ItemStack stack) {

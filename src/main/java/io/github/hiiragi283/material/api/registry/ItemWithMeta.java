@@ -8,6 +8,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Objects;
+
 @Desugar
 public record ItemWithMeta(Item item, int meta) {
 
@@ -18,6 +20,14 @@ public record ItemWithMeta(Item item, int meta) {
             return EMPTY;
         }
         return new ItemWithMeta(stack.getItem(), stack.getMetadata());
+    }
+
+    public boolean isEmpty() {
+        return Objects.equals(this, EMPTY) || item == Items.AIR;
+    }
+
+    public boolean isNotEmpty() {
+        return !isEmpty();
     }
 
     public ItemStack toStack() {
