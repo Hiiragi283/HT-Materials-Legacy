@@ -5,5 +5,4 @@ public interface HTObjectKey<T> {
     String getName();
 
     Class<T> getObjClass();
-
 }

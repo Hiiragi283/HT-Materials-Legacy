@@ -1,12 +1,13 @@
 package io.github.hiiragi283.material.api.material.flag;
 
-import io.github.hiiragi283.material.api.material.HTMaterial;
-import org.jetbrains.annotations.NotNull;
-
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+
+import org.jetbrains.annotations.NotNull;
+
+import io.github.hiiragi283.material.api.material.HTMaterial;
 
 public final class HTMaterialFlagSet implements Iterable<HTMaterialFlag> {
 
@@ -28,7 +29,7 @@ public final class HTMaterialFlagSet implements Iterable<HTMaterialFlag> {
         return backingSet.containsAll(c);
     }
 
-    //    Iterable    //
+    // Iterable //
 
     @NotNull
     @Override
@@ -36,7 +37,7 @@ public final class HTMaterialFlagSet implements Iterable<HTMaterialFlag> {
         return backingSet.iterator();
     }
 
-    //    Builder    //
+    // Builder //
 
     public static final class Builder {
 
@@ -55,7 +56,5 @@ public final class HTMaterialFlagSet implements Iterable<HTMaterialFlag> {
         public HTMaterialFlagSet build() {
             return new HTMaterialFlagSet(backingSet);
         }
-
     }
-
 }

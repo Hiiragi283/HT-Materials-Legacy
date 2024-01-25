@@ -1,14 +1,15 @@
 package io.github.hiiragi283.material.api.material.property;
 
-import io.github.hiiragi283.material.api.material.HTMaterial;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import io.github.hiiragi283.material.api.material.HTMaterial;
 
 public final class HTMaterialPropertyMap {
 
@@ -35,7 +36,7 @@ public final class HTMaterialPropertyMap {
         backingMap.values().forEach(property -> property.verify(material));
     }
 
-    //    Map    //
+    // Map //
 
     @NotNull
     public Set<HTPropertyKey<?>> keySet() {
@@ -52,15 +53,14 @@ public final class HTMaterialPropertyMap {
         return backingMap.entrySet();
     }
 
-    //    Builder    //
+    // Builder //
 
     public static final class Builder {
 
         private final Map<HTPropertyKey<?>, HTMaterialProperty<?>> backingMap = new HashMap<>();
 
         public <T extends HTMaterialProperty<T>> Builder add(T property) {
-            return add(property, prop -> {
-            });
+            return add(property, prop -> {});
         }
 
         public <T extends HTMaterialProperty<T>> Builder add(T property, Consumer<T> consumer) {
@@ -72,7 +72,5 @@ public final class HTMaterialPropertyMap {
         public HTMaterialPropertyMap build() {
             return new HTMaterialPropertyMap(backingMap);
         }
-
     }
-
 }

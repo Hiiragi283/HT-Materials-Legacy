@@ -1,20 +1,19 @@
 package io.github.hiiragi283.material.util;
 
-import com.google.gson.JsonObject;
-import io.github.hiiragi283.material.HMReference;
+import java.util.StringJoiner;
+import java.util.stream.Stream;
+
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.ModContainer;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.StringJoiner;
-import java.util.function.Consumer;
-import java.util.stream.Stream;
+import io.github.hiiragi283.material.HMReference;
 
 public abstract class HTUtils {
 
-    private HTUtils() {
-    }
+    private HTUtils() {}
 
     @NotNull
     public static String joinToString(@NotNull String delimiter, @NotNull Stream<String> stream) {
@@ -32,12 +31,4 @@ public abstract class HTUtils {
         ModContainer activeMod = getActiveModContainer();
         return activeMod != null && activeMod.getModId().equals(HMReference.MOD_ID);
     }
-
-    @NotNull
-    public static JsonObject buildJson(@NotNull Consumer<JsonObject> consumer) {
-        JsonObject jsonObject = new JsonObject();
-        consumer.accept(jsonObject);
-        return jsonObject;
-    }
-
 }

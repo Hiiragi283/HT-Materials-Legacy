@@ -1,18 +1,17 @@
 package io.github.hiiragi283.material.util;
 
-import net.minecraft.client.renderer.GlStateManager;
-
 import java.awt.*;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
 
+import net.minecraft.client.renderer.GlStateManager;
+
 public abstract class HTColor {
 
-    private HTColor() {
-    }
+    private HTColor() {}
 
-    //Minecraftのカラーコードと同じ色
+    // Minecraftのカラーコードと同じ色
     public static final Color BLACK = new Color(0x00, 0x00, 0x00);
     public static final Color DARK_BLUE = new Color(0x00, 0x00, 0xAA);
     public static final Color DARK_GREEN = new Color(0x00, 0xAA, 0x00);
@@ -30,7 +29,7 @@ public abstract class HTColor {
     public static final Color YELLOW = new Color(0xFF, 0xFF, 0x55);
     public static final Color WHITE = new Color(0xFF, 0xFF, 0xFF);
 
-    //複数の色を混合するメソッド
+    // 複数の色を混合するメソッド
     public static Color mixColor(Color... colors) {
         return mixColor(Arrays.asList(colors));
     }
@@ -47,7 +46,7 @@ public abstract class HTColor {
         return new Color(averageR / colors.size(), averageG / colors.size(), averageB / colors.size());
     }
 
-    //複数の色を比率を指定して混合するメソッド
+    // 複数の色を比率を指定して混合するメソッド
     public static Color blendColor(Map<Color, Integer> colors) {
         int averageR = 0;
         int averageG = 0;
@@ -62,7 +61,6 @@ public abstract class HTColor {
         return weight == 0 ? WHITE : new Color(averageR / weight, averageG / weight, averageB / weight);
     }
 
-
     public static void setGLColor(int color) {
         float red = (color >> 16 & 255) / 255.0f;
         float green = (color >> 8 & 255) / 255.0f;
@@ -73,5 +71,4 @@ public abstract class HTColor {
     public static void setGLColor(Color color) {
         setGLColor(color.getRGB());
     }
-
 }

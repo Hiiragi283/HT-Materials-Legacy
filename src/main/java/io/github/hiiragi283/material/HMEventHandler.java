@@ -1,10 +1,10 @@
 package io.github.hiiragi283.material;
 
-import io.github.hiiragi283.material.api.item.HTMaterialItem;
-import io.github.hiiragi283.material.api.material.HTMaterial;
-import io.github.hiiragi283.material.api.material.HTMaterialUtils;
-import io.github.hiiragi283.material.api.part.HTPart;
-import io.github.hiiragi283.material.api.part.HTPartDictionary;
+import java.awt.*;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -22,17 +22,17 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
-import java.awt.*;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import io.github.hiiragi283.material.api.item.HTMaterialItem;
+import io.github.hiiragi283.material.api.material.HTMaterial;
+import io.github.hiiragi283.material.api.material.HTMaterialUtils;
+import io.github.hiiragi283.material.api.part.HTPart;
+import io.github.hiiragi283.material.api.part.HTPartDictionary;
 
 @SuppressWarnings("unused")
 @Mod.EventBusSubscriber()
 public abstract class HMEventHandler {
 
-    private HMEventHandler() {
-    }
+    private HMEventHandler() {}
 
     @SubscribeEvent
     public static void onRegisterItem(RegistryEvent.Register<Item> event) {
@@ -44,38 +44,39 @@ public abstract class HMEventHandler {
     @Mod.EventBusSubscriber(value = Side.CLIENT)
     public static abstract class Client {
 
-        private Client() {
-        }
+        private Client() {}
 
         @SubscribeEvent
         public static void onItemColored(ColorHandlerEvent.Item event) {
             HTMaterialItem.getItems().forEach(item -> event.getItemColors().registerItemColorHandler(
-                    (stack, tintIndex) -> Optional.ofNullable(item.getMaterial(stack)).map(HTMaterial::color).map(Color::getRGB).orElse(-1),
-                    item
-            ));
+                    (stack, tintIndex) -> Optional.ofNullable(item.getMaterial(stack)).map(HTMaterial::color)
+                            .map(Color::getRGB).orElse(-1),
+                    item));
         }
 
         @SubscribeEvent
         public static void onModelRegister(ModelRegistryEvent event) {
-            ModelLoader.setCustomModelResourceLocation(HTMaterialsMod.ICON, 0, new ModelResourceLocation(Objects.requireNonNull(HTMaterialsMod.ICON.getRegistryName()), "inventory"));
-            HTMaterialItem.getItems().forEach(item -> item.getMaterialIndexes().forEach(index -> ModelLoader.setCustomModelResourceLocation(item, index, new ModelResourceLocation(Objects.requireNonNull(item.getRegistryName()), "inventory"))));
+            ModelLoader.setCustomModelResourceLocation(HTMaterialsMod.ICON, 0, new ModelResourceLocation(
+                    Objects.requireNonNull(HTMaterialsMod.ICON.getRegistryName()), "inventory"));
+            HTMaterialItem.getItems().forEach(item -> item.getMaterialIndexes()
+                    .forEach(index -> ModelLoader.setCustomModelResourceLocation(item, index,
+                            new ModelResourceLocation(Objects.requireNonNull(item.getRegistryName()), "inventory"))));
         }
 
         @SubscribeEvent
         public static void onItemTooltip(ItemTooltipEvent event) {
-
             ItemStack stack = event.getItemStack();
             if (stack.isEmpty()) return;
 
             List<String> tooltip = event.getToolTip();
 
-            //Material Tooltips for Item
+            // Material Tooltips for Item
             HTPart part = HTPartDictionary.getPart(event.getItemStack());
             if (part != null) {
                 HTMaterialUtils.addInformation(part.getMaterial(), part.getShape(), stack, tooltip);
             }
 
-            //Material Tooltips for Fluid Container Item
+            // Material Tooltips for Fluid Container Item
             Optional.ofNullable(stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null))
                     .map(IFluidHandler::getTankProperties)
                     .map(properties -> properties[0])
@@ -84,19 +85,18 @@ public abstract class HMEventHandler {
                     .map(Fluid::getName)
                     .map(HTMaterial::getMaterialOrNull)
                     .ifPresent(material -> HTMaterialUtils.addInformation(material, null, stack, tooltip));
-                    /*.map(Arrays::asList)
-                    .stream()
-                    .flatMap(Collection::stream)
-                    .map(IFluidTankProperties::getContents)
-                    .filter(Objects::nonNull)
-                    .map(FluidStack::getFluid)
-                    .map(Fluid::getName)
-                    .map(HTMaterial::getMaterialOrNull)
-                    .filter(Objects::nonNull)
-                    .forEach(material -> HTMaterialUtils.addInformation(material, null, stack, tooltip));*/
-
+            /*
+             * .map(Arrays::asList)
+             * .stream()
+             * .flatMap(Collection::stream)
+             * .map(IFluidTankProperties::getContents)
+             * .filter(Objects::nonNull)
+             * .map(FluidStack::getFluid)
+             * .map(Fluid::getName)
+             * .map(HTMaterial::getMaterialOrNull)
+             * .filter(Objects::nonNull)
+             * .forEach(material -> HTMaterialUtils.addInformation(material, null, stack, tooltip));
+             */
         }
-
     }
-
 }

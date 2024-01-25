@@ -1,17 +1,19 @@
 package io.github.hiiragi283.material.api.shape;
 
-import io.github.hiiragi283.material.api.material.flag.HTMaterialFlags;
+import java.lang.reflect.Field;
+
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-import java.lang.reflect.Field;
+import io.github.hiiragi283.material.api.material.flag.HTMaterialFlags;
 
 @Mod.EventBusSubscriber
 public enum HTShapes {
+
     INSTANCE;
 
-    //    Block    //
+    // Block //
 
     public static final HTShapeKey BLOCK = new HTShapeKey("block");
     public static final HTShapeKey BRICK = new HTShapeKey("brick");
@@ -25,7 +27,7 @@ public enum HTShapes {
     public static final HTShapeKey STAIR = new HTShapeKey("stair");
     public static final HTShapeKey STONE = new HTShapeKey("stone");
 
-    //    Item    //
+    // Item //
 
     public static final HTShapeKey DUST = new HTShapeKey("dust");
     public static final HTShapeKey GEAR = new HTShapeKey("gear");
@@ -35,7 +37,7 @@ public enum HTShapes {
     public static final HTShapeKey PLATE = new HTShapeKey("plate");
     public static final HTShapeKey STICK = new HTShapeKey("stick");
 
-    //    Register    //
+    // Register //
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void registerShapeKey(HTShapeEvent.Register event) {
@@ -74,5 +76,4 @@ public enum HTShapes {
                 .setEnabled()
                 .addRequiredFlag(HTMaterialFlags.GENERATE_STICK);
     }
-
 }

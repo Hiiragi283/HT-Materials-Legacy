@@ -1,15 +1,17 @@
 package io.github.hiiragi283.material.api.item;
 
+import java.util.stream.Stream;
+
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import io.github.hiiragi283.material.api.material.HTMaterial;
 import io.github.hiiragi283.material.api.material.HTMaterialKey;
 import io.github.hiiragi283.material.api.part.HTPart;
 import io.github.hiiragi283.material.api.shape.HTShapeKey;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.stream.Stream;
 
 public interface MaterialItemConvertible {
 
@@ -40,7 +42,8 @@ public interface MaterialItemConvertible {
     }
 
     default Stream<ItemStack> getMaterialStacks() {
-        return this instanceof Item item ? getMaterialIndexes().map(index -> new ItemStack(item, 1, index)) : Stream.empty();
+        return this instanceof Item item ? getMaterialIndexes().map(index -> new ItemStack(item, 1, index)) :
+                Stream.empty();
     }
 
     default HTPart getPart(ItemStack stack) {
@@ -50,5 +53,4 @@ public interface MaterialItemConvertible {
     default String getOreDict(ItemStack stack) {
         return getShapeKey().getOreDict(getMaterialKey(stack));
     }
-
 }

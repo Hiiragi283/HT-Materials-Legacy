@@ -1,11 +1,12 @@
 package io.github.hiiragi283.material.api.fluid;
 
-import io.github.hiiragi283.material.api.material.HTMaterial;
-import io.github.hiiragi283.material.api.material.property.HTFluidProperty;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.fluids.Fluid;
+
+import io.github.hiiragi283.material.api.material.HTMaterial;
+import io.github.hiiragi283.material.api.material.property.HTFluidProperty;
 
 public final class HTMaterialFluid extends Fluid {
 
@@ -47,5 +48,4 @@ public final class HTMaterialFluid extends Fluid {
     public String getUnlocalizedName() {
         return unlocalizedName;
     }
-
 }

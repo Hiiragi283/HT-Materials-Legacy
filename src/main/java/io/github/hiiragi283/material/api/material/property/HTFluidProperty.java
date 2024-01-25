@@ -1,15 +1,17 @@
 package io.github.hiiragi283.material.api.material.property;
 
-import io.github.hiiragi283.material.api.material.HTMaterial;
-import io.github.hiiragi283.material.api.shape.HTShape;
+import java.util.List;
+
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
+import io.github.hiiragi283.material.api.material.HTMaterial;
+import io.github.hiiragi283.material.api.shape.HTShape;
 
 public final class HTFluidProperty implements HTMaterialProperty<HTFluidProperty> {
 
@@ -29,7 +31,7 @@ public final class HTFluidProperty implements HTMaterialProperty<HTFluidProperty
         return this;
     }
 
-    //    HTMaterialProperty    //
+    // HTMaterialProperty //
 
     @NotNull
     @Override
@@ -38,23 +40,21 @@ public final class HTFluidProperty implements HTMaterialProperty<HTFluidProperty
     }
 
     @Override
-    public void verify(HTMaterial material) {
-
-    }
+    public void verify(HTMaterial material) {}
 
     @Override
-    public void addInformation(@NotNull HTMaterial material, @Nullable HTShape shape, @NotNull ItemStack stack, @NotNull List<String> tooltips) {
+    public void addInformation(@NotNull HTMaterial material, @Nullable HTShape shape, @NotNull ItemStack stack,
+                               @NotNull List<String> tooltips) {
         Fluid fluid = FluidRegistry.getFluid(material.name());
-        //Luminosity
+        // Luminosity
         tooltips.add(I18n.format("tooltip.ht_materials.material.luminosity", fluid.getLuminosity()));
-        //Density
+        // Density
         tooltips.add(I18n.format("tooltip.ht_materials.material.density", Math.abs(fluid.getDensity())));
-        //Temperature
+        // Temperature
         tooltips.add(I18n.format("tooltip.ht_materials.material.temperature", fluid.getTemperature()));
-        //Viscosity
+        // Viscosity
         tooltips.add(I18n.format("tooltip.ht_materials.material.viscosity", fluid.getViscosity() / 1000.0));
-        //Is Gaseous
+        // Is Gaseous
         tooltips.add(I18n.format("tooltip.ht_materials.material.gaseous", fluid.isGaseous()));
     }
-
 }

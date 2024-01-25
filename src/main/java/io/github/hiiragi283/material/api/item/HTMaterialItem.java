@@ -1,8 +1,9 @@
 package io.github.hiiragi283.material.api.item;
 
-import io.github.hiiragi283.material.HMReference;
-import io.github.hiiragi283.material.HTMaterialsMod;
-import io.github.hiiragi283.material.api.shape.HTShapeKey;
+import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -10,12 +11,13 @@ import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import io.github.hiiragi283.material.HMReference;
+import io.github.hiiragi283.material.HTMaterialsMod;
+import io.github.hiiragi283.material.api.shape.HTShapeKey;
 
 public final class HTMaterialItem extends Item implements MaterialItemConvertible {
 
@@ -29,7 +31,7 @@ public final class HTMaterialItem extends Item implements MaterialItemConvertibl
         setRegistryName(HMReference.MOD_ID, shapeKey.name());
     }
 
-    //    Item    //
+    // Item //
 
     @Override
     public int getMetadata(int damage) {
@@ -50,7 +52,7 @@ public final class HTMaterialItem extends Item implements MaterialItemConvertibl
         }
     }
 
-    //    MaterialItemConvertible    //
+    // MaterialItemConvertible //
 
     @NotNull
     @Override
@@ -58,7 +60,7 @@ public final class HTMaterialItem extends Item implements MaterialItemConvertibl
         return shapeKey;
     }
 
-    //    Registry    //
+    // Registry //
 
     private final static Map<HTShapeKey, HTMaterialItem> registry = new LinkedHashMap<>();
 
@@ -70,5 +72,4 @@ public final class HTMaterialItem extends Item implements MaterialItemConvertibl
     public static HTMaterialItem getItem(HTShapeKey shapeKey) {
         return registry.get(shapeKey);
     }
-
 }

@@ -1,5 +1,11 @@
 package io.github.hiiragi283.material.compat.jei;
 
+import java.util.stream.Collectors;
+
+import net.minecraft.item.ItemStack;
+
+import org.jetbrains.annotations.NotNull;
+
 import io.github.hiiragi283.material.HMReference;
 import io.github.hiiragi283.material.HTMaterialsMod;
 import io.github.hiiragi283.material.api.material.HTMaterial;
@@ -8,10 +14,6 @@ import mezz.jei.api.IModPlugin;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.JEIPlugin;
 import mezz.jei.api.recipe.IRecipeCategoryRegistration;
-import net.minecraft.item.ItemStack;
-import org.jetbrains.annotations.NotNull;
-
-import java.util.stream.Collectors;
 
 @JEIPlugin
 public class HTJeiPlugin implements IModPlugin {

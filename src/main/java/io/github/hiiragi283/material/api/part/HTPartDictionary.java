@@ -1,40 +1,40 @@
 package io.github.hiiragi283.material.api.part;
 
+import java.util.*;
+import java.util.stream.Stream;
+
+import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.oredict.OreDictionary;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import com.cleanroommc.groovyscript.api.GroovyBlacklist;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
+
 import io.github.hiiragi283.material.api.material.HTMaterialKey;
 import io.github.hiiragi283.material.api.material.materials.HTVanillaMaterials;
 import io.github.hiiragi283.material.api.registry.HTNonNullTable;
 import io.github.hiiragi283.material.api.registry.ItemWithMeta;
 import io.github.hiiragi283.material.api.shape.HTShapeKey;
 import io.github.hiiragi283.material.api.shape.HTShapes;
-import net.minecraft.block.Block;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.oredict.OreDictionary;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.*;
-import java.util.stream.Stream;
 
 @Mod.EventBusSubscriber()
 public abstract class HTPartDictionary {
 
     private static final Logger LOGGER = LogManager.getLogger(HTPartDictionary.class.getSimpleName());
 
-    private HTPartDictionary() {
-    }
+    private HTPartDictionary() {}
 
-    //    ItemWithMeta -> HTPart    //
+    // ItemWithMeta -> HTPart //
 
     private static final Map<ItemWithMeta, HTPart> itemToPart = new HashMap<>();
 
@@ -45,12 +45,7 @@ public abstract class HTPartDictionary {
 
     @Nullable
     public static HTPart getPart(@NotNull Item item, int meta) {
-        return getPart(new ItemWithMeta(item, meta));
-    }
-
-    @Nullable
-    private static HTPart getPart(@NotNull ItemWithMeta itemWithMeta) {
-        return itemToPart.get(itemWithMeta);
+        return ItemWithMeta.from(item, meta).map(itemToPart::get).filter(Objects::nonNull).findFirst().orElse(null);
     }
 
     public static boolean hasPart(@NotNull ItemStack stack) {
@@ -58,14 +53,10 @@ public abstract class HTPartDictionary {
     }
 
     public static boolean hasPart(@NotNull Item item, int meta) {
-        return hasPart(new ItemWithMeta(item, meta));
+        return ItemWithMeta.from(item, meta).map(itemToPart::containsKey).findFirst().orElse(false);
     }
 
-    private static boolean hasPart(@NotNull ItemWithMeta itemWithMeta) {
-        return itemToPart.containsKey(itemWithMeta);
-    }
-
-    //    HTShapeKey, HTMaterialKey -> ItemWithMeta    //
+    // HTShapeKey, HTMaterialKey -> ItemWithMeta //
 
     private static final Table<HTShapeKey, HTMaterialKey, ItemWithMeta> partToItem = HashBasedTable.create();
 
@@ -81,7 +72,8 @@ public abstract class HTPartDictionary {
     }
 
     @NotNull
-    public static ItemStack getDefaultStack(@NotNull HTShapeKey shapeKey, @NotNull HTMaterialKey materialKey, int count) {
+    public static ItemStack getDefaultStack(@NotNull HTShapeKey shapeKey, @NotNull HTMaterialKey materialKey,
+                                            int count) {
         ItemWithMeta itemWithMeta = getDefaultItem(shapeKey, materialKey);
         return itemWithMeta == null ? ItemStack.EMPTY : itemWithMeta.toStack(count);
     }
@@ -90,9 +82,10 @@ public abstract class HTPartDictionary {
         return partToItem.contains(shapeKey, materialKey);
     }
 
-    //    HTShapeKey, HTMaterialKey -> Stream<ItemWithMeta>    //
+    // HTShapeKey, HTMaterialKey -> Stream<ItemWithMeta> //
 
-    private static final HTNonNullTable<HTShapeKey, HTMaterialKey, Set<ItemWithMeta>> partToItems = HTNonNullTable.create((shape, material) -> new HashSet<>());
+    private static final HTNonNullTable<HTShapeKey, HTMaterialKey, Set<ItemWithMeta>> partToItems = HTNonNullTable
+            .create((shape, material) -> new HashSet<>());
 
     @NotNull
     public static Stream<ItemWithMeta> getItems(@NotNull HTShapeKey shapeKey, @NotNull HTMaterialKey materialKey) {
@@ -105,35 +98,30 @@ public abstract class HTPartDictionary {
     }
 
     @NotNull
-    public static Stream<ItemStack> getItemStacks(@NotNull HTShapeKey shapeKey, @NotNull HTMaterialKey materialKey, int count) {
+    public static Stream<ItemStack> getItemStacks(@NotNull HTShapeKey shapeKey, @NotNull HTMaterialKey materialKey,
+                                                  int count) {
         return getItems(shapeKey, materialKey).map(itemWithMeta -> itemWithMeta.toStack(count));
     }
 
-    //   Register    //
+    // Register //
 
-    public static void register(@NotNull HTShapeKey shapeKey, @NotNull HTMaterialKey materialKey, @NotNull ItemStack stack) {
-        register(shapeKey, materialKey, stack.getItem(), stack.getMetadata());
+    public static void register(@NotNull HTShapeKey shapeKey, @NotNull HTMaterialKey materialKey,
+                                @NotNull ItemStack stack) {
+        ItemWithMeta.fromStack(stack).forEach(itemWithMeta -> registerInternal(shapeKey, materialKey, itemWithMeta));
     }
 
-    public static void register(@NotNull HTShapeKey shapeKey, @NotNull HTMaterialKey materialKey, @NotNull Block block, int meta) {
-        register(shapeKey, materialKey, new ItemWithMeta(Item.getItemFromBlock(block), meta));
+    public static void register(@NotNull HTShapeKey shapeKey, @NotNull HTMaterialKey materialKey, @NotNull Block block,
+                                int meta) {
+        ItemWithMeta.from(block, meta).forEach(itemWithMeta -> registerInternal(shapeKey, materialKey, itemWithMeta));
     }
 
-    public static void register(@NotNull HTShapeKey shapeKey, @NotNull HTMaterialKey materialKey, @NotNull Item item, int meta) {
-        register(shapeKey, materialKey, new ItemWithMeta(item, meta));
+    public static void register(@NotNull HTShapeKey shapeKey, @NotNull HTMaterialKey materialKey, @NotNull Item item,
+                                int meta) {
+        ItemWithMeta.from(item, meta).forEach(itemWithMeta -> registerInternal(shapeKey, materialKey, itemWithMeta));
     }
 
-    @GroovyBlacklist
-    public static void register(@NotNull HTShapeKey shapeKey, @NotNull HTMaterialKey materialKey, @NotNull ItemWithMeta itemWithMeta) {
-        if (itemWithMeta.meta() == OreDictionary.WILDCARD_VALUE) {
-            Item item = itemWithMeta.item();
-            NonNullList<ItemStack> list = NonNullList.create();
-            item.getSubItems(CreativeTabs.SEARCH, list);
-            list.forEach(stack1 -> registerInternal(shapeKey, materialKey, new ItemWithMeta(stack1.getItem(), stack1.getMetadata())));
-        } else registerInternal(shapeKey, materialKey, itemWithMeta);
-    }
-
-    private static void registerInternal(@NotNull HTShapeKey shapeKey, @NotNull HTMaterialKey materialKey, @NotNull ItemWithMeta itemWithMeta) {
+    private static void registerInternal(@NotNull HTShapeKey shapeKey, @NotNull HTMaterialKey materialKey,
+                                         @NotNull ItemWithMeta itemWithMeta) {
         if (itemWithMeta.isEmpty()) return;
         HTPart part = new HTPart(shapeKey, materialKey);
         itemToPart.putIfAbsent(itemWithMeta, part);
@@ -145,7 +133,6 @@ public abstract class HTPartDictionary {
 
     @GroovyBlacklist
     public static void reloadOreDicts() {
-
         LOGGER.info("Reloading Ore Dictionary...");
         Arrays.stream(OreDictionary.getOreNames()).forEach(oredict -> {
             OreDictionary.getOres(oredict).stream()
@@ -184,7 +171,6 @@ public abstract class HTPartDictionary {
         register(HTShapes.BRICK, HTVanillaMaterials.STONE, Blocks.STONEBRICK, OreDictionary.WILDCARD_VALUE);
         register(HTShapes.BRICK, HTVanillaMaterials.NETHER_BRICK, Blocks.NETHER_BRICK, 0);
         LOGGER.info("Registered Custom Vanilla entries!");
-
     }
 
     @SubscribeEvent
@@ -198,5 +184,4 @@ public abstract class HTPartDictionary {
             register(part.shapeKey(), part.materialKey(), stack);
         }
     }
-
 }

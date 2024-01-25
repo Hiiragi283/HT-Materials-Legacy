@@ -1,22 +1,24 @@
 package io.github.hiiragi283.material.api.material;
 
-import com.cleanroommc.groovyscript.api.GroovyBlacklist;
-import com.google.common.collect.ImmutableMap;
-import io.github.hiiragi283.material.api.material.flag.HTMaterialFlag;
-import io.github.hiiragi283.material.api.material.flag.HTMaterialFlagSet;
-import io.github.hiiragi283.material.api.material.property.HTMaterialProperty;
-import io.github.hiiragi283.material.api.material.property.HTMaterialPropertyMap;
-import io.github.hiiragi283.material.api.material.property.HTPropertyKey;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 import java.awt.*;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.stream.Stream;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import com.cleanroommc.groovyscript.api.GroovyBlacklist;
+import com.google.common.collect.ImmutableMap;
+
+import io.github.hiiragi283.material.api.material.flag.HTMaterialFlag;
+import io.github.hiiragi283.material.api.material.flag.HTMaterialFlagSet;
+import io.github.hiiragi283.material.api.material.property.HTMaterialProperty;
+import io.github.hiiragi283.material.api.material.property.HTMaterialPropertyMap;
+import io.github.hiiragi283.material.api.material.property.HTPropertyKey;
 
 public final class HTMaterial {
 
@@ -28,7 +30,8 @@ public final class HTMaterial {
 
     private final HTMaterialFlagSet flags;
 
-    private HTMaterial(HTMaterialKey key, HTMaterialInfo info, HTMaterialPropertyMap properties, HTMaterialFlagSet flags) {
+    private HTMaterial(HTMaterialKey key, HTMaterialInfo info, HTMaterialPropertyMap properties,
+                       HTMaterialFlagSet flags) {
         this.key = key;
         this.info = info;
         this.properties = properties;
@@ -77,7 +80,7 @@ public final class HTMaterial {
         flags.verify(this);
     }
 
-    //    Properties    //
+    // Properties //
 
     @Nullable
     public <T extends HTMaterialProperty<T>> T getProperty(HTPropertyKey<T> key) {
@@ -88,7 +91,7 @@ public final class HTMaterial {
         return properties.contains(key);
     }
 
-    //    Flags    //
+    // Flags //
 
     public boolean hasFlag(HTMaterialFlag flag) {
         return flags.contains(flag);
@@ -98,7 +101,7 @@ public final class HTMaterial {
         return this.flags.containsAll(flags);
     }
 
-    //    Object    //
+    // Object //
 
     @Override
     public boolean equals(Object obj) {
@@ -117,7 +120,7 @@ public final class HTMaterial {
         return key.toString();
     }
 
-    //    Registry    //
+    // Registry //
 
     private static final Logger LOGGER = LogManager.getLogger("HTMaterial");
 
@@ -172,11 +175,10 @@ public final class HTMaterial {
     }
 
     static void create(
-            HTMaterialKey key,
-            HTMaterialInfo info,
-            HTMaterialPropertyMap properties,
-            HTMaterialFlagSet flags
-    ) {
+                       HTMaterialKey key,
+                       HTMaterialInfo info,
+                       HTMaterialPropertyMap properties,
+                       HTMaterialFlagSet flags) {
         var material = new HTMaterial(key, info, properties, flags);
         String name = key.name();
         if (registry.putIfAbsent(name, material) != null) {
@@ -190,5 +192,4 @@ public final class HTMaterial {
         }
         LOGGER.info("Material: " + key + " registered!");
     }
-
 }

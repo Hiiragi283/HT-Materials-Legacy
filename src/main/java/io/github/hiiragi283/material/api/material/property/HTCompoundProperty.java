@@ -1,13 +1,15 @@
 package io.github.hiiragi283.material.api.material.property;
 
-import com.google.common.collect.ImmutableMap;
-import io.github.hiiragi283.material.api.material.*;
-import io.github.hiiragi283.material.util.HTCollectors;
-import org.jetbrains.annotations.NotNull;
-
 import java.awt.*;
 import java.util.Map;
 import java.util.function.Consumer;
+
+import org.jetbrains.annotations.NotNull;
+
+import com.google.common.collect.ImmutableMap;
+
+import io.github.hiiragi283.material.api.material.*;
+import io.github.hiiragi283.material.util.HTCollectors;
 
 public final class HTCompoundProperty implements HTComponentProperty<HTCompoundProperty> {
 
@@ -31,18 +33,21 @@ public final class HTCompoundProperty implements HTComponentProperty<HTCompoundP
     @NotNull
     @Override
     public Color asColor() {
-        return ColorConvertible.average(backingMap.entrySet().stream().collect(HTCollectors.mapKeys(key -> HTMaterial.getMaterial(key.name()).color())));
+        return ColorConvertible.average(backingMap.entrySet().stream()
+                .collect(HTCollectors.mapKeys(key -> HTMaterial.getMaterial(key.name()).color())));
     }
 
     @NotNull
     @Override
     public String asFormula() {
-        return FormulaConvertible.format(backingMap.entrySet().stream().collect(HTCollectors.mapKeys(key -> HTMaterial.getMaterial(key.name()).formula())));
+        return FormulaConvertible.format(backingMap.entrySet().stream()
+                .collect(HTCollectors.mapKeys(key -> HTMaterial.getMaterial(key.name()).formula())));
     }
 
     @Override
     public double asMolar() {
-        return MolarMassConvertible.calculate(backingMap.entrySet().stream().collect(HTCollectors.mapKeys(key -> HTMaterial.getMaterial(key.name()).molar())));
+        return MolarMassConvertible.calculate(backingMap.entrySet().stream()
+                .collect(HTCollectors.mapKeys(key -> HTMaterial.getMaterial(key.name()).molar())));
     }
 
     @NotNull
@@ -50,5 +55,4 @@ public final class HTCompoundProperty implements HTComponentProperty<HTCompoundP
     public HTPropertyKey<HTCompoundProperty> getKey() {
         return HTPropertyKeys.COMPOUND;
     }
-
 }

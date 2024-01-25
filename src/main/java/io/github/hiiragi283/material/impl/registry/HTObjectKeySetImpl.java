@@ -1,12 +1,13 @@
 package io.github.hiiragi283.material.impl.registry;
 
-import io.github.hiiragi283.material.api.registry.HTObjectKey;
-import io.github.hiiragi283.material.api.registry.HTObjectKeySet;
-import org.jetbrains.annotations.NotNull;
-
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+
+import org.jetbrains.annotations.NotNull;
+
+import io.github.hiiragi283.material.api.registry.HTObjectKey;
+import io.github.hiiragi283.material.api.registry.HTObjectKeySet;
 
 public final class HTObjectKeySetImpl<T extends HTObjectKey<?>> implements HTObjectKeySet<T> {
 
@@ -27,5 +28,4 @@ public final class HTObjectKeySetImpl<T extends HTObjectKey<?>> implements HTObj
     public Iterator<T> iterator() {
         return backingSet.iterator();
     }
-
 }

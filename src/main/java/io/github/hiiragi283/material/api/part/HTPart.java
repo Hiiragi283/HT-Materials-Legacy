@@ -1,17 +1,19 @@
 package io.github.hiiragi283.material.api.part;
 
+import java.util.Arrays;
+import java.util.List;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import com.github.bsideup.jabel.Desugar;
 import com.google.common.base.CaseFormat;
+
 import io.github.hiiragi283.material.api.material.HTMaterial;
 import io.github.hiiragi283.material.api.material.HTMaterialKey;
 import io.github.hiiragi283.material.api.shape.HTShape;
 import io.github.hiiragi283.material.api.shape.HTShapeKey;
 import io.github.hiiragi283.material.util.HTUtils;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.Arrays;
-import java.util.List;
 
 @Desugar
 public record HTPart(HTShapeKey shapeKey, HTMaterialKey materialKey) {
@@ -54,5 +56,4 @@ public record HTPart(HTShapeKey shapeKey, HTMaterialKey materialKey) {
     public HTShape getShapeOrNull() {
         return HTShape.getShapeOrNull(shapeKey.name());
     }
-
 }

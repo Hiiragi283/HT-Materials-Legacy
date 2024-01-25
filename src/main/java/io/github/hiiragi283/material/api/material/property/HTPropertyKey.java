@@ -1,9 +1,9 @@
 package io.github.hiiragi283.material.api.material.property;
 
-import io.github.hiiragi283.material.api.registry.HTObjectKey;
-
 import java.util.HashMap;
 import java.util.Map;
+
+import io.github.hiiragi283.material.api.registry.HTObjectKey;
 
 @SuppressWarnings("ClassCanBeRecord")
 public final class HTPropertyKey<T extends HTMaterialProperty<T>> implements HTObjectKey<T> {
@@ -18,7 +18,7 @@ public final class HTPropertyKey<T extends HTMaterialProperty<T>> implements HTO
         registry.putIfAbsent(name, this);
     }
 
-    //    HTObjectKey    //
+    // HTObjectKey //
 
     @Override
     public String getName() {
@@ -30,12 +30,12 @@ public final class HTPropertyKey<T extends HTMaterialProperty<T>> implements HTO
         return objClass;
     }
 
-    //    Object    //
+    // Object //
 
     @Override
     public boolean equals(Object obj) {
         if (obj == null) return false;
-        if (obj instanceof HTPropertyKey<?> otherKey)
+        if (obj instanceof HTPropertyKey<?>otherKey)
             return otherKey.name.equals(this.name) && otherKey.objClass.equals(this.objClass);
         return false;
     }
@@ -50,7 +50,7 @@ public final class HTPropertyKey<T extends HTMaterialProperty<T>> implements HTO
         return name;
     }
 
-    //    Registry    //
+    // Registry //
 
     private static final Map<String, HTPropertyKey<?>> registry = new HashMap<>();
 
@@ -62,5 +62,4 @@ public final class HTPropertyKey<T extends HTMaterialProperty<T>> implements HTO
     static {
         HTPropertyKeys.init();
     }
-
 }

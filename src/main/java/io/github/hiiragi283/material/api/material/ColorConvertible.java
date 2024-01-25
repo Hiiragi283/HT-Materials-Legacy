@@ -1,15 +1,17 @@
 package io.github.hiiragi283.material.api.material;
 
-import com.google.common.collect.ImmutableMap;
-import io.github.hiiragi283.material.util.HTCollectors;
-import org.jetbrains.annotations.NotNull;
-
 import java.awt.*;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
+
+import org.jetbrains.annotations.NotNull;
+
+import com.google.common.collect.ImmutableMap;
+
+import io.github.hiiragi283.material.util.HTCollectors;
 
 @FunctionalInterface
 public interface ColorConvertible {
@@ -60,5 +62,4 @@ public interface ColorConvertible {
         }
         return weightSum == 0 ? Color.WHITE : new Color(redSum / weightSum, greenSum / weightSum, blueSum / weightSum);
     }
-
 }

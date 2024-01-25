@@ -1,14 +1,15 @@
 package io.github.hiiragi283.material.api.material.property;
 
-import io.github.hiiragi283.material.api.material.ColorConvertible;
-import io.github.hiiragi283.material.api.material.HTMaterialKey;
-import io.github.hiiragi283.material.util.HTUtils;
-import org.jetbrains.annotations.NotNull;
-import scala.actors.threadpool.Arrays;
-
 import java.awt.*;
 import java.util.Iterator;
 import java.util.stream.StreamSupport;
+
+import org.jetbrains.annotations.NotNull;
+
+import io.github.hiiragi283.material.api.material.ColorConvertible;
+import io.github.hiiragi283.material.api.material.HTMaterialKey;
+import io.github.hiiragi283.material.util.HTUtils;
+import scala.actors.threadpool.Arrays;
 
 public final class HTMixtureProperty implements HTComponentProperty<HTMixtureProperty>, Iterable<HTMaterialKey> {
 
@@ -32,12 +33,14 @@ public final class HTMixtureProperty implements HTComponentProperty<HTMixturePro
     @NotNull
     @Override
     public Color asColor() {
-        return ColorConvertible.average(StreamSupport.stream(iterable.spliterator(), false).map(key -> key.getMaterial().color()));
+        return ColorConvertible
+                .average(StreamSupport.stream(iterable.spliterator(), false).map(key -> key.getMaterial().color()));
     }
 
     @Override
     public @NotNull String asFormula() {
-        return HTUtils.joinToString(", ", StreamSupport.stream(iterable.spliterator(), false).map(key -> key.getMaterial().formula()));
+        return HTUtils.joinToString(", ",
+                StreamSupport.stream(iterable.spliterator(), false).map(key -> key.getMaterial().formula()));
     }
 
     @Override
@@ -49,5 +52,4 @@ public final class HTMixtureProperty implements HTComponentProperty<HTMixturePro
     public @NotNull HTPropertyKey<HTMixtureProperty> getKey() {
         return HTPropertyKeys.MIXTURE;
     }
-
 }

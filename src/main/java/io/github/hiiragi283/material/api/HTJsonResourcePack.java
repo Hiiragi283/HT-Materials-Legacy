@@ -1,19 +1,5 @@
 package io.github.hiiragi283.material.api;
 
-import com.google.common.collect.ImmutableSet;
-import com.google.gson.JsonElement;
-import io.github.hiiragi283.material.HMReference;
-import io.github.hiiragi283.material.util.HTUtils;
-import net.minecraft.client.resources.IResourcePack;
-import net.minecraft.client.resources.data.IMetadataSection;
-import net.minecraft.client.resources.data.MetadataSerializer;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.jetbrains.annotations.NotNull;
-
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -23,8 +9,26 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+import net.minecraft.client.resources.IResourcePack;
+import net.minecraft.client.resources.data.IMetadataSection;
+import net.minecraft.client.resources.data.MetadataSerializer;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
+
+import com.google.common.collect.ImmutableSet;
+import com.google.gson.JsonElement;
+
+import io.github.hiiragi283.material.HMReference;
+import io.github.hiiragi283.material.util.HTBuilderUtils;
+
 @SideOnly(Side.CLIENT)
 public enum HTJsonResourcePack implements IResourcePack {
+
     INSTANCE;
 
     private static final Logger LOGGER = LogManager.getLogger(HTJsonResourcePack.class.getSimpleName());
@@ -35,7 +39,7 @@ public enum HTJsonResourcePack implements IResourcePack {
         resourceMap.put(location, jsonElement);
     }
 
-    //    IResourcePack    //
+    // IResourcePack //
 
     @NotNull
     @Override
@@ -62,11 +66,13 @@ public enum HTJsonResourcePack implements IResourcePack {
     }
 
     @Override
-    public <T extends IMetadataSection> T getPackMetadata(@NotNull MetadataSerializer metadataSerializer, @NotNull String metadataSectionName) {
-        return metadataSerializer.parseMetadataSection(metadataSectionName, HTUtils.buildJson(metadata -> metadata.add("pack", HTUtils.buildJson(pack -> {
-            pack.addProperty("description", "");
-            pack.addProperty("pack_format", 3);
-        }))));
+    public <T extends IMetadataSection> T getPackMetadata(@NotNull MetadataSerializer metadataSerializer,
+                                                          @NotNull String metadataSectionName) {
+        return metadataSerializer.parseMetadataSection(metadataSectionName,
+                HTBuilderUtils.buildJson(metadata -> metadata.add("pack", HTBuilderUtils.buildJson(pack -> {
+                    pack.addProperty("description", "");
+                    pack.addProperty("pack_format", 3);
+                }))));
     }
 
     @NotNull
@@ -80,5 +86,4 @@ public enum HTJsonResourcePack implements IResourcePack {
     public String getPackName() {
         return "HT Materials' Dynamic Resource Pack";
     }
-
 }

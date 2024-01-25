@@ -1,18 +1,20 @@
 package io.github.hiiragi283.material.api.material;
 
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
+
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.eventhandler.Event;
+
+import org.jetbrains.annotations.NotNull;
+
 import io.github.hiiragi283.material.api.material.flag.HTMaterialFlagSet;
 import io.github.hiiragi283.material.api.material.property.HTComponentProperty;
 import io.github.hiiragi283.material.api.material.property.HTMaterialProperty;
 import io.github.hiiragi283.material.api.material.property.HTMaterialPropertyMap;
 import io.github.hiiragi283.material.api.registry.HTNonNullMap;
 import io.github.hiiragi283.material.api.registry.HTObjectKeySet;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.eventhandler.Event;
-import org.jetbrains.annotations.NotNull;
-
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
 
 public abstract class HTMaterialEvent extends Event {
 
@@ -24,7 +26,6 @@ public abstract class HTMaterialEvent extends Event {
         protected NonNullMap(@NotNull HTNonNullMap<HTMaterialKey, V> registry) {
             this.registry = registry;
         }
-
     }
 
     public abstract static class SimpleMap<V> extends HTMaterialEvent {
@@ -47,7 +48,6 @@ public abstract class HTMaterialEvent extends Event {
         public final V get(@NotNull HTMaterialKey materialKey) {
             return registry.getOrDefault(materialKey, defaultValue);
         }
-
     }
 
     public static final class Register extends HTMaterialEvent {
@@ -58,7 +58,6 @@ public abstract class HTMaterialEvent extends Event {
         private Register(@NotNull HTObjectKeySet<HTMaterialKey> registry) {
             this.registry = registry;
         }
-
     }
 
     public static final class Property extends NonNullMap<HTMaterialPropertyMap.Builder> {
@@ -66,7 +65,6 @@ public abstract class HTMaterialEvent extends Event {
         private Property(HTNonNullMap<HTMaterialKey, HTMaterialPropertyMap.Builder> registry) {
             super(registry);
         }
-
     }
 
     public static final class Flag extends NonNullMap<HTMaterialFlagSet.Builder> {
@@ -81,7 +79,6 @@ public abstract class HTMaterialEvent extends Event {
         private Color(Map<HTMaterialKey, ColorConvertible> registry) {
             super(registry, ColorConvertible.EMPTY);
         }
-
     }
 
     public static final class Formula extends SimpleMap<FormulaConvertible> {
@@ -89,7 +86,6 @@ public abstract class HTMaterialEvent extends Event {
         private Formula(Map<HTMaterialKey, FormulaConvertible> registry) {
             super(registry, FormulaConvertible.EMPTY);
         }
-
     }
 
     public static final class Molar extends SimpleMap<MolarMassConvertible> {
@@ -97,14 +93,15 @@ public abstract class HTMaterialEvent extends Event {
         private Molar(Map<HTMaterialKey, MolarMassConvertible> registry) {
             super(registry, MolarMassConvertible.EMPTY);
         }
-
     }
 
-    //    Init    //
+    // Init //
 
     private static final HTObjectKeySet<HTMaterialKey> materialKeys = HTObjectKeySet.create();
-    private static final HTNonNullMap<HTMaterialKey, HTMaterialPropertyMap.Builder> propertyMap = HTNonNullMap.create(key -> new HTMaterialPropertyMap.Builder());
-    private static final HTNonNullMap<HTMaterialKey, HTMaterialFlagSet.Builder> flagMap = HTNonNullMap.create(key -> new HTMaterialFlagSet.Builder());
+    private static final HTNonNullMap<HTMaterialKey, HTMaterialPropertyMap.Builder> propertyMap = HTNonNullMap
+            .create(key -> new HTMaterialPropertyMap.Builder());
+    private static final HTNonNullMap<HTMaterialKey, HTMaterialFlagSet.Builder> flagMap = HTNonNullMap
+            .create(key -> new HTMaterialFlagSet.Builder());
     private static final Map<HTMaterialKey, ColorConvertible> colorMap = new HashMap<>();
     private static final Map<HTMaterialKey, FormulaConvertible> formulaMap = new HashMap<>();
     private static final Map<HTMaterialKey, MolarMassConvertible> molarMap = new HashMap<>();
@@ -136,7 +133,7 @@ public abstract class HTMaterialEvent extends Event {
     private static ColorConvertible getColor(HTMaterialKey key, HTMaterialPropertyMap map) {
         ColorConvertible color = null;
         for (HTMaterialProperty<?> property : map.values()) {
-            if (property instanceof HTComponentProperty<?> component) {
+            if (property instanceof HTComponentProperty<?>component) {
                 color = component;
             }
         }
@@ -151,7 +148,7 @@ public abstract class HTMaterialEvent extends Event {
     private static FormulaConvertible getFormula(HTMaterialKey key, HTMaterialPropertyMap map) {
         FormulaConvertible formula = null;
         for (HTMaterialProperty<?> property : map.values()) {
-            if (property instanceof HTComponentProperty<?> component) {
+            if (property instanceof HTComponentProperty<?>component) {
                 formula = component;
             }
         }
@@ -166,7 +163,7 @@ public abstract class HTMaterialEvent extends Event {
     private static MolarMassConvertible getMolar(HTMaterialKey key, HTMaterialPropertyMap map) {
         MolarMassConvertible molar = null;
         for (HTMaterialProperty<?> property : map.values()) {
-            if (property instanceof HTComponentProperty<?> component) {
+            if (property instanceof HTComponentProperty<?>component) {
                 molar = component;
             }
         }
@@ -176,5 +173,4 @@ public abstract class HTMaterialEvent extends Event {
         }
         return molar == null ? MolarMassConvertible.EMPTY : molar;
     }
-
 }

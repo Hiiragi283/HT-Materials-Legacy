@@ -1,13 +1,14 @@
 package io.github.hiiragi283.material.api.material;
 
-import com.google.common.collect.ImmutableMap;
-import io.github.hiiragi283.material.util.HTCollectors;
-
 import java.util.Arrays;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
+
+import com.google.common.collect.ImmutableMap;
+
+import io.github.hiiragi283.material.util.HTCollectors;
 
 @FunctionalInterface
 public interface MolarMassConvertible {
@@ -17,7 +18,8 @@ public interface MolarMassConvertible {
     MolarMassConvertible EMPTY = () -> 0.0;
 
     static MolarMassConvertible of(MolarMassConvertible... molars) {
-        return () -> calculate(Arrays.stream(molars).collect(HTCollectors.associate(MolarMassConvertible::asMolar, color -> 1)));
+        return () -> calculate(
+                Arrays.stream(molars).collect(HTCollectors.associate(MolarMassConvertible::asMolar, color -> 1)));
     }
 
     static MolarMassConvertible of(Map<MolarMassConvertible, Integer> map) {
@@ -43,7 +45,7 @@ public interface MolarMassConvertible {
     }
 
     static double calculate(Map<Double, Integer> map) {
-        return map.entrySet().stream().map(entry -> entry.getKey() * entry.getValue()).mapToDouble(Double::doubleValue).sum();
+        return map.entrySet().stream().map(entry -> entry.getKey() * entry.getValue()).mapToDouble(Double::doubleValue)
+                .sum();
     }
-
 }

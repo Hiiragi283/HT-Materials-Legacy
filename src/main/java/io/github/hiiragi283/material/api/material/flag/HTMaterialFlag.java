@@ -1,12 +1,14 @@
 package io.github.hiiragi283.material.api.material.flag;
 
-import com.cleanroommc.groovyscript.api.GroovyBlacklist;
-import io.github.hiiragi283.material.api.material.HTMaterial;
-import io.github.hiiragi283.material.api.material.property.HTPropertyKey;
-import org.jetbrains.annotations.Nullable;
-
 import java.util.*;
 import java.util.function.Consumer;
+
+import org.jetbrains.annotations.Nullable;
+
+import com.cleanroommc.groovyscript.api.GroovyBlacklist;
+
+import io.github.hiiragi283.material.api.material.HTMaterial;
+import io.github.hiiragi283.material.api.material.property.HTPropertyKey;
 
 public final class HTMaterialFlag {
 
@@ -16,7 +18,8 @@ public final class HTMaterialFlag {
 
     private final Collection<HTPropertyKey<?>> requiredProperties;
 
-    private HTMaterialFlag(String name, Collection<HTMaterialFlag> requiredFlags, Collection<HTPropertyKey<?>> requiredProperties) {
+    private HTMaterialFlag(String name, Collection<HTMaterialFlag> requiredFlags,
+                           Collection<HTPropertyKey<?>> requiredProperties) {
         this.name = name;
         this.requiredFlags = requiredFlags;
         this.requiredProperties = requiredProperties;
@@ -27,17 +30,19 @@ public final class HTMaterialFlag {
     void verify(HTMaterial material) {
         requiredProperties.forEach(key -> {
             if (!material.hasProperty(key)) {
-                throw new IllegalStateException("The material: $material has no property: ${key.name} but required for ${this.name}!");
+                throw new IllegalStateException(
+                        "The material: $material has no property: ${key.name} but required for ${this.name}!");
             }
         });
         requiredFlags.forEach(flag -> {
             if (!material.hasFlag(flag)) {
-                throw new IllegalStateException("The material: $material has no flag: ${flag.name} but required for ${this.name}!");
+                throw new IllegalStateException(
+                        "The material: $material has no flag: ${flag.name} but required for ${this.name}!");
             }
         });
     }
 
-    //    Object    //
+    // Object //
 
     @Override
     public boolean equals(Object obj) {
@@ -56,7 +61,7 @@ public final class HTMaterialFlag {
         return name;
     }
 
-    //    Registry    //
+    // Registry //
 
     private static final Map<String, HTMaterialFlag> registry = new HashMap<>();
 
@@ -66,8 +71,7 @@ public final class HTMaterialFlag {
     }
 
     public static HTMaterialFlag create(String name) {
-        return create(name, builder -> {
-        });
+        return create(name, builder -> {});
     }
 
     public static HTMaterialFlag create(String name, Consumer<Builder> consumer) {
@@ -80,7 +84,7 @@ public final class HTMaterialFlag {
         HTMaterialFlags.init();
     }
 
-    //    Builder    //
+    // Builder //
 
     public static final class Builder {
 
@@ -97,7 +101,5 @@ public final class HTMaterialFlag {
         HTMaterialFlag build() {
             return new HTMaterialFlag(name, requiredFlags, requiredProperties);
         }
-
     }
-
 }

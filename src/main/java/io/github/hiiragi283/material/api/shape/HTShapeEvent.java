@@ -1,12 +1,14 @@
 package io.github.hiiragi283.material.api.shape;
 
-import io.github.hiiragi283.material.api.registry.HTNonNullMap;
-import io.github.hiiragi283.material.api.registry.HTObjectKeySet;
+import java.util.Comparator;
+
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.Event;
+
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Comparator;
+import io.github.hiiragi283.material.api.registry.HTNonNullMap;
+import io.github.hiiragi283.material.api.registry.HTObjectKeySet;
 
 public abstract class HTShapeEvent extends Event {
 
@@ -18,7 +20,6 @@ public abstract class HTShapeEvent extends Event {
         private Register(@NotNull HTObjectKeySet<HTShapeKey> registry) {
             this.registry = registry;
         }
-
     }
 
     public static final class Predicate extends HTShapeEvent {
@@ -29,13 +30,13 @@ public abstract class HTShapeEvent extends Event {
         private Predicate(@NotNull HTNonNullMap<HTShapeKey, HTShapePredicate.Builder> registry) {
             this.registry = registry;
         }
-
     }
 
-    //    Init    //
+    // Init //
 
     private static final HTObjectKeySet<HTShapeKey> shapeKeys = HTObjectKeySet.create();
-    private static final HTNonNullMap<HTShapeKey, HTShapePredicate.Builder> predicateMap = HTNonNullMap.create(key -> new HTShapePredicate.Builder());
+    private static final HTNonNullMap<HTShapeKey, HTShapePredicate.Builder> predicateMap = HTNonNullMap
+            .create(key -> new HTShapePredicate.Builder());
 
     public static void init() {
         MinecraftForge.EVENT_BUS.post(new Register(shapeKeys));
@@ -49,5 +50,4 @@ public abstract class HTShapeEvent extends Event {
             HTShape.create(key, predicate);
         });
     }
-
 }

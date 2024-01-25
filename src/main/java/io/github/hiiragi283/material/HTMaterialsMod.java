@@ -1,5 +1,17 @@
 package io.github.hiiragi283.material;
 
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.event.*;
+import net.minecraftforge.oredict.OreDictionary;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
+
 import io.github.hiiragi283.material.api.fluid.HTMaterialFluid;
 import io.github.hiiragi283.material.api.item.HTMaterialItem;
 import io.github.hiiragi283.material.api.material.HTMaterial;
@@ -10,29 +22,19 @@ import io.github.hiiragi283.material.api.material.property.HTPropertyKeys;
 import io.github.hiiragi283.material.api.part.HTPartDictionary;
 import io.github.hiiragi283.material.api.shape.HTShapeEvent;
 import io.github.hiiragi283.material.api.shape.HTShapes;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.event.*;
-import net.minecraftforge.oredict.OreDictionary;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("unused")
 @Mod(
-        modid = HMReference.MOD_ID,
-        name = HMReference.MOD_NAME,
-        version = HMReference.VERSION,
-        dependencies = "after:jei;" + "after:crafttweaker;" + "after:groovyscript;"
-)
+     modid = HMReference.MOD_ID,
+     name = HMReference.MOD_NAME,
+     version = HMReference.VERSION,
+     dependencies = "after:jei;" + "after:crafttweaker;" + "after:groovyscript;")
 public final class HTMaterialsMod {
 
     private static final Logger LOGGER = LogManager.getLogger(HMReference.MOD_NAME);
 
     public static final CreativeTabs CREATIVE_TABS = new CreativeTabs(HMReference.MOD_ID) {
+
         @NotNull
         @Override
         public ItemStack createIcon() {
@@ -60,14 +62,14 @@ public final class HTMaterialsMod {
 
     @Mod.EventHandler
     public void onPreInit(FMLPreInitializationEvent event) {
-        //Register HTShape and HTMaterial
+        // Register HTShape and HTMaterial
         HTShapeEvent.init();
         LOGGER.info("HTShape initialized!");
         HTMaterialEvent.init();
         LOGGER.info("HTMaterial initialized!");
-        //Reload Ore Dictionary
+        // Reload Ore Dictionary
         HTPartDictionary.reloadOreDicts();
-        //Register Material Fluids
+        // Register Material Fluids
         HTMaterial.getMaterials().forEach(material -> {
             HTFluidProperty fluidProperty = material.getProperty(HTPropertyKeys.FLUID);
             if (!material.hasFlag(HTMaterialFlags.NOT_GENERATE_FLUID) && fluidProperty != null) {
@@ -82,16 +84,14 @@ public final class HTMaterialsMod {
     @Mod.EventHandler
     public void onInit(FMLInitializationEvent event) {
         for (HTMaterialItem materialItem : HTMaterialItem.getItems()) {
-            materialItem.getMaterialStacks().forEach(stack -> OreDictionary.registerOre(materialItem.getOreDict(stack), stack));
+            materialItem.getMaterialStacks()
+                    .forEach(stack -> OreDictionary.registerOre(materialItem.getOreDict(stack), stack));
         }
     }
 
     @Mod.EventHandler
-    public void onPostInit(FMLPostInitializationEvent event) {
-    }
+    public void onPostInit(FMLPostInitializationEvent event) {}
 
     @Mod.EventHandler
-    public void onComplete(FMLLoadCompleteEvent event) {
-    }
-
+    public void onComplete(FMLLoadCompleteEvent event) {}
 }

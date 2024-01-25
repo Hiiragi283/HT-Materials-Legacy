@@ -1,16 +1,19 @@
 package io.github.hiiragi283.material.api.shape;
 
-import com.github.bsideup.jabel.Desugar;
-import com.google.common.base.CaseFormat;
-import io.github.hiiragi283.material.api.material.HTMaterialKey;
-import io.github.hiiragi283.material.api.registry.HTObjectKey;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import com.github.bsideup.jabel.Desugar;
+import com.google.common.base.CaseFormat;
+
+import io.github.hiiragi283.material.api.material.HTMaterialKey;
+import io.github.hiiragi283.material.api.registry.HTObjectKey;
 
 @Desugar
 public record HTShapeKey(String name) implements HTObjectKey<HTShape> {
@@ -35,7 +38,7 @@ public record HTShapeKey(String name) implements HTObjectKey<HTShape> {
         return HTShape.getShapeOrNull(this.name);
     }
 
-    //    Ore Dict    //
+    // Ore Dict //
 
     @NotNull
     public String getPrefixName() {
@@ -47,7 +50,7 @@ public record HTShapeKey(String name) implements HTObjectKey<HTShape> {
         return getPrefixName() + materialKey.getOreDictName();
     }
 
-    //    Translation    //
+    // Translation //
 
     @NotNull
     @SideOnly(Side.CLIENT)
@@ -59,5 +62,4 @@ public record HTShapeKey(String name) implements HTObjectKey<HTShape> {
     public ITextComponent getTranslatedText(HTMaterialKey materialKey) {
         return new TextComponentTranslation("ht_material." + name, materialKey.getTranslatedName());
     }
-
 }

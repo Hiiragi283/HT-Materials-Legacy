@@ -1,11 +1,13 @@
 package io.github.hiiragi283.material.api.registry;
 
-import com.google.common.collect.Table;
-import io.github.hiiragi283.material.impl.registry.HTNonNullTableImpl;
-import org.jetbrains.annotations.NotNull;
-
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
+
+import org.jetbrains.annotations.NotNull;
+
+import com.google.common.collect.Table;
+
+import io.github.hiiragi283.material.impl.registry.HTNonNullTableImpl;
 
 public interface HTNonNullTable<R, C, V> {
 
@@ -17,5 +19,4 @@ public interface HTNonNullTable<R, C, V> {
     V getOrCreate(R rowKey, C columnKey);
 
     void forEach(Consumer<Table.Cell<R, C, V>> consumer);
-
 }
