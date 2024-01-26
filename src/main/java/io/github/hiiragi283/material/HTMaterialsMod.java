@@ -1,8 +1,10 @@
 package io.github.hiiragi283.material;
 
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.*;
@@ -12,6 +14,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 
+import io.github.hiiragi283.material.api.ExtendedOreDictionary;
 import io.github.hiiragi283.material.api.fluid.HTMaterialFluid;
 import io.github.hiiragi283.material.api.item.HTMaterialItem;
 import io.github.hiiragi283.material.api.material.HTMaterial;
@@ -44,7 +47,7 @@ public final class HTMaterialsMod {
 
     public static final Item ICON = new Item()
             .setCreativeTab(CREATIVE_TABS)
-            .setRegistryName(HMReference.MOD_ID, "icon")
+            .setRegistryName(getId("icon"))
             .setTranslationKey(HMReference.MOD_ID);
 
     public static final Item ITEM_DUST = new HTMaterialItem(HTShapes.DUST);
@@ -54,6 +57,10 @@ public final class HTMaterialsMod {
     public static final Item ITEM_NUGGET = new HTMaterialItem(HTShapes.NUGGET);
     public static final Item ITEM_PLATE = new HTMaterialItem(HTShapes.PLATE);
     public static final Item ITEM_STICK = new HTMaterialItem(HTShapes.STICK);
+
+    public static ResourceLocation getId(String path) {
+        return new ResourceLocation(HMReference.MOD_ID, path);
+    }
 
     @Mod.EventHandler
     public void onConstruct(FMLConstructionEvent event) {
@@ -93,5 +100,7 @@ public final class HTMaterialsMod {
     public void onPostInit(FMLPostInitializationEvent event) {}
 
     @Mod.EventHandler
-    public void onComplete(FMLLoadCompleteEvent event) {}
+    public void onComplete(FMLLoadCompleteEvent event) {
+        ExtendedOreDictionary.removeOre("ingotIron", Items.IRON_INGOT);
+    }
 }

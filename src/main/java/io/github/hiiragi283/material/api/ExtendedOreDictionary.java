@@ -6,9 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.oredict.OreDictionary;
 
 import org.jetbrains.annotations.NotNull;
@@ -101,20 +99,38 @@ public class ExtendedOreDictionary {
     }
 
     public static void rebakeMap() {
-        stackToId.forEach(((itemWithMeta, integers) -> integers.clear()));
-        idToStack.forEach((integer, itemWithMetas) -> {
-            Set<ItemWithMeta> ores = idToStack.getOrCreate(integer);
-            for (ItemWithMeta itemWithMeta : ores) {
-                ResourceLocation name = itemWithMeta.item.delegate.name();
-                if (name == null) {
-                    FMLLog.log.debug(
-                            "Defaulting unregistered ore dictionary entry for ore dictionary {}: type {} to -1",
-                            getOreName(integer), itemWithMeta.item.getClass());
-                    continue;
-                }
-                Set<Integer> ids = stackToId.getOrCreate(itemWithMeta);
-                ids.add(integer);
-            }
-        });
+        /*
+         * stackToId.forEach(((itemWithMeta, integers) -> integers.clear()));
+         * idToStack.forEach((integer, itemWithMetas) -> itemWithMetas.forEach(itemWithMeta -> {
+         * ResourceLocation name = itemWithMeta.item.delegate.name();
+         * if (name == null) {
+         * FMLLog.log.debug(
+         * "Defaulting unregistered ore dictionary entry for ore dictionary {}: type {} to -1",
+         * getOreName(integer), itemWithMeta.item.getClass());
+         * } else stackToId.getOrCreate(itemWithMeta).add(integer);
+         * }));
+         */
     }
+
+    public static void removeOre(@NotNull String name, @NotNull Item ore) {
+        ItemWithMeta.from(ore, 0).forEach(itemWithMeta -> removeOreImpl(name, itemWithMeta));
+    }
+
+    public static void removeOre(@NotNull String name, @NotNull Block ore) {
+        ItemWithMeta.from(ore, 0).forEach(itemWithMeta -> removeOreImpl(name, itemWithMeta));
+    }
+
+    public static void removeOre(@NotNull String name, @NotNull ItemStack stack) {
+        ItemWithMeta.fromStack(stack).forEach(itemWithMeta -> removeOreImpl(name, itemWithMeta));
+    }
+
+    private static void removeOreImpl(@NotNull String name, @NotNull ItemWithMeta itemWithMeta) {
+        if (name.equals(UNKNOWN_OREDICT)) return;
+        if (name.isEmpty()) return;
+        int oreId = getOreID(name);
+        stackToId.getOrCreate(itemWithMeta).remove(oreId);
+        idToStack.getOrCreate(oreId).remove(itemWithMeta);
+    }
+
+    private ExtendedOreDictionary() {}
 }

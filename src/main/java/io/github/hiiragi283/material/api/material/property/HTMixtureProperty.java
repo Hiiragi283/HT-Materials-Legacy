@@ -11,7 +11,7 @@ import io.github.hiiragi283.material.api.material.HTMaterialKey;
 import io.github.hiiragi283.material.util.HTUtils;
 import scala.actors.threadpool.Arrays;
 
-public final class HTMixtureProperty implements HTComponentProperty<HTMixtureProperty>, Iterable<HTMaterialKey> {
+public final class HTMixtureProperty implements IComponentProperty<HTMixtureProperty>, Iterable<HTMaterialKey> {
 
     private final Iterable<HTMaterialKey> iterable;
 

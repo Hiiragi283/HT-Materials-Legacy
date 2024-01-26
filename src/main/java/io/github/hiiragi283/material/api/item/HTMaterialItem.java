@@ -15,11 +15,10 @@ import net.minecraftforge.oredict.OreDictionary;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import io.github.hiiragi283.material.HMReference;
 import io.github.hiiragi283.material.HTMaterialsMod;
 import io.github.hiiragi283.material.api.shape.HTShapeKey;
 
-public final class HTMaterialItem extends Item implements MaterialItemConvertible {
+public final class HTMaterialItem extends Item implements IMaterialItemProvider {
 
     public final HTShapeKey shapeKey;
 
@@ -28,7 +27,7 @@ public final class HTMaterialItem extends Item implements MaterialItemConvertibl
         hasSubtypes = true;
         registry.putIfAbsent(shapeKey, this);
         setCreativeTab(HTMaterialsMod.CREATIVE_TABS);
-        setRegistryName(HMReference.MOD_ID, shapeKey.name());
+        setRegistryName(HTMaterialsMod.getId(shapeKey.name()));
     }
 
     // Item //
@@ -52,12 +51,17 @@ public final class HTMaterialItem extends Item implements MaterialItemConvertibl
         }
     }
 
-    // MaterialItemConvertible //
+    // IMaterialItemProvider //
 
     @NotNull
     @Override
     public HTShapeKey getShapeKey() {
         return shapeKey;
+    }
+
+    @Override
+    public Item asItem() {
+        return this;
     }
 
     // Registry //

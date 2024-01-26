@@ -13,7 +13,7 @@ import org.jetbrains.annotations.Nullable;
 import com.github.bsideup.jabel.Desugar;
 import com.google.common.base.CaseFormat;
 
-import io.github.hiiragi283.material.HMReference;
+import io.github.hiiragi283.material.HTMaterialsMod;
 import io.github.hiiragi283.material.api.registry.HTObjectKey;
 
 @Desugar
@@ -52,7 +52,7 @@ public record HTMaterialKey(String name, int index) implements HTObjectKey<HTMat
 
     @NotNull
     public ResourceLocation getLocation(String path) {
-        return getLocation(HMReference.MOD_ID, path);
+        return HTMaterialsMod.getId(path);
     }
 
     @NotNull

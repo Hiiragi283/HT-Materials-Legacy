@@ -27,6 +27,7 @@ import io.github.hiiragi283.material.api.material.HTMaterial;
 import io.github.hiiragi283.material.api.material.HTMaterialUtils;
 import io.github.hiiragi283.material.api.part.HTPart;
 import io.github.hiiragi283.material.api.part.HTPartDictionary;
+import io.github.hiiragi283.material.api.shape.HTShape;
 
 @SuppressWarnings("unused")
 @Mod.EventBusSubscriber()
@@ -58,9 +59,13 @@ public abstract class HMEventHandler {
         public static void onModelRegister(ModelRegistryEvent event) {
             ModelLoader.setCustomModelResourceLocation(HTMaterialsMod.ICON, 0, new ModelResourceLocation(
                     Objects.requireNonNull(HTMaterialsMod.ICON.getRegistryName()), "inventory"));
-            HTMaterialItem.getItems().forEach(item -> item.getMaterialIndexes()
-                    .forEach(index -> ModelLoader.setCustomModelResourceLocation(item, index,
-                            new ModelResourceLocation(Objects.requireNonNull(item.getRegistryName()), "inventory"))));
+            for (HTMaterialItem materialItem : HTMaterialItem.getItems()) {
+                HTShape shape = materialItem.getShapeKey().getShape();
+                materialItem.getMaterials().forEach(material -> ModelLoader.setCustomModelResourceLocation(
+                        materialItem,
+                        material.index(),
+                        new ModelResourceLocation(shape.getModelLocation(material), "inventory")));
+            }
         }
 
         @SubscribeEvent

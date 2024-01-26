@@ -11,7 +11,7 @@ import com.google.common.collect.ImmutableMap;
 import io.github.hiiragi283.material.api.material.*;
 import io.github.hiiragi283.material.util.HTCollectors;
 
-public final class HTCompoundProperty implements HTComponentProperty<HTCompoundProperty> {
+public final class HTCompoundProperty implements IComponentProperty<HTCompoundProperty> {
 
     private final Map<HTMaterialKey, Integer> backingMap;
 

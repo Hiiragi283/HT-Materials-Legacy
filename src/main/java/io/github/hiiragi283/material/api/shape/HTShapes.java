@@ -6,7 +6,10 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+import io.github.hiiragi283.material.HTMaterialsMod;
 import io.github.hiiragi283.material.api.material.flag.HTMaterialFlags;
+import io.github.hiiragi283.material.api.material.property.HTGemProperty;
+import io.github.hiiragi283.material.api.material.property.HTPropertyKeys;
 
 @Mod.EventBusSubscriber
 public enum HTShapes {
@@ -57,23 +60,22 @@ public enum HTShapes {
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void modifyPredicate(HTShapeEvent.Predicate event) {
         var registry = event.registry;
-        registry.getOrCreate(DUST)
-                .setEnabled()
-                .addRequiredFlag(HTMaterialFlags.GENERATE_DUST);
-        registry.getOrCreate(GEAR)
-                .setEnabled()
-                .addRequiredFlag(HTMaterialFlags.GENERATE_GEAR);
-        registry.getOrCreate(INGOT)
-                .setEnabled()
-                .addRequiredFlag(HTMaterialFlags.GENERATE_INGOT);
-        registry.getOrCreate(NUGGET)
-                .setEnabled()
-                .addRequiredFlag(HTMaterialFlags.GENERATE_NUGGET);
-        registry.getOrCreate(PLATE)
-                .setEnabled()
-                .addRequiredFlag(HTMaterialFlags.GENERATE_PLATE);
-        registry.getOrCreate(STICK)
-                .setEnabled()
-                .addRequiredFlag(HTMaterialFlags.GENERATE_STICK);
+        registry.put(DUST, material -> material.hasFlag(HTMaterialFlags.GENERATE_DUST));
+        registry.put(GEM, material -> material.hasFlag(HTMaterialFlags.GENERATE_GEM));
+        registry.put(GEAR, material -> material.hasFlag(HTMaterialFlags.GENERATE_GEAR));
+        registry.put(INGOT, material -> material.hasFlag(HTMaterialFlags.GENERATE_INGOT));
+        registry.put(NUGGET, material -> material.hasFlag(HTMaterialFlags.GENERATE_NUGGET));
+        registry.put(PLATE, material -> material.hasFlag(HTMaterialFlags.GENERATE_PLATE));
+        registry.put(STICK, material -> material.hasFlag(HTMaterialFlags.GENERATE_STICK));
+    }
+
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    public static void modifyModelFunctions(HTShapeEvent.Model event) {
+        var registry = event.registry;
+        registry.put(GEM, material -> {
+            HTGemProperty gemProperty = material.getProperty(HTPropertyKeys.GEM);
+            String path = gemProperty != null ? "gem_" + gemProperty.name() : GEM.name();
+            return HTMaterialsMod.getId("gem_cubic");
+        });
     }
 }

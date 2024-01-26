@@ -5,8 +5,8 @@ import io.github.hiiragi283.material.api.material.FormulaConvertible;
 import io.github.hiiragi283.material.api.material.HTMaterial;
 import io.github.hiiragi283.material.api.material.MolarMassConvertible;
 
-public interface HTComponentProperty<T extends HTComponentProperty<T>> extends HTMaterialProperty<T>, ColorConvertible,
-                                    FormulaConvertible, MolarMassConvertible {
+public interface IComponentProperty<T extends IComponentProperty<T>> extends HTMaterialProperty<T>, ColorConvertible,
+                                   FormulaConvertible, MolarMassConvertible {
 
     @Override
     default void verify(HTMaterial material) {

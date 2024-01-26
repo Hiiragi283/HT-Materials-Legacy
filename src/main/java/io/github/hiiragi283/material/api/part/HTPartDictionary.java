@@ -72,7 +72,9 @@ public abstract class HTPartDictionary {
     }
 
     @NotNull
-    public static ItemStack getDefaultStack(@NotNull HTShapeKey shapeKey, @NotNull HTMaterialKey materialKey,
+    public static ItemStack getDefaultStack(
+                                            @NotNull HTShapeKey shapeKey,
+                                            @NotNull HTMaterialKey materialKey,
                                             int count) {
         ItemWithMeta itemWithMeta = getDefaultItem(shapeKey, materialKey);
         return itemWithMeta == null ? ItemStack.EMPTY : itemWithMeta.toStack(count);
@@ -98,29 +100,41 @@ public abstract class HTPartDictionary {
     }
 
     @NotNull
-    public static Stream<ItemStack> getItemStacks(@NotNull HTShapeKey shapeKey, @NotNull HTMaterialKey materialKey,
+    public static Stream<ItemStack> getItemStacks(
+                                                  @NotNull HTShapeKey shapeKey,
+                                                  @NotNull HTMaterialKey materialKey,
                                                   int count) {
         return getItems(shapeKey, materialKey).map(itemWithMeta -> itemWithMeta.toStack(count));
     }
 
     // Register //
 
-    public static void register(@NotNull HTShapeKey shapeKey, @NotNull HTMaterialKey materialKey,
+    public static void register(
+                                @NotNull HTShapeKey shapeKey,
+                                @NotNull HTMaterialKey materialKey,
                                 @NotNull ItemStack stack) {
         ItemWithMeta.fromStack(stack).forEach(itemWithMeta -> registerInternal(shapeKey, materialKey, itemWithMeta));
     }
 
-    public static void register(@NotNull HTShapeKey shapeKey, @NotNull HTMaterialKey materialKey, @NotNull Block block,
+    public static void register(
+                                @NotNull HTShapeKey shapeKey,
+                                @NotNull HTMaterialKey materialKey,
+                                @NotNull Block block,
                                 int meta) {
         ItemWithMeta.from(block, meta).forEach(itemWithMeta -> registerInternal(shapeKey, materialKey, itemWithMeta));
     }
 
-    public static void register(@NotNull HTShapeKey shapeKey, @NotNull HTMaterialKey materialKey, @NotNull Item item,
+    public static void register(
+                                @NotNull HTShapeKey shapeKey,
+                                @NotNull HTMaterialKey materialKey,
+                                @NotNull Item item,
                                 int meta) {
         ItemWithMeta.from(item, meta).forEach(itemWithMeta -> registerInternal(shapeKey, materialKey, itemWithMeta));
     }
 
-    private static void registerInternal(@NotNull HTShapeKey shapeKey, @NotNull HTMaterialKey materialKey,
+    private static void registerInternal(
+                                         @NotNull HTShapeKey shapeKey,
+                                         @NotNull HTMaterialKey materialKey,
                                          @NotNull ItemWithMeta itemWithMeta) {
         if (itemWithMeta.isEmpty()) return;
         HTPart part = new HTPart(shapeKey, materialKey);

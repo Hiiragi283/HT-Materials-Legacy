@@ -37,7 +37,10 @@ public abstract class HTMaterialUtils {
         return HTMaterial.getMaterialKeys().flatMap(key -> HTPartDictionary.getItemStacks(shapeKey, key, count));
     }
 
-    public static void addInformation(@NotNull HTMaterial material, @Nullable HTShape shape, @NotNull ItemStack stack,
+    public static void addInformation(
+                                      @NotNull HTMaterial material,
+                                      @Nullable HTShape shape,
+                                      @NotNull ItemStack stack,
                                       @NotNull List<String> tooltips) {
         // Title
         tooltips.add(I18n.format("tooltip.ht_materials.material.title"));

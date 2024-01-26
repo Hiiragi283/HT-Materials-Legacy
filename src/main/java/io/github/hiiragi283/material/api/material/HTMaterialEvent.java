@@ -10,9 +10,9 @@ import net.minecraftforge.fml.common.eventhandler.Event;
 import org.jetbrains.annotations.NotNull;
 
 import io.github.hiiragi283.material.api.material.flag.HTMaterialFlagSet;
-import io.github.hiiragi283.material.api.material.property.HTComponentProperty;
 import io.github.hiiragi283.material.api.material.property.HTMaterialProperty;
 import io.github.hiiragi283.material.api.material.property.HTMaterialPropertyMap;
+import io.github.hiiragi283.material.api.material.property.IComponentProperty;
 import io.github.hiiragi283.material.api.registry.HTNonNullMap;
 import io.github.hiiragi283.material.api.registry.HTObjectKeySet;
 
@@ -124,8 +124,7 @@ public abstract class HTMaterialEvent extends Event {
             java.awt.Color color = getColor(key, property).asColor();
             String formula = getFormula(key, property).asFormula();
             double molar = getMolar(key, property).asMolar();
-            HTMaterialInfo info = new HTMaterialInfo(color, formula, molar);
-            HTMaterial.create(key, info, property, flag);
+            HTMaterial.create(key, property, flag, color, formula, molar);
         });
     }
 
@@ -133,7 +132,7 @@ public abstract class HTMaterialEvent extends Event {
     private static ColorConvertible getColor(HTMaterialKey key, HTMaterialPropertyMap map) {
         ColorConvertible color = null;
         for (HTMaterialProperty<?> property : map.values()) {
-            if (property instanceof HTComponentProperty<?>component) {
+            if (property instanceof IComponentProperty<?>component) {
                 color = component;
             }
         }
@@ -148,7 +147,7 @@ public abstract class HTMaterialEvent extends Event {
     private static FormulaConvertible getFormula(HTMaterialKey key, HTMaterialPropertyMap map) {
         FormulaConvertible formula = null;
         for (HTMaterialProperty<?> property : map.values()) {
-            if (property instanceof HTComponentProperty<?>component) {
+            if (property instanceof IComponentProperty<?>component) {
                 formula = component;
             }
         }
@@ -163,7 +162,7 @@ public abstract class HTMaterialEvent extends Event {
     private static MolarMassConvertible getMolar(HTMaterialKey key, HTMaterialPropertyMap map) {
         MolarMassConvertible molar = null;
         for (HTMaterialProperty<?> property : map.values()) {
-            if (property instanceof HTComponentProperty<?>component) {
+            if (property instanceof IComponentProperty<?>component) {
                 molar = component;
             }
         }

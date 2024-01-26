@@ -25,7 +25,8 @@ public abstract class HTCollectors {
         return map1;
     }
 
-    public static <T, K, V> Collector<T, Map<K, V>, Map<K, V>> associate(@NotNull Function<T, K> keyFunction,
+    public static <T, K, V> Collector<T, Map<K, V>, Map<K, V>> associate(
+                                                                         @NotNull Function<T, K> keyFunction,
                                                                          @NotNull Function<T, V> valueFunction) {
         return Collector.of(
                 HashMap::new,

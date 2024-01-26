@@ -37,7 +37,13 @@ public enum HTElementMaterials {
 
     // 3rd Period //
 
+    public static final HTMaterialKey SODIUM = new HTMaterialKey("sodium", 11);
+    public static final HTMaterialKey MAGNESIUM = new HTMaterialKey("magnesium", 12);
+    public static final HTMaterialKey ALUMINUM = new HTMaterialKey("aluminum", 13);
     public static final HTMaterialKey SILICON = new HTMaterialKey("silicon", 14);
+    public static final HTMaterialKey PHOSPHORUS = new HTMaterialKey("phosphorus", 15);
+    public static final HTMaterialKey SULFUR = new HTMaterialKey("sulfur", 16);
+    public static final HTMaterialKey CHLORINE = new HTMaterialKey("chlorine", 17);
 
     // 4th Period //
 
@@ -91,6 +97,17 @@ public enum HTElementMaterials {
                 .add(new HTFluidProperty(), HTFluidProperty::setGaseous);
         registry.getOrCreate(NEON)
                 .add(new HTFluidProperty(), HTFluidProperty::setGaseous);
+        // 3rd Period
+        registry.getOrCreate(SODIUM);
+        registry.getOrCreate(MAGNESIUM);
+        registry.getOrCreate(ALUMINUM)
+                .add(HTMetalProperty.INSTANCE);
+        registry.getOrCreate(SILICON)
+                .add(HTMetalProperty.INSTANCE);
+        registry.getOrCreate(PHOSPHORUS);
+        registry.getOrCreate(SULFUR);
+        registry.getOrCreate(CHLORINE)
+                .add(new HTFluidProperty(), HTFluidProperty::setGaseous);
         // 4th Period
         registry.getOrCreate(IRON)
                 .add(HTMetalProperty.INSTANCE);
@@ -118,6 +135,27 @@ public enum HTElementMaterials {
         registry.getOrCreate(OXYGEN);
         registry.getOrCreate(FLUORINE);
         registry.getOrCreate(NEON);
+        // 3rd Period
+        registry.getOrCreate(SODIUM);
+        registry.getOrCreate(MAGNESIUM)
+                .add(HTMaterialFlags.GENERATE_DUST);
+        registry.getOrCreate(ALUMINUM)
+                .add(HTMaterialFlags.GENERATE_DUST)
+                .add(HTMaterialFlags.GENERATE_GEAR)
+                .add(HTMaterialFlags.GENERATE_INGOT)
+                .add(HTMaterialFlags.GENERATE_NUGGET)
+                .add(HTMaterialFlags.GENERATE_PLATE)
+                .add(HTMaterialFlags.GENERATE_STICK);
+        registry.getOrCreate(SILICON)
+                .add(HTMaterialFlags.GENERATE_DUST)
+                .add(HTMaterialFlags.GENERATE_INGOT)
+                .add(HTMaterialFlags.GENERATE_NUGGET)
+                .add(HTMaterialFlags.GENERATE_PLATE);
+        registry.getOrCreate(PHOSPHORUS)
+                .add(HTMaterialFlags.GENERATE_DUST);
+        registry.getOrCreate(SULFUR)
+                .add(HTMaterialFlags.GENERATE_DUST);
+        registry.getOrCreate(CHLORINE);
         // 4th Period
         registry.getOrCreate(IRON)
                 .add(HTMaterialFlags.GENERATE_DUST)
@@ -146,6 +184,24 @@ public enum HTElementMaterials {
         event.put(OXYGEN, ColorConvertible.EMPTY);
         event.put(FLUORINE, () -> HTColor.GREEN);
         event.put(NEON, () -> HTColor.LIGHT_PURPLE);
+        // 3rd Period
+        event.put(SODIUM, ColorConvertible.ofColor(builder -> {
+            builder.put(HTColor.DARK_BLUE, 1);
+            builder.put(HTColor.BLUE, 4);
+        }));
+        event.put(MAGNESIUM, () -> HTColor.GRAY);
+        event.put(ALUMINUM, ColorConvertible.ofColor(builder -> {
+            builder.put(HTColor.BLUE, 1);
+            builder.put(HTColor.WHITE, 5);
+        }));
+        event.put(SILICON, ColorConvertible.ofColor(builder -> {
+            builder.put(HTColor.BLACK, 2);
+            builder.put(HTColor.GRAY, 1);
+            builder.put(HTColor.BLUE, 1);
+        }));
+        event.put(PHOSPHORUS, () -> HTColor.YELLOW);
+        event.put(SULFUR, ColorConvertible.ofColor(HTColor.GOLD, HTColor.YELLOW));
+        event.put(CHLORINE, () -> HTColor.YELLOW);
         // 4th Period
         event.put(IRON, ColorConvertible.EMPTY);
         // 6th Period
@@ -166,6 +222,14 @@ public enum HTElementMaterials {
         event.put(OXYGEN, () -> "O");
         event.put(FLUORINE, () -> "F");
         event.put(NEON, () -> "Ne");
+        // 3rd Period
+        event.put(SODIUM, () -> "Na");
+        event.put(MAGNESIUM, () -> "Mg");
+        event.put(ALUMINUM, () -> "Al");
+        event.put(SILICON, () -> "Si");
+        event.put(PHOSPHORUS, () -> "P");
+        event.put(SULFUR, () -> "S");
+        event.put(CHLORINE, () -> "Cl");
         // 4th Period
         event.put(IRON, () -> "Fe");
         // 6th Period
@@ -186,6 +250,14 @@ public enum HTElementMaterials {
         event.put(OXYGEN, () -> 16.0);
         event.put(FLUORINE, () -> 19.0);
         event.put(NEON, () -> 20.2);
+        // 3rd Period
+        event.put(SODIUM, () -> 23.0);
+        event.put(MAGNESIUM, () -> 24.3);
+        event.put(ALUMINUM, () -> 27.0);
+        event.put(SILICON, () -> 28.1);
+        event.put(PHOSPHORUS, () -> 31.0);
+        event.put(SULFUR, () -> 32.1);
+        event.put(CHLORINE, () -> 35.5);
         // 4th Period
         event.put(IRON, () -> 55.8);
         // 6th Period

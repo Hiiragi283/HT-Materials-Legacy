@@ -23,19 +23,25 @@ import io.github.hiiragi283.material.api.material.property.HTPropertyKey;
 public final class HTMaterial {
 
     private final HTMaterialKey key;
-
-    private final HTMaterialInfo info;
-
     private final HTMaterialPropertyMap properties;
-
     private final HTMaterialFlagSet flags;
+    private final Color color;
+    private final String formula;
+    private final double molar;
 
-    private HTMaterial(HTMaterialKey key, HTMaterialInfo info, HTMaterialPropertyMap properties,
-                       HTMaterialFlagSet flags) {
+    private HTMaterial(
+                       HTMaterialKey key,
+                       HTMaterialPropertyMap properties,
+                       HTMaterialFlagSet flags,
+                       Color color,
+                       String formula,
+                       double molar) {
         this.key = key;
-        this.info = info;
         this.properties = properties;
         this.flags = flags;
+        this.color = color;
+        this.formula = formula;
+        this.molar = molar;
     }
 
     public HTMaterialKey key() {
@@ -50,20 +56,16 @@ public final class HTMaterial {
         return key().name();
     }
 
-    public HTMaterialInfo info() {
-        return info;
-    }
-
     public Color color() {
-        return info().color();
+        return color;
     }
 
     public String formula() {
-        return info().formula();
+        return formula;
     }
 
     public double molar() {
-        return info().molar();
+        return molar;
     }
 
     public HTMaterialPropertyMap getProperties() {
@@ -176,10 +178,12 @@ public final class HTMaterial {
 
     static void create(
                        HTMaterialKey key,
-                       HTMaterialInfo info,
                        HTMaterialPropertyMap properties,
-                       HTMaterialFlagSet flags) {
-        var material = new HTMaterial(key, info, properties, flags);
+                       HTMaterialFlagSet flags,
+                       Color color,
+                       String formula,
+                       double molar) {
+        var material = new HTMaterial(key, properties, flags, color, formula, molar);
         String name = key.name();
         if (registry.putIfAbsent(name, material) != null) {
             HTMaterial existMaterial = registry.get(name);

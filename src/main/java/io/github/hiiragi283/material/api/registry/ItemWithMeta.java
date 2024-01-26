@@ -99,6 +99,6 @@ public class ItemWithMeta {
 
     @Override
     public String toString() {
-        return Objects.requireNonNull(item.getRegistryName()) + ":" + meta;
+        return item.getRegistryName() + ":" + meta;
     }
 }

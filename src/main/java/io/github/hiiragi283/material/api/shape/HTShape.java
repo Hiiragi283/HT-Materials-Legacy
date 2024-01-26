@@ -2,8 +2,11 @@ package io.github.hiiragi283.material.api.shape;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
+
+import net.minecraft.util.ResourceLocation;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -16,11 +19,32 @@ import com.google.common.collect.ImmutableMap;
 import io.github.hiiragi283.material.api.material.HTMaterial;
 
 @Desugar
-public record HTShape(HTShapeKey key, HTShapePredicate predicate) implements Predicate<HTMaterial> {
+public class HTShape implements Predicate<HTMaterial> {
+
+    private final HTShapeKey key;
+    private final Predicate<@NotNull HTMaterial> itemPredicate;
+    private final Function<@NotNull HTMaterial, @NotNull ResourceLocation> modelFunction;
+
+    private HTShape(HTShapeKey key, Predicate<HTMaterial> itemPredicate,
+                    Function<HTMaterial, ResourceLocation> modelFunction) {
+        this.key = key;
+        this.itemPredicate = itemPredicate;
+        this.modelFunction = modelFunction;
+    }
+
+    @NotNull
+    public HTShapeKey key() {
+        return key;
+    }
+
+    @NotNull
+    public ResourceLocation getModelLocation(@NotNull HTMaterial material) {
+        return modelFunction.apply(material);
+    }
 
     @Override
-    public boolean test(HTMaterial material) {
-        return predicate.test(material);
+    public boolean test(@NotNull HTMaterial material) {
+        return itemPredicate.test(material);
     }
 
     // Registry //
@@ -59,8 +83,9 @@ public record HTShape(HTShapeKey key, HTShapePredicate predicate) implements Pre
 
     static void create(
                        HTShapeKey key,
-                       HTShapePredicate predicate) {
-        var shape = new HTShape(key, predicate);
+                       Predicate<HTMaterial> predicate,
+                       Function<HTMaterial, ResourceLocation> function) {
+        var shape = new HTShape(key, predicate, function);
         registry.putIfAbsent(key.name(), shape);
         LOGGER.info("Shape: " + key + " registered!");
     }
