@@ -23,20 +23,17 @@ import io.github.hiiragi283.material.api.material.property.HTPropertyKey;
 public final class HTMaterial {
 
     private final HTMaterialKey key;
+    private final int index;
     private final HTMaterialPropertyMap properties;
     private final HTMaterialFlagSet flags;
     private final Color color;
     private final String formula;
     private final double molar;
 
-    private HTMaterial(
-                       HTMaterialKey key,
-                       HTMaterialPropertyMap properties,
-                       HTMaterialFlagSet flags,
-                       Color color,
-                       String formula,
-                       double molar) {
+    private HTMaterial(HTMaterialKey key, int index, HTMaterialPropertyMap properties, HTMaterialFlagSet flags,
+                       Color color, String formula, double molar) {
         this.key = key;
+        this.index = index;
         this.properties = properties;
         this.flags = flags;
         this.color = color;
@@ -49,7 +46,7 @@ public final class HTMaterial {
     }
 
     public int index() {
-        return key().index();
+        return index;
     }
 
     public String name() {
@@ -176,20 +173,14 @@ public final class HTMaterial {
         return indexRegistry.get(index);
     }
 
-    static void create(
-                       HTMaterialKey key,
-                       HTMaterialPropertyMap properties,
-                       HTMaterialFlagSet flags,
-                       Color color,
-                       String formula,
-                       double molar) {
-        var material = new HTMaterial(key, properties, flags, color, formula, molar);
+    static void create(HTMaterialKey key, int index, HTMaterialPropertyMap properties, HTMaterialFlagSet flags,
+                       Color color, String formula, double molar) {
+        var material = new HTMaterial(key, index, properties, flags, color, formula, molar);
         String name = key.name();
         if (registry.putIfAbsent(name, material) != null) {
             HTMaterial existMaterial = registry.get(name);
             throw new IllegalStateException("Name: " + name + " is already registered by " + existMaterial);
         }
-        int index = key.index();
         if (indexRegistry.putIfAbsent(index, material) != null) {
             HTMaterial existMaterial = indexRegistry.get(index);
             throw new IllegalStateException("Index: " + index + " is already registered by " + existMaterial);

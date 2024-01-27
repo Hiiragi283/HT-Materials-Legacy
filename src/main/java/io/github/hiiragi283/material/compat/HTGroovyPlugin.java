@@ -15,7 +15,6 @@ import io.github.hiiragi283.material.api.part.HTPart;
 import io.github.hiiragi283.material.api.shape.HTShape;
 import io.github.hiiragi283.material.api.shape.HTShapeKey;
 
-@SuppressWarnings("unused")
 public class HTGroovyPlugin implements GroovyPlugin {
 
     // GroovyPlugin //
@@ -35,19 +34,10 @@ public class HTGroovyPlugin implements GroovyPlugin {
     @Override
     public void onCompatLoaded(GroovyContainer<?> container) {
         GameObjectHandlerManager.registerGameObjectHandler(HMReference.MOD_ID, "materialKey",
-                HTGroovyPlugin::parseMaterialKey);
+                IGameObjectHandler.wrapStringGetter(HTMaterialKey::new));
         GameObjectHandlerManager.registerGameObjectHandler(HMReference.MOD_ID, "part", HTGroovyPlugin::parsePart);
         GameObjectHandlerManager.registerGameObjectHandler(HMReference.MOD_ID, "shapeKey",
                 IGameObjectHandler.wrapStringGetter(HTShapeKey::new));
-    }
-
-    @NotNull
-    private static Result<HTMaterialKey> parseMaterialKey(String mainArg, Object... args) {
-        if (args.length != 1 || !(args[0] instanceof Integer)) {
-            return Result.error();
-        }
-        int index = (int) args[0];
-        return Result.some(new HTMaterialKey(mainArg, index));
     }
 
     @NotNull

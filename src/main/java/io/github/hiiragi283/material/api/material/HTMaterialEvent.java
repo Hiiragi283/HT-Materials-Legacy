@@ -9,12 +9,13 @@ import net.minecraftforge.fml.common.eventhandler.Event;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableBiMap;
+
 import io.github.hiiragi283.material.api.material.flag.HTMaterialFlagSet;
 import io.github.hiiragi283.material.api.material.property.HTMaterialProperty;
 import io.github.hiiragi283.material.api.material.property.HTMaterialPropertyMap;
-import io.github.hiiragi283.material.api.material.property.IComponentProperty;
+import io.github.hiiragi283.material.api.material.property.component.HTComponentPropertyBase;
 import io.github.hiiragi283.material.api.registry.HTNonNullMap;
-import io.github.hiiragi283.material.api.registry.HTObjectKeySet;
 
 public abstract class HTMaterialEvent extends Event {
 
@@ -53,9 +54,9 @@ public abstract class HTMaterialEvent extends Event {
     public static final class Register extends HTMaterialEvent {
 
         @NotNull
-        public final HTObjectKeySet<HTMaterialKey> registry;
+        public final ImmutableBiMap.Builder<HTMaterialKey, Integer> registry;
 
-        private Register(@NotNull HTObjectKeySet<HTMaterialKey> registry) {
+        private Register(@NotNull ImmutableBiMap.Builder<HTMaterialKey, Integer> registry) {
             this.registry = registry;
         }
     }
@@ -97,7 +98,7 @@ public abstract class HTMaterialEvent extends Event {
 
     // Init //
 
-    private static final HTObjectKeySet<HTMaterialKey> materialKeys = HTObjectKeySet.create();
+    private static final ImmutableBiMap.Builder<HTMaterialKey, Integer> materialKeys = ImmutableBiMap.builder();
     private static final HTNonNullMap<HTMaterialKey, HTMaterialPropertyMap.Builder> propertyMap = HTNonNullMap
             .create(key -> new HTMaterialPropertyMap.Builder());
     private static final HTNonNullMap<HTMaterialKey, HTMaterialFlagSet.Builder> flagMap = HTNonNullMap
@@ -118,13 +119,15 @@ public abstract class HTMaterialEvent extends Event {
     }
 
     private static void createMaterials() {
-        materialKeys.stream().sorted(Comparator.comparingInt(HTMaterialKey::index)).forEach(key -> {
+        ImmutableBiMap<HTMaterialKey, Integer> keyMap = materialKeys.build();
+        keyMap.entrySet().stream().sorted(Comparator.comparingInt(Map.Entry::getValue)).forEach(entry -> {
+            HTMaterialKey key = entry.getKey();
             HTMaterialPropertyMap property = propertyMap.getOrCreate(key).build();
             HTMaterialFlagSet flag = flagMap.getOrCreate(key).build();
             java.awt.Color color = getColor(key, property).asColor();
             String formula = getFormula(key, property).asFormula();
             double molar = getMolar(key, property).asMolar();
-            HTMaterial.create(key, property, flag, color, formula, molar);
+            HTMaterial.create(key, entry.getValue(), property, flag, color, formula, molar);
         });
     }
 
@@ -132,7 +135,7 @@ public abstract class HTMaterialEvent extends Event {
     private static ColorConvertible getColor(HTMaterialKey key, HTMaterialPropertyMap map) {
         ColorConvertible color = null;
         for (HTMaterialProperty<?> property : map.values()) {
-            if (property instanceof IComponentProperty<?>component) {
+            if (property instanceof HTComponentPropertyBase<?>component) {
                 color = component;
             }
         }
@@ -147,7 +150,7 @@ public abstract class HTMaterialEvent extends Event {
     private static FormulaConvertible getFormula(HTMaterialKey key, HTMaterialPropertyMap map) {
         FormulaConvertible formula = null;
         for (HTMaterialProperty<?> property : map.values()) {
-            if (property instanceof IComponentProperty<?>component) {
+            if (property instanceof HTComponentPropertyBase<?>component) {
                 formula = component;
             }
         }
@@ -162,7 +165,7 @@ public abstract class HTMaterialEvent extends Event {
     private static MolarMassConvertible getMolar(HTMaterialKey key, HTMaterialPropertyMap map) {
         MolarMassConvertible molar = null;
         for (HTMaterialProperty<?> property : map.values()) {
-            if (property instanceof IComponentProperty<?>component) {
+            if (property instanceof HTComponentPropertyBase<?>component) {
                 molar = component;
             }
         }

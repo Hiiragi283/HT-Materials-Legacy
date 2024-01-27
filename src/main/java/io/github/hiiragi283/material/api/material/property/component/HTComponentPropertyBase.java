@@ -1,15 +1,17 @@
-package io.github.hiiragi283.material.api.material.property;
+package io.github.hiiragi283.material.api.material.property.component;
 
 import io.github.hiiragi283.material.api.material.ColorConvertible;
 import io.github.hiiragi283.material.api.material.FormulaConvertible;
 import io.github.hiiragi283.material.api.material.HTMaterial;
 import io.github.hiiragi283.material.api.material.MolarMassConvertible;
+import io.github.hiiragi283.material.api.material.property.HTMaterialProperty;
 
-public interface IComponentProperty<T extends IComponentProperty<T>> extends HTMaterialProperty<T>, ColorConvertible,
-                                   FormulaConvertible, MolarMassConvertible {
+public abstract class HTComponentPropertyBase<T extends HTComponentPropertyBase<T>>
+                                             implements HTMaterialProperty<T>, ColorConvertible,
+                                             FormulaConvertible, MolarMassConvertible {
 
     @Override
-    default void verify(HTMaterial material) {
+    public void verify(HTMaterial material) {
         material.getProperties().values().forEach(prop -> {
             if (prop.getKey() != getKey() && prop instanceof ColorConvertible) {
                 throw new IllegalStateException(

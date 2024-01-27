@@ -1,4 +1,4 @@
-package io.github.hiiragi283.material.api.material.property;
+package io.github.hiiragi283.material.api.material.property.component;
 
 import java.awt.*;
 import java.util.Map;
@@ -9,9 +9,11 @@ import org.jetbrains.annotations.NotNull;
 import com.google.common.collect.ImmutableMap;
 
 import io.github.hiiragi283.material.api.material.*;
+import io.github.hiiragi283.material.api.material.property.HTPropertyKey;
+import io.github.hiiragi283.material.api.material.property.HTPropertyKeys;
 import io.github.hiiragi283.material.util.HTCollectors;
 
-public final class HTCompoundProperty implements IComponentProperty<HTCompoundProperty> {
+public final class HTCompoundProperty extends HTComponentPropertyBase<HTCompoundProperty> {
 
     private final Map<HTMaterialKey, Integer> backingMap;
 

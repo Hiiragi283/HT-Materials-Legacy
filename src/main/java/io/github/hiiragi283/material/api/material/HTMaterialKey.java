@@ -17,9 +17,13 @@ import io.github.hiiragi283.material.HTMaterialsMod;
 import io.github.hiiragi283.material.api.registry.HTObjectKey;
 
 @Desugar
-public record HTMaterialKey(String name, int index) implements HTObjectKey<HTMaterial> {
+public record HTMaterialKey(String name) implements HTObjectKey<HTMaterial> {
 
-    public static final HTMaterialKey EMPTY = new HTMaterialKey("", 0);
+    public HTMaterialKey(String name, int index) {
+        this(name);
+    }
+
+    public static final HTMaterialKey EMPTY = new HTMaterialKey("");
 
     @Override
     public String getName() {

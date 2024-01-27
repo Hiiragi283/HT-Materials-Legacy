@@ -1,7 +1,5 @@
 package io.github.hiiragi283.material.api.material.materials;
 
-import java.lang.reflect.Field;
-
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -10,8 +8,8 @@ import io.github.hiiragi283.material.api.material.ColorConvertible;
 import io.github.hiiragi283.material.api.material.HTMaterialEvent;
 import io.github.hiiragi283.material.api.material.HTMaterialKey;
 import io.github.hiiragi283.material.api.material.flag.HTMaterialFlags;
-import io.github.hiiragi283.material.api.material.property.HTFluidProperty;
 import io.github.hiiragi283.material.api.material.property.HTMetalProperty;
+import io.github.hiiragi283.material.api.material.property.fluid.HTGasProperty;
 import io.github.hiiragi283.material.util.HTColor;
 
 @Mod.EventBusSubscriber
@@ -21,39 +19,39 @@ public enum HTElementMaterials {
 
     // 1st Period //
 
-    public static final HTMaterialKey HYDROGEN = new HTMaterialKey("hydrogen", 1);
-    public static final HTMaterialKey HELIUM = new HTMaterialKey("helium", 2);
+    public static final HTMaterialKey HYDROGEN = new HTMaterialKey("hydrogen");
+    public static final HTMaterialKey HELIUM = new HTMaterialKey("helium");
 
     // 2nd Period //
 
-    public static final HTMaterialKey LITHIUM = new HTMaterialKey("lithium", 3);
-    public static final HTMaterialKey BERYLLIUM = new HTMaterialKey("beryllium", 4);
-    public static final HTMaterialKey BORON = new HTMaterialKey("boron", 5);
-    public static final HTMaterialKey CARBON = new HTMaterialKey("carbon", 6);
-    public static final HTMaterialKey NITROGEN = new HTMaterialKey("nitrogen", 7);
-    public static final HTMaterialKey OXYGEN = new HTMaterialKey("oxygen", 8);
-    public static final HTMaterialKey FLUORINE = new HTMaterialKey("fluorine", 9);
-    public static final HTMaterialKey NEON = new HTMaterialKey("neon", 10);
+    public static final HTMaterialKey LITHIUM = new HTMaterialKey("lithium");
+    public static final HTMaterialKey BERYLLIUM = new HTMaterialKey("beryllium");
+    public static final HTMaterialKey BORON = new HTMaterialKey("boron");
+    public static final HTMaterialKey CARBON = new HTMaterialKey("carbon");
+    public static final HTMaterialKey NITROGEN = new HTMaterialKey("nitrogen");
+    public static final HTMaterialKey OXYGEN = new HTMaterialKey("oxygen");
+    public static final HTMaterialKey FLUORINE = new HTMaterialKey("fluorine");
+    public static final HTMaterialKey NEON = new HTMaterialKey("neon");
 
     // 3rd Period //
 
-    public static final HTMaterialKey SODIUM = new HTMaterialKey("sodium", 11);
-    public static final HTMaterialKey MAGNESIUM = new HTMaterialKey("magnesium", 12);
-    public static final HTMaterialKey ALUMINUM = new HTMaterialKey("aluminum", 13);
-    public static final HTMaterialKey SILICON = new HTMaterialKey("silicon", 14);
-    public static final HTMaterialKey PHOSPHORUS = new HTMaterialKey("phosphorus", 15);
-    public static final HTMaterialKey SULFUR = new HTMaterialKey("sulfur", 16);
-    public static final HTMaterialKey CHLORINE = new HTMaterialKey("chlorine", 17);
+    public static final HTMaterialKey SODIUM = new HTMaterialKey("sodium");
+    public static final HTMaterialKey MAGNESIUM = new HTMaterialKey("magnesium");
+    public static final HTMaterialKey ALUMINUM = new HTMaterialKey("aluminum");
+    public static final HTMaterialKey SILICON = new HTMaterialKey("silicon");
+    public static final HTMaterialKey PHOSPHORUS = new HTMaterialKey("phosphorus");
+    public static final HTMaterialKey SULFUR = new HTMaterialKey("sulfur");
+    public static final HTMaterialKey CHLORINE = new HTMaterialKey("chlorine");
 
     // 4th Period //
 
-    public static final HTMaterialKey IRON = new HTMaterialKey("iron", 28);
+    public static final HTMaterialKey IRON = new HTMaterialKey("iron");
 
     // 5th Period //
 
     // 6th Period //
 
-    public static final HTMaterialKey GOLD = new HTMaterialKey("gold", 79);
+    public static final HTMaterialKey GOLD = new HTMaterialKey("gold");
 
     // 7th Period //
 
@@ -61,17 +59,33 @@ public enum HTElementMaterials {
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void registerMaterialKey(HTMaterialEvent.Register event) {
-        for (Field field : HTElementMaterials.class.getDeclaredFields()) {
-            field.setAccessible(true);
-            try {
-                Object obj = field.get(HTElementMaterials.INSTANCE);
-                if (obj instanceof HTMaterialKey key) {
-                    event.registry.add(key);
-                }
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        }
+        var registry = event.registry;
+        // 1st Period
+        registry.put(HYDROGEN, 1);
+        registry.put(HELIUM, 2);
+        // 2nd Period
+        registry.put(LITHIUM, 3);
+        registry.put(BERYLLIUM, 4);
+        registry.put(BORON, 5);
+        registry.put(CARBON, 6);
+        registry.put(NITROGEN, 7);
+        registry.put(OXYGEN, 8);
+        registry.put(FLUORINE, 9);
+        registry.put(NEON, 10);
+        // 3rd Period
+        registry.put(SODIUM, 11);
+        registry.put(MAGNESIUM, 12);
+        registry.put(ALUMINUM, 13);
+        registry.put(SILICON, 14);
+        registry.put(PHOSPHORUS, 15);
+        registry.put(SULFUR, 16);
+        registry.put(CHLORINE, 17);
+        // 4th Period
+        registry.put(IRON, 28);
+        // 5th Period
+        // 6th Period
+        registry.put(GOLD, 79);
+        // 7th Period
     }
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
@@ -79,9 +93,9 @@ public enum HTElementMaterials {
         var registry = event.registry;
         // 1st Period
         registry.getOrCreate(HYDROGEN)
-                .add(new HTFluidProperty(), HTFluidProperty::setGaseous);
+                .add(new HTGasProperty());
         registry.getOrCreate(HELIUM)
-                .add(new HTFluidProperty(), HTFluidProperty::setGaseous);
+                .add(new HTGasProperty());
         // 2nd Period
         registry.getOrCreate(LITHIUM)
                 .add(HTMetalProperty.INSTANCE);
@@ -90,13 +104,13 @@ public enum HTElementMaterials {
         registry.getOrCreate(BORON);
         registry.getOrCreate(CARBON);
         registry.getOrCreate(NITROGEN)
-                .add(new HTFluidProperty(), HTFluidProperty::setGaseous);
+                .add(new HTGasProperty());
         registry.getOrCreate(OXYGEN)
-                .add(new HTFluidProperty(), HTFluidProperty::setGaseous);
+                .add(new HTGasProperty());
         registry.getOrCreate(FLUORINE)
-                .add(new HTFluidProperty(), HTFluidProperty::setGaseous);
+                .add(new HTGasProperty());
         registry.getOrCreate(NEON)
-                .add(new HTFluidProperty(), HTFluidProperty::setGaseous);
+                .add(new HTGasProperty());
         // 3rd Period
         registry.getOrCreate(SODIUM);
         registry.getOrCreate(MAGNESIUM);
@@ -107,7 +121,7 @@ public enum HTElementMaterials {
         registry.getOrCreate(PHOSPHORUS);
         registry.getOrCreate(SULFUR);
         registry.getOrCreate(CHLORINE)
-                .add(new HTFluidProperty(), HTFluidProperty::setGaseous);
+                .add(new HTGasProperty());
         // 4th Period
         registry.getOrCreate(IRON)
                 .add(HTMetalProperty.INSTANCE);

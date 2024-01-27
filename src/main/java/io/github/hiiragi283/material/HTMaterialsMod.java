@@ -1,7 +1,6 @@
 package io.github.hiiragi283.material;
 
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -14,14 +13,11 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 
-import io.github.hiiragi283.material.api.ExtendedOreDictionary;
 import io.github.hiiragi283.material.api.fluid.HTMaterialFluid;
 import io.github.hiiragi283.material.api.item.HTMaterialItem;
 import io.github.hiiragi283.material.api.material.HTMaterial;
 import io.github.hiiragi283.material.api.material.HTMaterialEvent;
-import io.github.hiiragi283.material.api.material.flag.HTMaterialFlags;
-import io.github.hiiragi283.material.api.material.property.HTFluidProperty;
-import io.github.hiiragi283.material.api.material.property.HTPropertyKeys;
+import io.github.hiiragi283.material.api.material.property.fluid.HTFluidPropertyBase;
 import io.github.hiiragi283.material.api.part.HTPartDictionary;
 import io.github.hiiragi283.material.api.shape.HTShapeEvent;
 import io.github.hiiragi283.material.api.shape.HTShapes;
@@ -77,14 +73,17 @@ public final class HTMaterialsMod {
         // Reload Ore Dictionary
         HTPartDictionary.reloadOreDicts();
         // Register Material Fluids
-        HTMaterial.getMaterials().forEach(material -> {
-            HTFluidProperty fluidProperty = material.getProperty(HTPropertyKeys.FLUID);
-            if (!material.hasFlag(HTMaterialFlags.NOT_GENERATE_FLUID) && fluidProperty != null) {
-                HTMaterialFluid fluid = new HTMaterialFluid(material, fluidProperty);
-                FluidRegistry.registerFluid(fluid);
-                FluidRegistry.addBucketForFluid(fluid);
-            }
-        });
+        HTMaterial.getMaterials().forEach(material -> material
+                .getProperties()
+                .values()
+                .stream()
+                .filter(HTFluidPropertyBase.class::isInstance)
+                .map(HTFluidPropertyBase.class::cast)
+                .forEach(property -> {
+                    HTMaterialFluid fluid = new HTMaterialFluid(material, property);
+                    FluidRegistry.registerFluid(fluid);
+                    FluidRegistry.addBucketForFluid(fluid);
+                }));
         LOGGER.info("HTMaterialFluid initialized!");
     }
 
@@ -100,7 +99,5 @@ public final class HTMaterialsMod {
     public void onPostInit(FMLPostInitializationEvent event) {}
 
     @Mod.EventHandler
-    public void onComplete(FMLLoadCompleteEvent event) {
-        ExtendedOreDictionary.removeOre("ingotIron", Items.IRON_INGOT);
-    }
+    public void onComplete(FMLLoadCompleteEvent event) {}
 }

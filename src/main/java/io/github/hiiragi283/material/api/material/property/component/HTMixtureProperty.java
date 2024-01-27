@@ -1,4 +1,4 @@
-package io.github.hiiragi283.material.api.material.property;
+package io.github.hiiragi283.material.api.material.property.component;
 
 import java.awt.*;
 import java.util.Iterator;
@@ -8,10 +8,13 @@ import org.jetbrains.annotations.NotNull;
 
 import io.github.hiiragi283.material.api.material.ColorConvertible;
 import io.github.hiiragi283.material.api.material.HTMaterialKey;
+import io.github.hiiragi283.material.api.material.property.HTPropertyKey;
+import io.github.hiiragi283.material.api.material.property.HTPropertyKeys;
 import io.github.hiiragi283.material.util.HTUtils;
 import scala.actors.threadpool.Arrays;
 
-public final class HTMixtureProperty implements IComponentProperty<HTMixtureProperty>, Iterable<HTMaterialKey> {
+public final class HTMixtureProperty extends HTComponentPropertyBase<HTMixtureProperty>
+                                     implements Iterable<HTMaterialKey> {
 
     private final Iterable<HTMaterialKey> iterable;
 
