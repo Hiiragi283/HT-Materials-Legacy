@@ -1,32 +1,54 @@
 package io.github.hiiragi283;
 
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import org.jetbrains.annotations.NotNull;
+
+import io.github.hiiragi283.api.HTMaterialsAPI;
+import io.github.hiiragi283.item.ItemMaterialDictionary;
 
 @Mod(modid = HMReference.MOD_ID,
      name = HMReference.MOD_NAME,
      version = HMReference.VERSION)
 public final class HTMaterialsMod {
 
-    public static final CreativeTabs CREATIVE_TABS = new CreativeTabs("") {
-
-        @NotNull
-        @Override
-        public ItemStack createIcon() {
-            return ItemStack.EMPTY;
-        }
-    };
-
     @Mod.EventHandler
     public void onConstruct() {
+        MinecraftForge.EVENT_BUS.register(this);
         HTMaterialsCore.initAddons();
     }
 
     @Mod.EventHandler
-    public void onPreInit() {}
+    public void onPreInit() {
+        HTMaterialsCore.registerShapes();
+        HTMaterialsCore.registerMaterials();
+        HTMaterialsAPIImpl.creativeTabs = new CreativeTabs("material") {
+
+            @NotNull
+            @Override
+            public ItemStack createIcon() {
+                return new ItemStack(HTMaterialsAPI.INSTANCE.iconItem());
+            }
+        };
+        HTMaterialsAPIImpl.iconItem = new Item()
+                .setCreativeTab(HTMaterialsAPI.INSTANCE.creativeTab())
+                .setRegistryName(HTMaterialsAPI.MOD_ID, "icon");
+        HTMaterialsAPIImpl.dictionaryItem = ItemMaterialDictionary.INSTANCE;
+    }
+
+    @SubscribeEvent
+    public void registerItem(RegistryEvent.Register<Item> event) {
+        // HTMaterialsCore.initShapeItemBuilders(event.getRegistry());
+        event.getRegistry().registerAll(
+                HTMaterialsAPI.INSTANCE.iconItem(),
+                HTMaterialsAPI.INSTANCE.dictionaryItem());
+    }
 
     @Mod.EventHandler
     public void onInit() {}

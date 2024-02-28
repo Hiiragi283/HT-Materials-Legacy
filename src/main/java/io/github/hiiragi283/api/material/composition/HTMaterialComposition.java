@@ -4,16 +4,21 @@ import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.jetbrains.annotations.NotNull;
+
+import com.github.bsideup.jabel.Desugar;
 import com.google.common.collect.ImmutableMap;
 
 import io.github.hiiragi283.api.material.element.HTElement;
 
-public record HTMaterialComposition(ImmutableMap<HTElement, Integer> component,
-                                    Color color,
-                                    String formula,
+@Desugar
+public record HTMaterialComposition(@NotNull ImmutableMap<HTElement, Integer> component,
+                                    @NotNull Color color,
+                                    @NotNull String formula,
                                     double molar) {
 
-    public HTMaterialComposition(Map<HTElement, Integer> component, Color color, String formula, double molar) {
+    public HTMaterialComposition(@NotNull Map<HTElement, Integer> component, @NotNull Color color,
+                                 @NotNull String formula, double molar) {
         this(ImmutableMap.copyOf(component), color, formula, molar);
     }
 

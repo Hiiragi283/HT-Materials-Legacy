@@ -11,27 +11,42 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import com.github.bsideup.jabel.Desugar;
+import com.google.common.base.CaseFormat;
+import com.google.common.base.Preconditions;
 
 import io.github.hiiragi283.api.HTMaterialsAPI;
 
-@Desugar
-public record HTMaterialKey(String name, String translationKey) {
-
-    public HTMaterialKey(String name) {
-        this(name, "ht_material." + name);
-    }
+public final class HTMaterialKey {
 
     public static final HTMaterialKey EMPTY = new HTMaterialKey("");
+    private final String name;
+    private final String translationKey;
+
+    public HTMaterialKey(String name) {
+        this.name = name;
+        this.translationKey = "ht_material." + name;
+    }
+
+    private HTMaterial cache;
 
     @Nullable
     public HTMaterial getMaterialOrNull() {
-        return HTMaterialsAPI.INSTANCE.materialRegistry().getMaterial(this);
+        if (cache == null) {
+            cache = HTMaterialsAPI.INSTANCE.materialRegistry().getMaterial(this);
+        }
+        return cache;
     }
 
     @NotNull
     public HTMaterial getMaterial() throws NullPointerException {
-        return Objects.requireNonNull(getMaterialOrNull(), "");
+        return Preconditions.checkNotNull(getMaterialOrNull(), "Material; %s is not registered!", name);
+    }
+
+    // Ore Dictionary
+
+    @NotNull
+    public String getOreDictName() {
+        return CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, name);
     }
 
     // Translation
@@ -44,5 +59,34 @@ public record HTMaterialKey(String name, String translationKey) {
     @NotNull
     public ITextComponent getTranslatedText() {
         return new TextComponentTranslation(translationKey);
+    }
+
+    public String name() {
+        return name;
+    }
+
+    public String translationKey() {
+        return translationKey;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) return true;
+        if (obj == null || obj.getClass() != this.getClass()) return false;
+        var that = (HTMaterialKey) obj;
+        return Objects.equals(this.name, that.name) &&
+                Objects.equals(this.translationKey, that.translationKey);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, translationKey);
+    }
+
+    @Override
+    public String toString() {
+        return "HTMaterialKey[" +
+                "name=" + name + ", " +
+                "translationKey=" + translationKey + ']';
     }
 }

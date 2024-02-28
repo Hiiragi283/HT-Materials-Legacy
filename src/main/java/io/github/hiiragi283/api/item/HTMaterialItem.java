@@ -1,8 +1,6 @@
 package io.github.hiiragi283.api.item;
 
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.stream.Stream;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -13,25 +11,26 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-import io.github.hiiragi283.HTMaterialsMod;
 import io.github.hiiragi283.api.HTMaterialsAPI;
+import io.github.hiiragi283.api.material.HTMaterial;
+import io.github.hiiragi283.api.material.flag.HTMaterialFlag;
 import io.github.hiiragi283.api.shape.HTShapeKey;
 
 public final class HTMaterialItem extends Item implements IMaterialItemProvider {
 
     public final HTShapeKey shapeKey;
+    private final HTMaterialFlag materialFlag;
 
-    public HTMaterialItem(HTShapeKey shapeKey) {
+    public HTMaterialItem(HTShapeKey shapeKey, HTMaterialFlag materialFlag) {
         this.shapeKey = shapeKey;
+        this.materialFlag = materialFlag;
         hasSubtypes = true;
-        registry.putIfAbsent(shapeKey, this);
-        setCreativeTab(HTMaterialsMod.CREATIVE_TABS);
+        setCreativeTab(HTMaterialsAPI.INSTANCE.creativeTab());
         setRegistryName(HTMaterialsAPI.location(shapeKey.name()));
     }
 
-    // Item //
+    // Item
 
     @Override
     public int getMetadata(int damage) {
@@ -52,7 +51,7 @@ public final class HTMaterialItem extends Item implements IMaterialItemProvider 
         }
     }
 
-    // IMaterialItemProvider //
+    // IMaterialItemProvider
 
     @NotNull
     @Override
@@ -60,21 +59,15 @@ public final class HTMaterialItem extends Item implements IMaterialItemProvider 
         return shapeKey;
     }
 
+    @NotNull
+    @Override
+    public Stream<HTMaterial> getValidMaterials() {
+        return HTMaterialsAPI.INSTANCE.materialRegistry().getValues().stream()
+                .filter(material -> material.hasFlag(materialFlag));
+    }
+
     @Override
     public Item asItem() {
         return this;
-    }
-
-    // Registry //
-
-    private final static Map<HTShapeKey, HTMaterialItem> registry = new LinkedHashMap<>();
-
-    public static Collection<HTMaterialItem> getItems() {
-        return registry.values();
-    }
-
-    @Nullable
-    public static HTMaterialItem getItem(HTShapeKey shapeKey) {
-        return registry.get(shapeKey);
     }
 }

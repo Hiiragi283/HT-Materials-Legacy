@@ -1,7 +1,6 @@
 package io.github.hiiragi283.api.item;
 
 import java.util.Objects;
-import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 import net.minecraft.block.Block;
@@ -23,19 +22,19 @@ public class HTMetaItem {
     public static HTMetaItem EMPTY = new HTMetaItem(Items.AIR, 0);
 
     @NotNull
-    public static Stream<HTMetaItem> fromState(IBlockState state, Consumer<HTMetaItem> consumer) {
+    public static Stream<HTMetaItem> fromState(@NotNull IBlockState state) {
         Block block = state.getBlock();
         int meta = block.getMetaFromState(state);
         return from(block, meta);
     }
 
     @NotNull
-    public static Stream<HTMetaItem> fromStack(ItemStack stack) {
+    public static Stream<HTMetaItem> fromStack(@NotNull ItemStack stack) {
         return from(stack.getItem(), stack.getMetadata());
     }
 
     @NotNull
-    public static Stream<@NotNull HTMetaItem> from(Object obj, int meta) {
+    public static Stream<HTMetaItem> from(@NotNull Object obj, int meta) {
         Item item;
         if (obj instanceof IItemProvider) {
             item = ((IItemProvider) obj).asItem();

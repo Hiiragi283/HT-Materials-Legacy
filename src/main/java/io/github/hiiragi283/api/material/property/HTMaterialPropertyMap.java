@@ -28,11 +28,11 @@ public final class HTMaterialPropertyMap {
     }
 
     @Nullable
-    public HTMaterialProperty<?> get(HTPropertyKey<?> key) {
+    public HTMaterialProperty<?> get(@NotNull HTPropertyKey<?> key) {
         return backingMap.get(key);
     }
 
-    public void verify(HTMaterial material) {
+    public void verify(@NotNull HTMaterial material) {
         backingMap.values().forEach(property -> property.verify(material));
     }
 
@@ -59,11 +59,11 @@ public final class HTMaterialPropertyMap {
 
         private final Map<HTPropertyKey<?>, HTMaterialProperty<?>> backingMap = new HashMap<>();
 
-        public <T extends HTMaterialProperty<T>> Builder add(T property) {
+        public <T extends HTMaterialProperty<T>> Builder add(@NotNull T property) {
             return add(property, prop -> {});
         }
 
-        public <T extends HTMaterialProperty<T>> Builder add(T property, Consumer<T> consumer) {
+        public <T extends HTMaterialProperty<T>> Builder add(@NotNull T property, @NotNull Consumer<T> consumer) {
             consumer.accept(property);
             backingMap.put(property.getKey(), property);
             return this;

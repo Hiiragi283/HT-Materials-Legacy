@@ -1,14 +1,13 @@
 package io.github.hiiragi283.api.material.property;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.github.bsideup.jabel.Desugar;
 
+@Desugar
 public record HTPropertyKey<T extends HTMaterialProperty<T>> (String name, Class<T> objClass) {
 
     public HTPropertyKey(String name, Class<T> objClass) {
         this.name = name;
         this.objClass = objClass;
-        registry.putIfAbsent(name, this);
     }
 
     // Object //
@@ -29,18 +28,5 @@ public record HTPropertyKey<T extends HTMaterialProperty<T>> (String name, Class
     @Override
     public String toString() {
         return name;
-    }
-
-    // Registry //
-
-    private static final Map<String, HTPropertyKey<?>> registry = new HashMap<>();
-
-    @SuppressWarnings("unchecked")
-    public static <T extends HTMaterialProperty<T>> HTPropertyKey<T> getKey(String name) {
-        return (HTPropertyKey<T>) registry.get(name);
-    }
-
-    static {
-        HTPropertyKeys.init();
     }
 }

@@ -17,12 +17,12 @@ import io.github.hiiragi283.api.shape.HTShapeKey;
 public interface IMaterialItemProvider extends IItemProvider {
 
     @Nullable
-    default HTMaterial getMaterial(ItemStack stack) {
+    default HTMaterial getMaterial(@NotNull ItemStack stack) {
         return HTMaterialsAPI.INSTANCE.materialRegistry().getMaterial(stack.getMetadata());
     }
 
     @NotNull
-    default HTMaterialKey getMaterialKey(ItemStack stack) {
+    default HTMaterialKey getMaterialKey(@NotNull ItemStack stack) {
         HTMaterial material = getMaterial(stack);
         return material == null ? HTMaterialKey.EMPTY : material.key();
     }
@@ -30,27 +30,31 @@ public interface IMaterialItemProvider extends IItemProvider {
     @NotNull
     HTShapeKey getShapeKey();
 
-    default Stream<HTMaterial> getMaterials() {
-        return HTMaterialsAPI.INSTANCE.materialRegistry().getValues().stream();
-    }
+    @NotNull
+    Stream<HTMaterial> getValidMaterials();
 
+    @NotNull
     default Stream<HTMaterialKey> getMaterialKeys() {
-        return getMaterials().map(HTMaterial::key);
+        return getValidMaterials().map(HTMaterial::key);
     }
 
+    @NotNull
     default IntStream getMaterialIndexes() {
-        return getMaterials().mapToInt(HTMaterial::index);
+        return getValidMaterials().mapToInt(HTMaterial::index);
     }
 
+    @NotNull
     default Stream<ItemStack> getMaterialStacks() {
         return getMaterialIndexes().mapToObj(index -> new ItemStack(asItem(), 1, index));
     }
 
-    default HTPart getPart(ItemStack stack) {
+    @NotNull
+    default HTPart getPart(@NotNull ItemStack stack) {
         return new HTPart(getShapeKey(), getMaterialKey(stack));
     }
 
-    default String getOreDict(ItemStack stack) {
+    @NotNull
+    default String getOreDict(@NotNull ItemStack stack) {
         return getShapeKey().getOreDict(getMaterialKey(stack));
     }
 }

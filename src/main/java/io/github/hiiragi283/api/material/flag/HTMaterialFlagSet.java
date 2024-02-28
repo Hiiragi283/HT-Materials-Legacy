@@ -17,7 +17,7 @@ public final class HTMaterialFlagSet implements Iterable<HTMaterialFlag> {
         this.backingSet = backingSet;
     }
 
-    public void verify(HTMaterial material) {
+    public void verify(@NotNull HTMaterial material) {
         backingSet.forEach(flag -> flag.verify(material));
     }
 
@@ -43,12 +43,12 @@ public final class HTMaterialFlagSet implements Iterable<HTMaterialFlag> {
 
         private final Set<HTMaterialFlag> backingSet = new HashSet<>();
 
-        public Builder add(HTMaterialFlag flag) {
+        public Builder add(@NotNull HTMaterialFlag flag) {
             backingSet.add(flag);
             return this;
         }
 
-        public Builder remove(HTMaterialFlag flag) {
+        public Builder remove(@NotNull HTMaterialFlag flag) {
             backingSet.remove(flag);
             return this;
         }

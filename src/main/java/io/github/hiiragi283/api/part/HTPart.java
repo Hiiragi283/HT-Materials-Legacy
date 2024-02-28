@@ -16,6 +16,14 @@ public record HTPart(HTShapeKey shapeKey, HTMaterialKey materialKey) {
         this(shape.key(), material.key());
     }
 
+    public HTPart(HTShape shape, HTMaterialKey materialKey) {
+        this(shape.key(), materialKey);
+    }
+
+    public HTPart(HTShapeKey shapeKey, HTMaterial material) {
+        this(shapeKey, material.key());
+    }
+
     @NotNull
     public HTShape getShape() throws NullPointerException {
         return shapeKey.getShape();

@@ -9,6 +9,7 @@ import net.minecraft.util.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import com.github.bsideup.jabel.Desugar;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMultimap;
@@ -111,6 +112,7 @@ public final class HTPartManager {
     }
 
     // Entry
+    @Desugar
     public record Entry(HTPart part, HTMetaItem metaItem) {}
 
     // Builder

@@ -11,6 +11,8 @@ import net.minecraft.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import com.github.bsideup.jabel.Desugar;
+
 import io.github.hiiragi283.api.material.composition.HTMaterialComposition;
 import io.github.hiiragi283.api.material.element.HTElement;
 import io.github.hiiragi283.api.material.flag.HTMaterialFlag;
@@ -20,11 +22,8 @@ import io.github.hiiragi283.api.material.property.HTMaterialPropertyMap;
 import io.github.hiiragi283.api.material.property.HTPropertyKey;
 import io.github.hiiragi283.api.shape.HTShape;
 
-public record HTMaterial(
-                         HTMaterialKey key,
-                         int index,
-                         HTMaterialComposition composition,
-                         HTMaterialFlagSet flagSet,
+@Desugar
+public record HTMaterial(HTMaterialKey key, int index, HTMaterialComposition composition, HTMaterialFlagSet flagSet,
                          HTMaterialPropertyMap propertyMap) {
 
     // Composition
@@ -50,35 +49,32 @@ public record HTMaterial(
 
     // Flags
 
-    public void forEachFlag(Consumer<HTMaterialFlag> consumer) {
+    public void forEachFlag(@NotNull Consumer<HTMaterialFlag> consumer) {
         flagSet.forEach(consumer);
     }
 
-    public boolean hasFlag(HTMaterialFlag flag) {
+    public boolean hasFlag(@NotNull HTMaterialFlag flag) {
         return flagSet.contains(flag);
     }
 
     // Properties
 
-    public void forEachProperty(Consumer<HTMaterialProperty<?>> consumer) {
+    public void forEachProperty(@NotNull Consumer<HTMaterialProperty<?>> consumer) {
         propertyMap.values().forEach(consumer);
     }
 
     @Nullable
-    public <T extends HTMaterialProperty<T>> T getProperty(HTPropertyKey<T> key) {
+    public <T extends HTMaterialProperty<T>> T getProperty(@NotNull HTPropertyKey<T> key) {
         return key.objClass().cast(propertyMap.get(key));
     }
 
-    public boolean hasProperty(HTPropertyKey<?> key) {
+    public boolean hasProperty(@NotNull HTPropertyKey<?> key) {
         return propertyMap.contains(key);
     }
 
     // Other //
 
-    public void addInformation(
-                               @NotNull HTMaterial material,
-                               @Nullable HTShape shape,
-                               @NotNull ItemStack stack,
+    public void addInformation(@NotNull HTMaterial material, @Nullable HTShape shape, @NotNull ItemStack stack,
                                @NotNull List<String> tooltips) {
         // Title
         tooltips.add(I18n.format("tooltip.ht_materials.material.title"));

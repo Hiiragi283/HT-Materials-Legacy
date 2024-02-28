@@ -1,5 +1,7 @@
 package io.github.hiiragi283.api;
 
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 
 import org.apache.logging.log4j.LogManager;
@@ -26,6 +28,12 @@ public interface HTMaterialsAPI {
     HTShapeRegistry shapeRegistry();
 
     HTMaterialRegistry materialRegistry();
+
+    CreativeTabs creativeTab();
+
+    Item iconItem();
+
+    Item dictionaryItem();
 
     HTPartManager partManager();
 }

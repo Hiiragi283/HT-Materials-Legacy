@@ -3,7 +3,10 @@ package io.github.hiiragi283.api.material.flag;
 import java.util.*;
 import java.util.function.Consumer;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import com.google.common.base.Preconditions;
 
 import io.github.hiiragi283.api.material.HTMaterial;
 import io.github.hiiragi283.api.material.property.HTPropertyKey;
@@ -11,13 +14,10 @@ import io.github.hiiragi283.api.material.property.HTPropertyKey;
 public final class HTMaterialFlag {
 
     private final String name;
-
     private final Collection<HTMaterialFlag> requiredFlags;
-
     private final Collection<HTPropertyKey<?>> requiredProperties;
 
-    private HTMaterialFlag(String name,
-                           Collection<HTMaterialFlag> requiredFlags,
+    private HTMaterialFlag(String name, Collection<HTMaterialFlag> requiredFlags,
                            Collection<HTPropertyKey<?>> requiredProperties) {
         this.name = name;
         this.requiredFlags = requiredFlags;
@@ -25,19 +25,11 @@ public final class HTMaterialFlag {
         registry.putIfAbsent(name, this);
     }
 
-    void verify(HTMaterial material) {
-        requiredProperties.forEach(key -> {
-            if (!material.hasProperty(key)) {
-                throw new IllegalStateException(
-                        "The material: $material has no property: ${key.name} but required for ${this.name}!");
-            }
-        });
-        requiredFlags.forEach(flag -> {
-            if (!material.hasFlag(flag)) {
-                throw new IllegalStateException(
-                        "The material: $material has no flag: ${flag.name} but required for ${this.name}!");
-            }
-        });
+    public void verify(@NotNull HTMaterial material) {
+        requiredProperties.forEach(key -> Preconditions.checkArgument(material.hasProperty(key),
+                "Material; %s has not property; %s but required for; %s", material.key().name(), key.name(), name));
+        requiredFlags.forEach(flag -> Preconditions.checkArgument(material.hasFlag(flag),
+                "Material; %s has not flag; %s but required for; %s", material.key().name(), flag.name, name));
     }
 
     // Object
@@ -64,15 +56,17 @@ public final class HTMaterialFlag {
     private static final Map<String, HTMaterialFlag> registry = new HashMap<>();
 
     @Nullable
-    public static HTMaterialFlag getFlag(String name) {
+    public static HTMaterialFlag getFlag(@NotNull String name) {
         return registry.get(name);
     }
 
-    public static HTMaterialFlag create(String name) {
+    @NotNull
+    public static HTMaterialFlag create(@NotNull String name) {
         return create(name, builder -> {});
     }
 
-    public static HTMaterialFlag create(String name, Consumer<Builder> consumer) {
+    @NotNull
+    public static HTMaterialFlag create(@NotNull String name, Consumer<Builder> consumer) {
         var builder = new Builder(name);
         consumer.accept(builder);
         return builder.build();
@@ -88,9 +82,9 @@ public final class HTMaterialFlag {
             this.name = name;
         }
 
-        public final Set<HTMaterialFlag> requiredFlags = new HashSet<>();
+        public final Set<@NotNull HTMaterialFlag> requiredFlags = new HashSet<>();
 
-        public final Set<HTPropertyKey<?>> requiredProperties = new HashSet<>();
+        public final Set<@NotNull HTPropertyKey<?>> requiredProperties = new HashSet<>();
 
         HTMaterialFlag build() {
             return new HTMaterialFlag(name, requiredFlags, requiredProperties);
