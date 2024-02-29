@@ -3,10 +3,13 @@ package io.github.hiiragi283;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -44,10 +47,13 @@ public final class HTMaterialsMod {
 
     @SubscribeEvent
     public void registerItem(RegistryEvent.Register<Item> event) {
-        // HTMaterialsCore.initShapeItemBuilders(event.getRegistry());
-        event.getRegistry().registerAll(
-                HTMaterialsAPI.INSTANCE.iconItem(),
-                HTMaterialsAPI.INSTANCE.dictionaryItem());
+        HTMaterialsCore.onItemRegister(event.getRegistry());
+    }
+
+    @SideOnly(Side.CLIENT)
+    @SubscribeEvent
+    public void onModelRegister(ModelRegistryEvent event) {
+        HTMaterialsCore.onModelRegister(event);
     }
 
     @Mod.EventHandler

@@ -5,11 +5,6 @@ import com.github.bsideup.jabel.Desugar;
 @Desugar
 public record HTPropertyKey<T extends HTMaterialProperty<T>> (String name, Class<T> objClass) {
 
-    public HTPropertyKey(String name, Class<T> objClass) {
-        this.name = name;
-        this.objClass = objClass;
-    }
-
     // Object //
 
     @Override

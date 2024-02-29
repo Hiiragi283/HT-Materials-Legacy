@@ -1,4 +1,4 @@
-package io.github.hiiragi283.api.util;
+package io.github.hiiragi283.api.extension;
 
 import java.util.function.Consumer;
 
@@ -8,9 +8,9 @@ import org.jetbrains.annotations.NotNull;
 
 import com.google.gson.JsonObject;
 
-public final class HTBuilderUtil {
+public final class ObjectBuilderUtil {
 
-    private HTBuilderUtil() {}
+    private ObjectBuilderUtil() {}
 
     @NotNull
     private static <T> T buildObject(@NotNull T instance, @NotNull Consumer<T> consumer) {

@@ -63,9 +63,11 @@ public record HTMaterial(HTMaterialKey key, int index, HTMaterialComposition com
         propertyMap.values().forEach(consumer);
     }
 
+    @SuppressWarnings("unchecked")
     @Nullable
     public <T extends HTMaterialProperty<T>> T getProperty(@NotNull HTPropertyKey<T> key) {
-        return key.objClass().cast(propertyMap.get(key));
+        HTMaterialProperty<?> property = propertyMap.get(key);
+        return key.objClass().isInstance(property) ? (T) property : null;
     }
 
     public boolean hasProperty(@NotNull HTPropertyKey<?> key) {

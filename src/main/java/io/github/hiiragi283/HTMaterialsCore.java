@@ -1,11 +1,12 @@
 package io.github.hiiragi283;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
+import java.util.*;
 import java.util.stream.Collectors;
 
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
+import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.registries.IForgeRegistry;
 
@@ -79,11 +80,30 @@ final class HTMaterialsCore {
         HTMaterialsAPIImpl.materialRegistry = registry;
     }
 
-    // Init
-    public static void initShapeItemBuilders(@NotNull IForgeRegistry<Item> registry) {
+    public static void onItemRegister(@NotNull IForgeRegistry<Item> registry) {
         HTMaterialsAPI.INSTANCE.shapeRegistry().getValues()
-                .forEach(shape -> shape.itemBuilders().forEach(itemBuilder -> itemBuilder.initItem(registry)));
+                .stream().flatMap(shape -> shape.itemBuilders().stream())
+                .forEach(itemBuilder -> itemBuilder.registerItem(registry));
+        registry.registerAll(HTMaterialsAPI.INSTANCE.iconItem(), HTMaterialsAPI.INSTANCE.dictionaryItem());
     }
+
+    private static void setModel(Item item) {
+        Optional.ofNullable(item.getRegistryName())
+                .ifPresent(location -> ModelLoader.setCustomModelResourceLocation(
+                        item,
+                        0,
+                        new ModelResourceLocation(location, "inventory")));
+    }
+
+    public static void onModelRegister(ModelRegistryEvent event) {
+        HTMaterialsAPI.INSTANCE.shapeRegistry().getValues()
+                .stream().flatMap(HTShape::ItemBuilderStream)
+                .forEach(HTShapeItemBuilder::registerModel);
+        setModel(HTMaterialsAPI.INSTANCE.iconItem());
+        setModel(HTMaterialsAPI.INSTANCE.dictionaryItem());
+    }
+
+    // Init
 
     public static void bindItemToPart() {
         HTPartManager.Builder builder = new HTPartManager.Builder();

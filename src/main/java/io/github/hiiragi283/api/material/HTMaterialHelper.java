@@ -10,7 +10,7 @@ import io.github.hiiragi283.api.material.composition.HTMaterialComposition;
 import io.github.hiiragi283.api.material.flag.HTMaterialFlagSet;
 import io.github.hiiragi283.api.material.property.HTMaterialPropertyMap;
 
-public class HTMaterialHelper {
+public final class HTMaterialHelper {
 
     // Material Key
     private final Map<HTMaterialKey, Integer> keyMap = new LinkedHashMap<>();

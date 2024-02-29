@@ -4,9 +4,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.function.Consumer;
 import java.util.function.Function;
-
-import net.minecraft.util.ResourceLocation;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -16,7 +15,7 @@ import com.google.common.collect.Multimap;
 
 import io.github.hiiragi283.api.item.IMaterialItemProvider;
 
-public class HTShapeHelper {
+public final class HTShapeHelper {
 
     // Shape key
     private final Set<HTShapeKey> keys = new LinkedHashSet<>();
@@ -39,8 +38,15 @@ public class HTShapeHelper {
     }
 
     public void addShapeItem(@NotNull HTShapeKey shapeKey,
+                             @NotNull Function<HTShapeKey, ? extends IMaterialItemProvider> itemBuilder) {
+        contentMultimap.put(shapeKey, new HTShapeItemBuilder.Builder(shapeKey, itemBuilder).build());
+    }
+
+    public void addShapeItem(@NotNull HTShapeKey shapeKey,
                              @NotNull Function<HTShapeKey, ? extends IMaterialItemProvider> itemBuilder,
-                             @NotNull Function<HTShapeKey, ResourceLocation> locationBuilder) {
-        contentMultimap.put(shapeKey, new HTShapeItemBuilder(shapeKey, itemBuilder, locationBuilder));
+                             @NotNull Consumer<HTShapeItemBuilder.Builder> builderConsumer) {
+        HTShapeItemBuilder.Builder builder = new HTShapeItemBuilder.Builder(shapeKey, itemBuilder);
+        builderConsumer.accept(builder);
+        contentMultimap.put(shapeKey, builder.build());
     }
 }

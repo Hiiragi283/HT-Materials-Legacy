@@ -15,9 +15,9 @@ import net.minecraftforge.oredict.OreDictionary;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import io.github.hiiragi283.api.util.HTBuilderUtil;
+import io.github.hiiragi283.api.extension.ObjectBuilderUtil;
 
-public class HTMetaItem {
+public final class HTMetaItem {
 
     public static HTMetaItem EMPTY = new HTMetaItem(Items.AIR, 0);
 
@@ -40,7 +40,7 @@ public class HTMetaItem {
             item = ((IItemProvider) obj).asItem();
             if (item != Items.AIR) {
                 if (meta == OreDictionary.WILDCARD_VALUE) {
-                    return HTBuilderUtil
+                    return ObjectBuilderUtil
                             .<ItemStack>buildNonNullList(list -> item.getSubItems(CreativeTabs.SEARCH, list))
                             .stream()
                             .map(stack -> new HTMetaItem(stack.getItem(), stack.getMetadata()));
