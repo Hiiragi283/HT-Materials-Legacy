@@ -1,10 +1,12 @@
 {
-  "package": "io.github.hiiragi283.mixin",
+  "package": "io.github.hiiragi283.htms.mixin",
   "refmap": "mixins.ht_materials.refmap.json",
   "target": "@env(DEFAULT)",
   "minVersion": "0.8",
   "compatibilityLevel": "JAVA_8",
   "mixins": [],
-  "client": [],
+  "client": [
+    "MinecraftMixin"
+  ],
   "server": []
 }
