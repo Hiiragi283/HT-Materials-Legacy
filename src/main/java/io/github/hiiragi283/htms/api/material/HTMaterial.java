@@ -19,7 +19,7 @@ import com.google.common.collect.ImmutableSet;
 import io.github.hiiragi283.htms.api.extension.TypedResourceLocation;
 import io.github.hiiragi283.htms.api.material.composition.HTElement;
 import io.github.hiiragi283.htms.api.material.composition.HTMaterialComposition;
-import io.github.hiiragi283.htms.api.material.property.HTMaterialProperty;
+import io.github.hiiragi283.htms.api.material.property.HTTooltipProperty;
 import io.github.hiiragi283.htms.api.shape.HTShape;
 
 public final class HTMaterial {
@@ -33,7 +33,7 @@ public final class HTMaterial {
     private final ImmutableSet<@NotNull ResourceLocation> flagSet;
 
     @NotNull
-    private final ImmutableMap<@NotNull TypedResourceLocation<?>, @NotNull HTMaterialProperty<?>> propertyMap;
+    private final ImmutableMap<@NotNull TypedResourceLocation<?>, @NotNull Object> propertyMap;
 
     @NotNull
     public final HTMaterialType type;
@@ -49,9 +49,20 @@ public final class HTMaterial {
 
     public final double molar;
 
+    private boolean isEmpty;
+
+    static HTMaterial empty(@NotNull HTMaterialKey key) {
+        HTMaterial emptyMaterial = new HTMaterial(key, new HTMaterial.Builder(-1));
+        emptyMaterial.isEmpty = true;
+        return emptyMaterial;
+    }
+
     HTMaterial(@NotNull Map.Entry<@NotNull HTMaterialKey, HTMaterial.@NotNull Builder> entry) {
-        this.key = entry.getKey();
-        HTMaterial.Builder builder = entry.getValue();
+        this(entry.getKey(), entry.getValue());
+    }
+
+    private HTMaterial(@NotNull HTMaterialKey key, HTMaterial.@NotNull Builder builder) {
+        this.key = key;
         this.index = builder.index;
         this.flagSet = ImmutableSet.copyOf(builder.flagSet);
         this.propertyMap = ImmutableMap.copyOf(builder.propertyMap);
@@ -61,6 +72,7 @@ public final class HTMaterial {
         this.color = composition.color();
         this.formula = composition.formula();
         this.molar = composition.molar();
+        this.isEmpty = false;
     }
 
     public HTMaterialKey key() {
@@ -69,6 +81,14 @@ public final class HTMaterial {
 
     public int index() {
         return index;
+    }
+
+    public boolean isEmpty() {
+        return isEmpty;
+    }
+
+    public boolean isNotEmpty() {
+        return !isEmpty;
     }
 
     // Flag //
@@ -83,20 +103,16 @@ public final class HTMaterial {
 
     // Property //
 
-    public <T extends HTMaterialProperty<T>> @NotNull Optional<T> getPropertyOptional(@NotNull TypedResourceLocation<T> key) {
+    public <T> @NotNull Optional<T> getPropertyOptional(@NotNull TypedResourceLocation<T> key) {
         return Optional.ofNullable(getProperty(key));
     }
 
-    public <T extends HTMaterialProperty<T>> @Nullable T getProperty(@NotNull TypedResourceLocation<T> key) {
+    public <T> @Nullable T getProperty(@NotNull TypedResourceLocation<T> key) {
         return key.cast(propertyMap.get(key));
     }
 
     public boolean hasProperty(@NotNull TypedResourceLocation<?> property) {
         return propertyMap.containsKey(property);
-    }
-
-    public void forEachProperty(@NotNull Consumer<@NotNull HTMaterialProperty<?>> action) {
-        propertyMap.values().forEach(action);
     }
 
     // Type //
@@ -106,6 +122,19 @@ public final class HTMaterial {
     }
 
     // Object //
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof HTMaterial other && Objects.equals(this.key, other.key) &&
+                Objects.equals(this.index, other.index);
+    }
+
+    @Override
+    public int hashCode() {
+        int hashcode = key.hashCode();
+        hashcode += index;
+        return hashcode;
+    }
 
     @Override
     public String toString() {
@@ -119,13 +148,13 @@ public final class HTMaterial {
         final int index;
 
         @NotNull
-        HTMaterialComposition composition = HTMaterialComposition.Empty.INSTANCE;
+        HTMaterialComposition composition = HTMaterialComposition.empty();
 
         @NotNull
         Set<@NotNull ResourceLocation> flagSet = new HashSet<>();
 
         @NotNull
-        Map<@NotNull TypedResourceLocation<?>, @NotNull HTMaterialProperty<?>> propertyMap = new HashMap<>();
+        Map<@NotNull TypedResourceLocation<?>, @NotNull Object> propertyMap = new HashMap<>();
 
         @NotNull
         HTMaterialType type = HTMaterialType.Undefined.INSTANCE;
@@ -134,8 +163,10 @@ public final class HTMaterial {
             this.index = index;
         }
 
-        public Builder setComposition(@NotNull HTMaterialComposition composition) {
-            this.composition = composition;
+        public Builder setComposition(@Nullable HTMaterialComposition composition) {
+            if (composition != null) {
+                this.composition = composition;
+            }
             return this;
         }
 
@@ -149,8 +180,10 @@ public final class HTMaterial {
             return this;
         }
 
-        public Builder addProperty(@NotNull HTMaterialProperty<?> property) {
-            propertyMap.put(property.getId(), property);
+        public <T> Builder addProperty(@Nullable TypedResourceLocation<T> key, @Nullable T value) {
+            if (key != null && value != null) {
+                propertyMap.put(key, value);
+            }
             return this;
         }
 
@@ -159,8 +192,10 @@ public final class HTMaterial {
             return this;
         }
 
-        public Builder setType(@NotNull HTMaterialType type) {
-            this.type = type;
+        public Builder setType(@Nullable HTMaterialType type) {
+            if (type != null) {
+                this.type = type;
+            }
             return this;
         }
     }
@@ -190,7 +225,10 @@ public final class HTMaterial {
             tooltips.add(I18n.format("tooltip.ht_materials.material.molar", molar));
         }
         // Tooltip from Properties
-        material.forEachProperty(property -> property.addInformation(context));
+        material.propertyMap.values().stream()
+                .filter(value -> value instanceof HTTooltipProperty)
+                .map(value -> (HTTooltipProperty) value)
+                .forEach(property -> property.addInformation(context));
     }
 
     @Desugar

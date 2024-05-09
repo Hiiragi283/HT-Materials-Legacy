@@ -17,9 +17,28 @@ import com.google.common.base.CaseFormat;
 import com.google.common.base.Supplier;
 
 import io.github.hiiragi283.htms.api.HTMaterialsAPI;
+import io.github.hiiragi283.htms.api.extension.SafeSupplier;
 
 @Desugar
-public record HTMaterialKey(@NotNull String name) {
+public record HTMaterialKey(@NotNull String name) implements SafeSupplier<HTMaterial> {
+
+    // SafeSupplier //
+
+    @Override
+    public HTMaterial get() {
+        return Objects.requireNonNull(HTMaterialsAPI.INSTANCE.getMaterialRegistry().get(this),
+                "Material; " + name + " is not registered!");
+    }
+
+    @Override
+    public @NotNull HTMaterial getOrDefault() {
+        return HTMaterialsAPI.INSTANCE.getMaterialRegistry().getOrEmpty(this);
+    }
+
+    @Override
+    public @Nullable HTMaterial getOrNull() {
+        return HTMaterialsAPI.INSTANCE.getMaterialRegistry().get(this);
+    }
 
     // Material //
 

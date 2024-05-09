@@ -36,7 +36,7 @@ public final class ItemShapedMaterial extends Item implements IMaterialItemProvi
     public ItemShapedMaterial(@NotNull HTShape shape, @NotNull Stream<@NotNull HTMaterialKey> validMaterials) {
         this.shape = shape;
         this.validMaterials = validMaterials
-                .sorted(Comparator.comparing(HTMaterialKey::name))
+                .sorted(Comparator.comparing(key -> key.getMaterialOrThrow().index()))
                 .collect(Collectors.toCollection(LinkedHashSet::new));
         setCreativeTab(HTMaterialsAPI.INSTANCE.getCreativeTab());
         setHasSubtypes(true);
@@ -86,7 +86,7 @@ public final class ItemShapedMaterial extends Item implements IMaterialItemProvi
     }
 
     @Override
-    public Item asItem() {
+    public @NotNull Item asItem() {
         return this;
     }
 }

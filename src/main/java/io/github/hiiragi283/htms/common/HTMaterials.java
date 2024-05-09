@@ -57,7 +57,9 @@ public final class HTMaterials {
     }
 
     @Mod.EventHandler
-    public void onInit(FMLInitializationEvent event) {}
+    public void onInit(FMLInitializationEvent event) {
+        registerOreDicts();
+    }
 
     @Mod.EventHandler
     public void onPostInit(FMLPostInitializationEvent event) {}

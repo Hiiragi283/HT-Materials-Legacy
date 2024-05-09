@@ -9,7 +9,7 @@ import com.google.common.collect.ImmutableList;
 
 import zone.rong.mixinbooter.IEarlyMixinLoader;
 
-public class HTMaterialsLoadingPlugin implements IFMLLoadingPlugin, IEarlyMixinLoader {
+public final class HTMaterialsLoadingPlugin implements IFMLLoadingPlugin, IEarlyMixinLoader {
 
     @Override
     public String[] getASMTransformerClass() {

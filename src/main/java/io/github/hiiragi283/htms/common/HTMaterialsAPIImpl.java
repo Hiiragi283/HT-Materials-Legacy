@@ -19,7 +19,7 @@ import io.github.hiiragi283.htms.api.material.HTMaterialRegistry;
 import io.github.hiiragi283.htms.api.material.content.HTMaterialContentRegistry;
 import io.github.hiiragi283.htms.api.shape.HTShapeRegistry;
 
-public class HTMaterialsAPIImpl implements HTMaterialsAPI {
+public final class HTMaterialsAPIImpl implements HTMaterialsAPI {
 
     private static final Iterable<HTMaterialsPlugin> plugins = HTServiceLoaderUtil.getInstances(HTMaterialsPlugin.class)
             .filter(plugin -> Loader.isModLoaded(plugin.getModId()))

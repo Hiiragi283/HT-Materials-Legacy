@@ -16,6 +16,14 @@ import io.github.hiiragi283.htms.api.extension.HTMolarUtil;
 @Desugar
 public record HTElement(@NotNull Color color, @NotNull String formula, double molar) {
 
+    public static @NotNull HTElement of(@NotNull Color color, @NotNull String formula, double molar) {
+        return new HTElement(color, formula, molar);
+    }
+
+    public static @NotNull HTElement group(@NotNull Map<HTElement, Integer> elements) {
+        return new Builder(elements).build();
+    }
+
     public static @NotNull HTElement group(@NotNull Map<HTElement, Integer> elements,
                                            @NotNull Consumer<HTElement.Builder> consumer) {
         HTElement.Builder builder = new Builder(elements);

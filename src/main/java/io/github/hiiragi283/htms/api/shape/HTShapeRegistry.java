@@ -40,6 +40,10 @@ public final class HTShapeRegistry {
         return keyMap.get(key);
     }
 
+    public @NotNull HTShape getOrEmpty(@NotNull String key) {
+        return keyMap.getOrDefault(key, new HTShape(key));
+    }
+
     public @NotNull ImmutableMap<@NotNull String, @NotNull HTShape> keyMap() {
         return ImmutableMap.copyOf(keyMap);
     }
