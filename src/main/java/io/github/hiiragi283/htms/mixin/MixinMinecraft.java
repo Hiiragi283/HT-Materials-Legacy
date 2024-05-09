@@ -16,7 +16,7 @@ import io.github.hiiragi283.htms.api.HTMaterialsAPI;
 import io.github.hiiragi283.htms.api.resource.HTRuntimeResourcePack;
 
 @Mixin(Minecraft.class)
-public class MinecraftMixin {
+public abstract class MixinMinecraft {
 
     @Shadow
     @Final
