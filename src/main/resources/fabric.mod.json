@@ -1,0 +1,69 @@
+{
+	"schemaVersion": 1,
+	"id": "better_with_materials",
+	"version": "${version}",
+	"name": "Better With Materials",
+	"description": "This mod aims to help new BTA modders.",
+	"authors": [
+		"Hiiragi283"
+	],
+	"contact": {
+		"homepage": "",
+		"sources": ""
+	},
+	"license": "CC0-1.0",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			{
+				"adapter": "kotlin",
+				"value": "io.github.hiiragi283.bwms.common.BetterWithMaterials"
+			}
+		],
+		"client": [
+			{
+				"adapter": "kotlin",
+				"value": "io.github.hiiragi283.bwms.client.BetterWithMaterialsClient"
+			}
+		],
+		"beforeGameStart": [
+			{
+				"adapter": "kotlin",
+				"value": "io.github.hiiragi283.bwms.common.BetterWithMaterials"
+			}
+		],
+		"afterGameStart": [
+			{
+				"adapter": "kotlin",
+				"value": "io.github.hiiragi283.bwms.common.BetterWithMaterials"
+			}
+		],
+		"recipesReady": [
+			{
+				"adapter": "kotlin",
+				"value": "io.github.hiiragi283.bwms.common.BetterWithMaterials"
+			}
+		],
+		"better_with_materials": [
+			{
+				"adapter": "kotlin",
+				"value": "io.github.hiiragi283.bwms.compat.HTDefaultMaterials"
+			},
+			{
+				"adapter": "kotlin",
+				"value": "io.github.hiiragi283.bwms.compat.HTBTACompat"
+			}
+		]
+	},
+	"mixins": [
+		"bwms.mixins.json"
+	],
+	"depends": {
+		"minecraft": "~7.1",
+		"fabricloader": ">=0.15.5",
+		"fabric-language-kotlin": "*",
+		"prismaticlibe": "*"
+	},
+	"suggests": {
+	}
+}

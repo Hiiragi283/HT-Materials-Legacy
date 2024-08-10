@@ -1,0 +1,119 @@
+// Item
+item.better_with_materials.dust.desc=Just a dust
+item.better_with_materials.gear.desc=Just a gear
+item.better_with_materials.gem.desc=Not only crystal but also chunk
+item.better_with_materials.ingot.desc=Not only metal ingot but also brick bar
+item.better_with_materials.plate.desc=Not only plate but also paper
+item.better_with_materials.rod.desc=Just a rod or stick
+
+// Material
+ht_material.hydrogen=Hydrogen
+ht_material.water=Water
+ht_material.snow=Snow
+ht_material.ice=Ice
+
+ht_material.carbon=Carbon
+ht_material.charcoal=Charcoal
+ht_material.coal=Coal
+ht_material.diamond=Diamond
+ht_material.nether_coal=Nether Coal
+ht_material.paper=Paper
+ht_material.sugar=Sugar
+ht_material.wood=Wood
+ht_material.wool=Wool
+
+ht_material.nitrogen=Nitrogen
+ht_material.niter=Niter
+
+ht_material.magnesium=Magnesium
+ht_material.olivine=Olivine
+
+ht_material.aluminium=Aluminium
+ht_material.clay=Clay
+ht_material.lapis=Lapis
+ht_material.terracotta=Terracotta
+
+ht_material.silicon=Silicon
+ht_material.flint=Flint
+ht_material.glass=Glass
+ht_material.gravel=Gravel
+ht_material.lava=Lava
+ht_material.quartz=Quartz
+ht_material.sand=Sand
+ht_material.soul_sand=Soul Sand
+
+ht_material.stone=Stone
+ht_material.basalt=Basalt
+ht_material.limestone=Limestone
+ht_material.granite=Granite
+ht_material.marble=Marble
+ht_material.slate=Slate
+ht_material.permafrost=Permafrost
+ht_material.sandstone=Sandstone
+ht_material.obsidian=Obsidian
+ht_material.bedrock=Bedrock
+ht_material.netherrack=Netherrack
+
+ht_material.sulfur=Sulfur
+ht_material.gunpowder=Gunpowder
+
+ht_material.bone=Bone
+
+ht_material.iron=Iron
+ht_material.steel=Steel
+
+ht_material.gold=Gold
+
+ht_material.apple=Apple
+ht_material.cacao=Cacao
+ht_material.cherry=Cherry
+ht_material.pumpkin=Pumpkin
+ht_material.wheat=Wheat
+
+ht_material.beef=Beef
+ht_material.chicken=Chicken
+ht_material.pork=Pork
+
+ht_material.dirt=Dirt
+ht_material.glowstone=Glowstone
+ht_material.mud=Mud
+ht_material.redstone=Redstone
+ht_material.slime=Slime
+ht_material.sponge=Sponge
+
+// Shape - Block
+ht_shape.block=Block of %s
+ht_shape.slab=%s Slab
+ht_shape.stair=%s Stair
+ht_shape.bricks=%s Bricks
+ht_shape.ore=%s Ore
+ht_shape.ore_basalt=Basalt %s Ore
+ht_shape.ore_limestone=Limestone %s Ore
+ht_shape.ore_granite=Granite %s Ore
+ht_shape.ore_gravel=Gravel %s Ore
+ht_shape.ore_sand=Sand %s Ore
+ht_shape.log=%s Log
+ht_shape.planks=%s Planks
+ht_shape.fence=%s Fence
+ht_shape.fence_gate=%s Fence Gate
+ht_shape.stone=%s Stone
+ht_shape.cobblestone=%s Cobblestone
+ht_shape.stone_polished=Polished %s Stone
+// Shape - Item
+ht_shape.dust=%s Dust
+ht_shape.gear=%s Gear
+ht_shape.gem=%s Gem
+ht_shape.ingot=%s Ingot
+ht_shape.nugget=%s Nugget
+ht_shape.plate=%s Plate
+ht_shape.raw_chunk=Raw %s
+ht_shape.rod=%s Rod
+ht_shape.seed=%s Seed
+ht_shape.crop=%s Crop
+ht_shape.raw_meat=Raw %s Meat
+ht_shape.cooked_meat=Cooked %s Meat
+// Tooltip
+tooltip.better_with_materials.material.title=§4=== Material Info ===
+tooltip.better_with_materials.material.name=- Name: §3%s§r§8
+tooltip.better_with_materials.material.formula=- Formula: §3%s§8
+tooltip.better_with_materials.material.molar=- Molar: §3%s§r§8 g/mol

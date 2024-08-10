@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "io.github.hiiragi283.bwms.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "GuiTooltipMixin"
+  ],
+  "client": [],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
