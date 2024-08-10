@@ -1,0 +1,18 @@
+[
+  {
+    "modid": "ht_materials",
+    "name": "HT Materials Legacy",
+    "description": "Example placeholder mod.",
+    "version": "${version}",
+    "mcversion": "${mcversion}",
+    "url": "",
+    "updateUrl": "",
+    "authorList": [
+      "Hiiragi283"
+    ],
+    "credits": "Authors of this project",
+    "logoFile": "",
+    "screenshots": [],
+    "dependencies": []
+  }
+]

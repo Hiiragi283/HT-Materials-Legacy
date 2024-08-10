@@ -1,0 +1,16 @@
+{
+  "package": "io.github.hiiragi283.mixin",
+  "refmap": "mixins.ht_materials.refmap.json",
+  "target": "@env(DEFAULT)",
+  "minVersion": "0.8",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "BlockMixin",
+    "FurnaceRecipesMixin",
+    "ItemMixin",
+    "MinecraftMixin",
+    "OreDictionaryAccessor"
+  ],
+  "client": [],
+  "server": []
+}
