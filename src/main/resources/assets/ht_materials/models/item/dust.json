@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "ht_materials:item/dust",
-    "layer1": "ht_materials:item/dust_overlay"
+    "layer0": "ht_materials:items/dust",
+    "layer1": "ht_materials:items/dust_overlay"
   }
 }

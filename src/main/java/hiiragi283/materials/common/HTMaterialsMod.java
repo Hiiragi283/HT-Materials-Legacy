@@ -30,6 +30,7 @@ public final class HTMaterialsMod {
 
     @Mod.EventHandler
     public static void onInit(FMLInitializationEvent event) {
+        HTMaterialRegistryImpl.registerOreDicts();
 
         LOGGER.info("Succeeded init event!");
     }

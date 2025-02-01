@@ -1,11 +1,40 @@
+itemGroup.ht_materials.materials=HT Materials Legacy
 
 # Material
+material.ht_materials.carbon=Carbon
+
+material.ht_materials.aluminum=Aluminum
+
 material.ht_materials.iron=Iron
+material.ht_materials.cobalt=Cobalt
+material.ht_materials.nickel=Nickel
 material.ht_materials.copper=Copper
+material.ht_materials.zinc=Zinc
+
+material.ht_materials.silver=Silver
+material.ht_materials.tin=Tin
+
+material.ht_materials.platinum=Platinum
+material.ht_materials.iridium=Iridium
+material.ht_materials.osmium=Osmium
 material.ht_materials.gold=Gold
+material.ht_materials.lead=Lead
+
+material.ht_materials.coal=Coal
+material.ht_materials.charcoal=Charcoal
+
+material.ht_materials.steel=Steel
+
+material.ht_materials.brass=Brass
+material.ht_materials.bronze=Bronze
+
+material.ht_materials.electrum=Electrum
 
 # Part
 
 part.ht_materials.dust=%s Dust
+part.ht_materials.gear=%s Gear
 part.ht_materials.ingot=%s Ingot
+part.ht_materials.nugget=%s Nugget
 part.ht_materials.plate=%s Plate
+part.ht_materials.rod=%s Rod

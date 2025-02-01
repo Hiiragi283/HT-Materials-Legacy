@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "ht_materials:items/nugget",
+    "layer1": "ht_materials:items/nugget_overlay"
+  }
+}

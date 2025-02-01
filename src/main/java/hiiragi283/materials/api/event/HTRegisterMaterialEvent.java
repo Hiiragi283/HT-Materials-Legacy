@@ -17,6 +17,7 @@ public class HTRegisterMaterialEvent extends Event {
 
     public void register(@NotNull final HTMaterialKey material, final int index) {
         Preconditions.checkArgument(index > 0, "index must be greater than 0");
-        Preconditions.checkArgument(materials.put(index, material) == null, "The index: " + index + " has already bound to " + material);
+        Preconditions.checkArgument(materials.get(index) == null, "The index: " + index + " has already bound to " + material);
+        materials.put(index, material);
     }
 }

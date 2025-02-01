@@ -25,6 +25,14 @@ repositories {
             includeGroup 'maven.modrinth'
         }
     }
+    maven {
+        name 'Cleanroom Maven'
+        url 'https://maven.cleanroommc.com'
+    }
+    maven {
+        name 'BlameJared Maven'
+        url 'https://maven.blamejared.com'
+    }
     mavenLocal() // Must be last for caching to work
 }
 
@@ -34,6 +42,9 @@ dependencies {
     // Include OSXNarratorBlocker by default for the dev env, for M1+ Macs
     runtimeOnly 'com.cleanroommc:osxnarratorblocker:1.0'
 
+    implementation 'mezz:jei:4.26.2'
+    implementation rfg.deobf('curse.maven:top-245211:2667280')
+    
     compileOnlyApi 'org.jetbrains:annotations:26.0.2'
     annotationProcessor 'org.jetbrains:annotations:26.0.2'
     

@@ -12,6 +12,7 @@ import hiiragi283.materials.common.init.HMItems;
 import hiiragi283.materials.common.item.ItemPartMaterial;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.color.IItemColor;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
@@ -33,19 +34,19 @@ public final class HTMaterialsClientEventHandlers {
     @SubscribeEvent
     public static void onRegisterModel(ModelRegistryEvent event) {
         HTMaterialRegistry registry = HTMaterialsAPI.INSTANCE.getMaterialRegistry();
-        for (HTMaterialKey material : registry.getMaterials()) {
-            OptionalInt index = registry.getIndex(material);
-            if (index.isPresent()) {
-                HTPropertyHolder holder = registry.getPropertyHolder(material);
-                HTMaterialModelFunction modelFunction = holder.getPropertyOrDefault(DefaultMaterialProperties.MODEL, (HTPart part, HTMaterialKey key) -> HTMaterialsAPI.id(part.name));
-                for (ItemPartMaterial item : HMItems.ITEMS) {
+        for (ItemPartMaterial item : HMItems.ITEMS) {
+            item.getValidMaterials().forEach((HTMaterialKey material) -> {
+                OptionalInt index = registry.getIndex(material);
+                if (index.isPresent()) {
+                    HTPropertyHolder holder = registry.getPropertyHolder(material);
+                    HTMaterialModelFunction modelFunction = holder.getPropertyOrDefault(DefaultMaterialProperties.MODEL, (HTPart part, HTMaterialKey key) -> HTMaterialsAPI.id(part.name));
                     ModelLoader.setCustomModelResourceLocation(
                             item,
                             index.getAsInt(),
                             new ModelResourceLocation(modelFunction.apply(item.getPart(), material), "inventory")
                     );
                 }
-            }
+            });
         }
 
         LOGGER.info("Registered item models!");
@@ -54,7 +55,7 @@ public final class HTMaterialsClientEventHandlers {
     @SubscribeEvent
     public static void onRegisterItemColor(ColorHandlerEvent.Item event) {
         IItemColor itemColor = (ItemStack stack, int tintIndex) -> {
-            if (tintIndex != 1) return -1;
+            if (tintIndex != 0) return -1;
             HTMaterialRegistry registry = HTMaterialsAPI.INSTANCE.getMaterialRegistry();
             return registry.getPropertyFromIndex(stack.getMetadata())
                     .getOptional(DefaultMaterialProperties.COLOR)
@@ -62,12 +63,9 @@ public final class HTMaterialsClientEventHandlers {
                     .orElse(-1);
         };
 
-        event.getItemColors().registerItemColorHandler(
-                itemColor,
-                HMItems.DUST,
-                HMItems.INGOT,
-                HMItems.PLATE
-        );
+        for (Item item : HMItems.ITEMS) {
+            event.getItemColors().registerItemColorHandler(itemColor, item);
+        }
 
         LOGGER.info("Registered Item Colors!");
     }

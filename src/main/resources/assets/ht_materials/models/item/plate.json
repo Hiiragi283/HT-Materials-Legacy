@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "ht_materials:item/plate",
-    "layer1": "ht_materials:item/plate_overlay"
+    "layer0": "ht_materials:items/plate",
+    "layer1": "ht_materials:items/plate_overlay"
   }
 }

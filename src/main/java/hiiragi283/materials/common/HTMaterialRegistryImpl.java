@@ -2,19 +2,24 @@ package hiiragi283.materials.common;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+import com.mojang.realmsclient.util.Pair;
 import hiiragi283.materials.api.event.HTRegisterMaterialEvent;
 import hiiragi283.materials.api.event.HTSetupPropertiesEvent;
 import hiiragi283.materials.api.mateial.HTMaterialKey;
 import hiiragi283.materials.api.mateial.HTMaterialRegistry;
 import hiiragi283.materials.api.property.HTPropertyHolder;
 import hiiragi283.materials.api.property.HTPropertyHolderBuilder;
+import hiiragi283.materials.common.init.HMItems;
+import hiiragi283.materials.common.item.ItemPartMaterial;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.oredict.OreDictionary;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
+import java.util.stream.Stream;
 
 enum HTMaterialRegistryImpl implements HTMaterialRegistry {
     INSTANCE;
@@ -43,6 +48,17 @@ enum HTMaterialRegistryImpl implements HTMaterialRegistry {
         LOGGER.info("Set up properties!");
     }
 
+    static void registerOreDicts() {
+        for (ItemPartMaterial item : HMItems.ITEMS) {
+            item.getValidMaterials().forEach((HTMaterialKey material) -> OreDictionary.registerOre(
+                    item.getPart().createOreDict(material),
+                    item.getStackFromMaterial(material)
+            ));
+        }
+
+        LOGGER.info("Registered Ore Dictionary!");
+    }
+
     //    HTMaterialRegistry    //
 
     @Override
@@ -59,6 +75,11 @@ enum HTMaterialRegistryImpl implements HTMaterialRegistry {
     @Override
     public @Nullable HTMaterialKey getMaterialFromIndex(int index) {
         return materialMap.get(index);
+    }
+
+    @Override
+    public @NotNull Stream<Pair<HTMaterialKey, Integer>> getIndexedMaterials() {
+        return materialMap.entrySet().stream().map((Map.Entry<Integer, HTMaterialKey> entry) -> Pair.of(entry.getValue(), entry.getKey()));
     }
 
     @Override
