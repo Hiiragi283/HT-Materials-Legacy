@@ -4,6 +4,8 @@ itemGroup.ht_materials.materials=HT Materials Legacy
 material.ht_materials.carbon=Carbon
 
 material.ht_materials.aluminum=Aluminum
+material.ht_materials.silicon=Silicon
+material.ht_materials.sulfur=Sulfur
 
 material.ht_materials.iron=Iron
 material.ht_materials.cobalt=Cobalt
@@ -23,12 +25,35 @@ material.ht_materials.lead=Lead
 material.ht_materials.coal=Coal
 material.ht_materials.charcoal=Charcoal
 
+material.ht_materials.quartz=Quartz
+material.ht_materials.glass=Glass
+
 material.ht_materials.steel=Steel
 
 material.ht_materials.brass=Brass
 material.ht_materials.bronze=Bronze
 
 material.ht_materials.electrum=Electrum
+
+material.thermalfoundation.signalum=Signalum
+material.thermalfoundation.lumium=Lumium
+material.thermalfoundation.enderium=Enderium
+
+material.enderio.electrical_steel=Electrical Steel
+material.enderio.energetic_alloy=Energetic Alloy
+material.enderio.vibrant_alloy=Vibrant Alloy
+material.enderio.redstone_alloy=Redstone Alloy
+material.enderio.conductive_iron=Conductive Iron
+material.enderio.pulsating_iron=Pulsating Iron
+material.enderio.dark_steel=Dark Steel
+material.enderio.soularium=Soularium
+material.enderio.end_steel=End Steel
+
+material.tconstruct.ardite=Ardite
+material.tconstruct.manyullyn=Manyullyn
+material.tconstruct.knightslime=Knightslime
+material.tconstruct.pigiron=Pigiron
+material.tconstruct.alubrass=Alubrass
 
 # Part
 

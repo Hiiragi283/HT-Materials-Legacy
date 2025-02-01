@@ -3,3 +3,14 @@
 
 // If you wish to use the default helper methods, uncomment the line below
 // apply from: 'gradle/scripts/helpers.gradle'
+
+// https://qiita.com/kumaGoro_95/items/744ab7184c82c6e352e2
+spotless {
+    java {
+        googleJavaFormat() // Google Java Format を使用
+        importOrder("java", "javax", "net", "org", "com") // インポート順の整理
+        removeUnusedImports() // 未使用インポートの削除
+        trimTrailingWhitespace() // 行末の空白削除
+        endWithNewline() // ファイル末尾に改行を追加
+    }
+}

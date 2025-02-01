@@ -1,33 +1,40 @@
 package hiiragi283.materials.api.mateial;
 
-import com.mojang.realmsclient.util.Pair;
-import hiiragi283.materials.api.property.HTPropertyHolder;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 import java.util.OptionalInt;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import com.mojang.realmsclient.util.Pair;
+
+import hiiragi283.materials.api.property.HTPropertyHolder;
+
 public interface HTMaterialRegistry {
 
-    @NotNull Set<HTMaterialKey> getMaterials();
+  @NotNull
+  Set<HTMaterialKey> getMaterials();
 
-    //    Index    //
+  //    Index    //
 
-    @NotNull OptionalInt getIndex(@NotNull final HTMaterialKey materialKey);
+  @NotNull
+  OptionalInt getIndex(@NotNull final HTMaterialKey materialKey);
 
-    @Nullable HTMaterialKey getMaterialFromIndex(final int index);
+  @Nullable
+  HTMaterialKey getMaterialFromIndex(final int index);
 
-    @NotNull Stream<Pair<HTMaterialKey, Integer>> getIndexedMaterials();
+  @NotNull
+  Stream<Pair<HTMaterialKey, Integer>> getIndexedMaterials();
 
-    //    Property    //
+  //    Property    //
 
-    @NotNull HTPropertyHolder getPropertyHolder(@NotNull final HTMaterialKey materialKey);
+  @NotNull
+  HTPropertyHolder getPropertyHolder(@NotNull final HTMaterialKey materialKey);
 
-    default @NotNull HTPropertyHolder getPropertyFromIndex(final int index) {
-        var material = getMaterialFromIndex(index);
-        if (material == null) return HTPropertyHolder.empty();
-        return getPropertyHolder(material);
-    }
+  default @NotNull HTPropertyHolder getPropertyFromIndex(final int index) {
+    var material = getMaterialFromIndex(index);
+    if (material == null) return HTPropertyHolder.empty();
+    return getPropertyHolder(material);
+  }
 }

@@ -14,6 +14,7 @@ plugins {
     id 'com.matthewprenger.cursegradle' version '1.4.0' apply false
     id 'com.modrinth.minotaur' version '2.+' apply false
     id 'org.jetbrains.changelog' version '2.2.1'
+    id 'com.diffplug.spotless' version '7.0.2'
 }
 
 apply from: 'gradle/scripts/helpers.gradle'
