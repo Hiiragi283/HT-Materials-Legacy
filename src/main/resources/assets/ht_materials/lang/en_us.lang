@@ -1,0 +1,11 @@
+
+# Material
+material.ht_materials.iron=Iron
+material.ht_materials.copper=Copper
+material.ht_materials.gold=Gold
+
+# Part
+
+part.ht_materials.dust=%s Dust
+part.ht_materials.ingot=%s Ingot
+part.ht_materials.plate=%s Plate
